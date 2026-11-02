@@ -221,3 +221,39 @@ section:not(.hero){padding:clamp(96px,13vw,170px) var(--gut)}   /* C's airiness 
 .portrait figcaption{position:static;margin-top:14px;text-align:left;font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
 .portrait{box-shadow:none}
 .portrait img{box-shadow:0 40px 80px -30px rgba(0,0,0,.85)}
+
+/* ---- video pass (James, 2026-11-02) ---- */
+/* long-form: one channel title, equal cards, clearer view counts */
+.channel{display:flex;align-items:center;justify-content:center;gap:10px;margin:-16px auto 28px;font-weight:600;font-size:17px}
+.channel span{font-weight:400;color:var(--ink-2)}
+.ch-dot{width:8px;height:8px;border-radius:50%;background:#e33}
+.yt-grid .yt:first-child{grid-column:auto}
+.yt-grid .yt:first-child figcaption b{font-size:17px}
+.yt figcaption span{font:600 14px var(--sans);color:var(--accent-2);letter-spacing:.01em}
+/* autoplay clips */
+.clip{margin:0}
+.clip-media{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--line);background:#000}
+.clip video{display:block;width:100%;height:100%;object-fit:cover}
+.clip.tall .clip-media{aspect-ratio:9/16}
+.clip.wide .clip-media{aspect-ratio:16/9}
+.clip figcaption{margin-top:10px;font-size:14px;color:var(--ink-2)}
+.reel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;max-width:1100px;margin:0 auto 96px}
+.side-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:1100px}
+/* sound buttons: small + discreet on clips, clear on the testimonial */
+.snd{position:absolute;right:10px;bottom:10px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(233,223,208,.25);background:rgba(20,16,12,.55);backdrop-filter:blur(6px);color:var(--ink);font-size:14px;cursor:pointer;display:grid;place-items:center;opacity:.75;transition:opacity .3s,background .3s,transform .4s var(--ease)}
+.snd:hover{opacity:1;transform:scale(1.08)}
+.snd .snd-on{display:none}
+.snd[aria-pressed="true"] .snd-on{display:inline}
+.snd[aria-pressed="true"] .snd-off{display:none}
+.snd.snd-big{left:50%;right:auto;bottom:16px;transform:translateX(-50%);width:auto;height:auto;padding:.7em 1.2em;border-radius:999px;font:600 14px var(--sans);opacity:1;background:var(--accent);color:#14100C;border:0;box-shadow:0 8px 24px -8px rgba(0,0,0,.6)}
+.snd.snd-big:hover{transform:translateX(-50%) scale(1.04)}
+.snd.snd-big[aria-pressed="true"]{background:rgba(20,16,12,.7);color:var(--ink);border:1px solid var(--line)}
+/* testimonial: video on top, quote underneath */
+.card.video-card .clip-media{border:0;border-radius:0}
+.video-card video{max-height:620px}
+.video-card figcaption p{font-family:var(--serif);font-size:24px;line-height:1.2;margin:0}
+@media (max-width:820px){
+  .reel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .side-row{grid-template-columns:1fr}
+  .side-row .clip:last-child{display:block}
+}

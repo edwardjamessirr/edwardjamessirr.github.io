@@ -257,3 +257,6 @@ section:not(.hero){padding:clamp(96px,13vw,170px) var(--gut)}   /* C's airiness 
   .side-row{grid-template-columns:1fr}
   .side-row .clip:last-child{display:block}
 }
+/* testimonial: quote sits under the video, never over the unmute button */
+.card.quote.video-card figcaption{position:static;inset:auto;background:none;padding:20px 22px 24px}
+.card.quote.video-card .snd-big{z-index:2}

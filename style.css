@@ -260,3 +260,9 @@ section:not(.hero){padding:clamp(96px,13vw,170px) var(--gut)}   /* C's airiness 
 /* testimonial: quote sits under the video, never over the unmute button */
 .card.quote.video-card figcaption{position:static;inset:auto;background:none;padding:20px 22px 24px}
 .card.quote.video-card .snd-big{z-index:2}
+
+/* ---- pass 3 (James, 2026-11-02): 3 reels, 4 long-form, tighter testimonial quote ---- */
+.reel-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:860px}
+.card.quote.video-card figcaption{padding:14px 18px 16px}
+.video-card figcaption p{font-size:21px;line-height:1.18}
+@media (max-width:820px){.reel-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}

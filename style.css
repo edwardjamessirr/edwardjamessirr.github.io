@@ -266,3 +266,18 @@ section:not(.hero){padding:clamp(96px,13vw,170px) var(--gut)}   /* C's airiness 
 .card.quote.video-card figcaption{padding:14px 18px 16px}
 .video-card figcaption p{font-size:21px;line-height:1.18}
 @media (max-width:820px){.reel-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}
+
+/* ---- texture (James, 2026-11-02): paper-fibre from his ASSETS kit, everything below the hero ---- */
+.paper{position:relative;isolation:isolate}
+.paper::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:url(img/texture-paper.jpg) center top/1400px auto repeat;opacity:.09;mix-blend-mode:screen}
+.paper::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(120% 60% at 50% 0%,rgba(168,134,95,.05),transparent 60%)}
+
+/* darker brown (James, 2026-11-02) */
+:root{--bg:#0E0B08;--bg-2:#17120E}
+.paper::after{background:radial-gradient(120% 60% at 50% 0%,rgba(168,134,95,.035),transparent 60%)}
+/* texture v2: one fixed sheet (no tile seams), overlay blend keeps the brown dark */
+.paper{clip-path:inset(0)}
+.paper::before{position:fixed;inset:0;background:url(img/texture-paper.jpg) center/cover no-repeat;opacity:.75;mix-blend-mode:overlay}
+.paper{background:var(--bg)}

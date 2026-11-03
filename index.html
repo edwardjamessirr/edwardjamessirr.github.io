@@ -8,12 +8,12 @@
 <meta property="og:title" content="Edward James — Video Editor">
 <meta property="og:description" content="Edits that hold attention. Attention that pays. 704K+ YouTube views on 5 long-form edits.">
 <meta property="og:image" content="img/pool-payoff.jpg">
-<meta name="theme-color" content="#14100C">
+<meta name="theme-color" content="#0E0B08">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314100C'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-style='italic' font-size='34' fill='%23C9A57A'%3EEJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -48,6 +48,7 @@
   </div>
 </section>
 
+<div class="paper">
 <section class="work" id="work">
   <header class="sec-head"><p class="kicker">01 — Work</p><h2>Long-<em>form</em></h2><p class="lede">YouTube vlogs for a 30K-subscriber travel and dating channel. Story first, pacing that holds, 9–12 minutes that feel short.</p></header>
   <p class="channel"><span class="ch-dot"></span>Kyrikouts <span>· 30K subscribers on YouTube</span></p>
@@ -75,7 +76,7 @@
     <article class="card"><p class="big">400K+</p><p>views from five short reels in fourteen days.</p><p class="meta">Live-stream creator · Instagram</p></article>
     <article class="card"><p class="big">368K</p><p>views on a single 12-minute vlog I cut.</p><p class="meta">Kyrikouts · YouTube</p></article>
     <article class="card"><p class="big">5 / day</p><p>reels posted in a single day at full pace, every one checked frame by frame first.</p><p class="meta">Volume without the slop</p></article>
-    <figure class="card quote video-card"><div class="clip-media"><video class="auto" src="video/testimonial.mp4" poster="img/client-voice.jpg" muted loop playsinline preload="metadata"></video><button class="snd snd-big" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off">🔇 Tap to unmute</span><span class="snd-on">🔊 Sound on</span></button></div><figcaption><p>“I didn't even ask for a testimonial. This is one of my clients.”</p></figcaption></figure>
+    <figure class="card quote video-card"><div class="clip-media"><video class="auto" data-sound="on" src="video/testimonial.mp4" poster="img/client-voice.jpg" muted loop playsinline preload="metadata"></video><button class="snd snd-big" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off">🔇 Tap to unmute</span><span class="snd-on">🔊 Sound on</span></button></div><figcaption><p>“I didn't even ask for a testimonial. This is one of my clients.”</p></figcaption></figure>
   </div>
 </section>
 
@@ -122,6 +123,7 @@
 </section>
 
 <footer class="foot"><span>© 2026 Edward James</span><span><a href="https://wa.me/526651660117" target="_blank" rel="noopener">WhatsApp</a> · <a href="mailto:eddysmail40@gmail.com">Email</a> · <a href="https://x.com/EdwardJamesSirr" target="_blank" rel="noopener">X</a></span></footer>
+</div>
 
 <script>
   // reveal on scroll + autoplay videos on screen (scroll check backs up IntersectionObserver)
@@ -132,8 +134,18 @@
   function onScreen(el,frac){const r=el.getBoundingClientRect(),h=innerHeight||document.documentElement.clientHeight;const vis=Math.min(r.bottom,h)-Math.max(r.top,0);return vis>Math.min(r.height,h)*frac}
   function check(){
     rv.forEach(el=>{if(!el.classList.contains('in')&&onScreen(el,.08))el.classList.add('in')});
-    vids.forEach(v=>{if(onScreen(v,.35)){if(v.paused)v.play().catch(()=>{})}else if(!v.paused){v.pause()}});
+    vids.forEach(v=>{if(onScreen(v,.35)){if(v.paused)start(v)}else if(!v.paused){v.pause()}});
   }
+  // the testimonial tries to play WITH sound; browsers only allow that after a tap/click,
+  // so if it's blocked it plays muted and the button stays up. First tap anywhere turns the sound on.
+  let userMuted=false, tapped=false;
+  function setBtn(v){const b=v.parentElement.querySelector('.snd');if(!b)return;b.setAttribute('aria-pressed',String(!v.muted));b.setAttribute('aria-label',v.muted?'Unmute':'Mute')}
+  function start(v){
+    if(v.dataset.sound==='on'&&!userMuted){v.muted=false;v.play().then(()=>setBtn(v)).catch(()=>{v.muted=true;setBtn(v);v.play().catch(()=>{})})}
+    else v.play().catch(()=>{});
+  }
+  ['pointerdown','keydown','touchstart'].forEach(ev=>addEventListener(ev,()=>{if(tapped)return;tapped=true;
+    vids.filter(v=>v.dataset.sound==='on'&&!v.paused&&v.muted&&!userMuted).forEach(v=>{v.muted=false;setBtn(v)})},{once:false,passive:true}));
   if('IntersectionObserver' in window){const io=new IntersectionObserver(check,{threshold:[0,.1,.35,.6]});rv.concat(vids).forEach(el=>io.observe(el))}
   addEventListener('scroll',check,{passive:true});addEventListener('resize',check);addEventListener('load',check);check();
   // safety net: never leave anything invisible
@@ -142,7 +154,7 @@
   document.querySelectorAll('.snd').forEach(b=>b.addEventListener('click',()=>{
     const v=b.parentElement.querySelector('video'),on=v.muted;
     vids.forEach(o=>{o.muted=true;const s=o.parentElement.querySelector('.snd');if(s){s.setAttribute('aria-pressed','false');s.setAttribute('aria-label','Unmute')}});
-    v.muted=!on;if(on)v.play().catch(()=>{});
+    v.muted=!on;if(on)v.play().catch(()=>{});if(v.dataset.sound==='on')userMuted=!on;tapped=true;
     b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-label',on?'Mute':'Unmute');
   }));
   // YouTube: load the player only on click

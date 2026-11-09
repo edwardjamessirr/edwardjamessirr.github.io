@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sprout</title>
+<meta name="description" content="A pause screen that shows up before distracting apps. Grow a streak, not a scroll.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1b2a66">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sprout">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231b2a66'/%3E%3Cpath d='M32 50V30' stroke='%2386c96f' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M32 34C22 34 16 26 16 18c10 0 16 6 16 16zM32 30c0-10 6-16 16-16 0 8-6 16-16 16z' fill='%2386c96f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky1: #1b2a66; --sky2: #2f4596;
+    --ground1: #9a7656; --ground2: #7d5e43;
+    --ink-sky: #ffffff; --accent: #ffd36b;
+    --card: #ffffff; --card-ink: #1d2433; --muted: #5d6676;
+    --blue: #3b82f6; --blue-deep: #2563c9; --blue-soft: #eaf2ff;
+    --line: #dfe4ec; --danger: #c2410c;
+    --radius: 26px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: "Nunito", ui-rounded, "SF Pro Rounded", system-ui, -apple-system, sans-serif;
+    background: var(--ground2);
+    color: var(--card-ink);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 100svh;
+  }
+  .app { max-width: 480px; margin: 0 auto; min-height: 100svh; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* ---------- sky ---------- */
+  .sky {
+    background: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 100%);
+    color: var(--ink-sky);
+    padding: calc(18px + env(safe-area-inset-top)) 20px 0;
+    text-align: center;
+    position: relative;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 800; font-size: 14px; letter-spacing: .02em;
+    padding: 7px 14px; border-radius: 999px;
+    background: rgba(255,255,255,.16); color: var(--ink-sky);
+  }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  h1 {
+    margin: 16px 0 0; font-weight: 900; font-size: clamp(34px, 9.5vw, 44px);
+    line-height: 1.05; letter-spacing: -.02em; text-wrap: balance;
+  }
+  h1 .accent { color: var(--accent); }
+  .sub-sky { margin: 10px 0 0; font-weight: 700; font-size: 17px; opacity: .85; }
+
+  .scene-wrap { position: relative; margin: 0 -20px; }
+  .scene-wrap svg { display: block; width: 100%; height: auto; }
+  .breath-label {
+    position: absolute; left: 0; right: 0; top: 4%;
+    font-weight: 900; font-size: 20px; letter-spacing: .01em;
+    color: var(--ink-sky); transition: opacity .4s;
+  }
+  .breath-label b { display: block; font-size: 15px; font-weight: 800; opacity: .75; margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+  /* breathing ring + idle bob */
+  .ring { transform-box: fill-box; transform-origin: center; transform: scale(.72); opacity: .0; }
+  .breathing .ring { animation: breathe 10s ease-in-out forwards; }
+  @keyframes breathe {
+    0% { transform: scale(.72); opacity: .0; }
+    8% { opacity: 1; }
+    50% { transform: scale(1.12); opacity: 1; }
+    92% { opacity: 1; }
+    100% { transform: scale(.72); opacity: 0; }
+  }
+  .bob { animation: bob 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom center; }
+  @keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+  .cheer .bob { animation: hop .6s ease-out 3; }
+  @keyframes hop { 0%,100% { transform: translateY(0) scaleY(1) } 30% { transform: translateY(-16px) scaleY(1.04) } 60% { transform: translateY(0) scaleY(.95) } }
+  .twinkle { animation: twinkle 2.6s ease-in-out infinite; }
+  @keyframes twinkle { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
+
+  /* ---------- ground ---------- */
+  .ground {
+    flex: 1;
+    background: linear-gradient(180deg, var(--ground1) 0%, var(--ground2) 100%);
+    padding: 4px 16px calc(28px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: 0 5px 0 rgba(0,0,0,.14);
+    padding: 18px 20px;
+  }
+  .card h2 { margin: 0 0 4px; font-size: 21px; font-weight: 900; letter-spacing: -.01em; }
+  .card p { margin: 0; color: var(--muted); font-weight: 700; font-size: 15.5px; line-height: 1.4; }
+
+  .q-title { color: #fff; font-weight: 900; font-size: 22px; text-align: center; margin: 4px 0 0; text-shadow: 0 2px 0 rgba(0,0,0,.12); text-wrap: balance; }
+
+  .option {
+    width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
+    font: inherit; color: inherit; cursor: pointer;
+    background: var(--card); border: 3px solid transparent; border-radius: var(--radius);
+    box-shadow: 0 5px 0 rgba(0,0,0,.14);
+    padding: 14px 18px;
+    transition: transform .12s, border-color .15s, background .15s;
+  }
+  .option:active { transform: translateY(2px); }
+  .option[aria-checked="true"] { border-color: var(--blue); background: var(--blue-soft); box-shadow: 0 5px 0 var(--blue-deep); }
+  .radio { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 3px solid #cfd5df; display: grid; place-items: center; background: #fff; }
+  .option[aria-checked="true"] .radio { border-color: var(--blue); }
+  .option[aria-checked="true"] .radio::after { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--blue); }
+  .option b { display: block; font-size: 18px; font-weight: 900; }
+  .option span.s { display: block; font-size: 14.5px; font-weight: 700; color: var(--muted); margin-top: 1px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .btn {
+    display: block; width: 100%; border: 0; cursor: pointer; text-decoration: none; text-align: center;
+    font: inherit; font-weight: 900; font-size: 21px;
+    padding: 17px 20px; border-radius: 999px;
+    background: var(--blue); color: #fff;
+    box-shadow: 0 6px 0 var(--blue-deep);
+    transition: transform .1s, box-shadow .1s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--blue-deep); }
+  .btn.ghost { background: rgba(255,255,255,.2); color: #fff; box-shadow: none; font-size: 16px; padding: 13px 18px; }
+  .btn.ghost:disabled { opacity: .45; cursor: default; }
+  .btn.ghost.warn { background: rgba(0,0,0,.2); }
+  .fine { color: rgba(255,255,255,.92); text-align: center; font-weight: 700; font-size: 14.5px; margin: 0; line-height: 1.45; text-shadow: 0 1px 0 rgba(0,0,0,.1); }
+  .fine a { color: #fff; }
+
+  .hidden { display: none !important; }
+  .fade-in { animation: fadeUp .45s ease-out both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+
+  /* ---------- dashboard ---------- */
+  .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .stat { background: var(--card); border-radius: 20px; box-shadow: 0 5px 0 rgba(0,0,0,.14); padding: 12px 8px; text-align: center; }
+  .stat b { display: block; font-size: 28px; font-weight: 900; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 13px; font-weight: 800; color: var(--muted); }
+  .streak-card { display: flex; align-items: center; gap: 16px; }
+  .streak-num { flex: none; font-size: 48px; font-weight: 900; line-height: 1; color: var(--blue); font-variant-numeric: tabular-nums; min-width: 64px; text-align: center; }
+
+  .themes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 10px; margin-top: 14px; }
+  .theme { text-align: center; }
+  .theme .thumb { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 1; border: 3px solid #fff; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
+  .theme .thumb svg { width: 100%; height: 100%; display: block; }
+  .theme.locked .thumb::after { content: ""; position: absolute; inset: 0; background: rgba(30,36,50,.55); }
+  .theme .lock { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; }
+  .theme .thumb .lock svg { width: 26px; height: 26px; }
+  .theme.current .thumb { border-color: var(--blue); }
+  .theme small { display: block; margin-top: 5px; font-weight: 900; font-size: 14px; }
+  .theme small i { font-style: normal; display: block; font-weight: 700; font-size: 12.5px; color: var(--muted); }
+
+  details.step { border-top: 2px solid var(--line); }
+  details.step:first-of-type { border-top: 0; }
+  details.step summary {
+    list-style: none; cursor: pointer; padding: 14px 0; display: flex; align-items: center; gap: 12px;
+    font-weight: 900; font-size: 17px;
+  }
+  details.step summary::-webkit-details-marker { display: none; }
+  .num { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--blue-soft); color: var(--blue-deep); display: grid; place-items: center; font-weight: 900; font-size: 15px; }
+  .chev { margin-left: auto; transition: transform .2s; color: var(--muted); }
+  details[open] .chev { transform: rotate(90deg); }
+  .step-body { padding: 0 0 16px 42px; font-weight: 700; font-size: 15px; color: #3b4352; line-height: 1.5; }
+  .step-body ol { margin: 6px 0 0; padding-left: 18px; }
+  .step-body li { margin: 4px 0; }
+  .step-body em { font-style: normal; background: #f1f3f7; border-radius: 6px; padding: 1px 6px; color: var(--card-ink); font-weight: 800; }
+  .step-body .tag { display: inline-block; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: var(--blue-deep); margin-bottom: 4px; }
+  .note { margin-top: 10px; background: #fff7e6; border-radius: 12px; padding: 10px 12px; color: #6b4a12; font-size: 14px; }
+
+  .links { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .link-row { display: flex; align-items: center; gap: 8px; background: #f4f6fa; border-radius: 14px; padding: 8px 8px 8px 12px; }
+  .link-row strong { font-size: 15px; font-weight: 900; min-width: 78px; }
+  .link-row code { flex: 1; min-width: 0; font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, Menlo, monospace; }
+  .copy { flex: none; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font: inherit; font-weight: 900; font-size: 13px; padding: 7px 12px; cursor: pointer; }
+  .copy.done { background: #16a34a; }
+  .textlink { background: none; border: 0; padding: 0; font: inherit; font-weight: 800; color: rgba(255,255,255,.85); text-decoration: underline; cursor: pointer; font-size: 14px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; margin-top: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bob, .twinkle, .cheer .bob { animation: none; }
+    .breathing .ring { animation-duration: .01s; }
+    .fade-in { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <section class="sky">
+    <span class="pill" id="pill"><span class="dot"></span><span id="pill-text">Sprout</span></span>
+    <h1 id="title"></h1>
+    <p class="sub-sky hidden" id="sub-sky"></p>
+    <div class="scene-wrap" id="scene-wrap">
+      <div class="breath-label hidden" id="breath-label" aria-live="polite"></div>
+      <div id="scene"></div>
+    </div>
+  </section>
+  <section class="ground" id="ground"></section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- config ---------- */
+  var THEMES = [
+    { key: "dusk",   name: "Dusk",   day: 0,   sky: ["#1b2a66", "#2f4596"], ground: ["#9a7656", "#7d5e43"], ink: "#ffffff", accent: "#ffd36b" },
+    { key: "meadow", name: "Meadow", day: 3,   sky: ["#2f7fcf", "#8fcaf0"], ground: ["#7fc266", "#5ea24f"], ink: "#ffffff", accent: "#ffe27a" },
+    { key: "ocean",  name: "Ocean",  day: 7,   sky: ["#2b8fd0", "#a9dcf3"], ground: ["#efcf93", "#d9b06e"], ink: "#ffffff", accent: "#fff09a" },
+    { key: "autumn", name: "Autumn", day: 14,  sky: ["#d9714a", "#f6c58e"], ground: ["#c7773f", "#a45b2a"], ink: "#ffffff", accent: "#fff1b8" },
+    { key: "aurora", name: "Aurora", day: 30,  sky: ["#0c1430", "#1c2c5c"], ground: ["#e3eaf6", "#bcc8df"], ink: "#ffffff", accent: "#7ef0b5" },
+    { key: "golden", name: "Golden", day: 100, sky: ["#e9951f", "#fcdf8e"], ground: ["#dc9a3b", "#bf7d24"], ink: "#3a240c", accent: "#a8410c" }
+  ];
+  var APPS = {
+    tiktok:    { name: "TikTok",    url: "tiktok://" },
+    instagram: { name: "Instagram", url: "instagram://" },
+    youtube:   { name: "YouTube",   url: "youtube://" },
+    x:         { name: "X",         url: "twitter://" },
+    snapchat:  { name: "Snapchat",  url: "snapchat://" },
+    reddit:    { name: "Reddit",    url: "reddit://" },
+    facebook:  { name: "Facebook",  url: "fb://" }
+  };
+  var REASONS = [
+    { key: "bored", label: "I'm bored",          sub: "Scrolling won't fix it.",                       breaks: true },
+    { key: "habit", label: "Just habit",         sub: "My thumb went there on its own.",              breaks: true },
+    { key: "need",  label: "I need it for something", sub: "A message, work, a search. Streak stays safe.", breaks: false },
+    { key: "want",  label: "I really want to watch something", sub: "Fair. It costs your streak.",   breaks: true }
+  ];
+  var BREATH_SECONDS = 10;
+  var LET_ME_IN = "Let Me In";
+  var STORE_KEY = "sprout.v1";
+
+  /* ---------- storage ---------- */
+  function today(d) {
+    d = d || new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function daysBetween(a, b) {
+    var x = a.split("-").map(Number), y = b.split("-").map(Number);
+    return Math.round((Date.UTC(y[0], y[1] - 1, y[2]) - Date.UTC(x[0], x[1] - 1, x[2])) / 864e5);
+  }
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(STORE_KEY));
+      if (s && s.log && s.startedAt) return s;
+    } catch (e) {}
+    return { startedAt: today(), lastSlip: null, best: 0, log: {} };
+  }
+  function save() {
+    try {
+      var keys = Object.keys(state.log).sort();
+      while (keys.length > 90) delete state.log[keys.shift()];
+      localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+  function streak() { return Math.max(0, daysBetween(state.lastSlip || state.startedAt, today())); }
+  function dayLog() {
+    var k = today();
+    if (!state.log[k]) state.log[k] = { attempts: 0, pass: 0, slip: 0, needed: 0, apps: {} };
+    return state.log[k];
+  }
+  function themeIndex(days) { var i = 0; THEMES.forEach(function (t, k) { if (days >= t.day) i = k; }); return i; }
+
+  var state = load();
+  state.best = Math.max(state.best || 0, streak());
+  save();
+
+  /* ---------- drawing ---------- */
+  var OUT = "#2b1a12";
+  function leaf(x, y, dir, s) {
+    return '<path d="M' + x + ' ' + y +
+      ' Q' + (x + dir * s * 0.45) + ' ' + (y - s * 0.95) + ' ' + (x + dir * s) + ' ' + (y - s * 0.62) +
+      ' Q' + (x + dir * s * 0.62) + ' ' + (y - s * 0.02) + ' ' + x + ' ' + y + 'Z" fill="#6cc160" stroke="' + OUT + '" stroke-width="3.5" stroke-linejoin="round"/>' +
+      '<path d="M' + (x + dir * 4) + ' ' + (y - 4) + ' Q' + (x + dir * s * 0.5) + ' ' + (y - s * 0.45) + ' ' + (x + dir * s * 0.82) + ' ' + (y - s * 0.6) + '" fill="none" stroke="#4e9e48" stroke-width="2.5" stroke-linecap="round"/>';
+  }
+  function stem(top) {
+    return '<path d="M200 176 Q195 ' + ((176 + top) / 2) + ' 200 ' + top + '" fill="none" stroke="' + OUT + '" stroke-width="10" stroke-linecap="round"/>' +
+           '<path d="M200 176 Q195 ' + ((176 + top) / 2) + ' 200 ' + top + '" fill="none" stroke="#5aae4f" stroke-width="5" stroke-linecap="round"/>';
+  }
+  function flower(cx, cy, r, color) {
+    var p = "";
+    for (var i = 0; i < 6; i++) {
+      var a = i * Math.PI / 3;
+      p += '<circle cx="' + (cx + Math.cos(a) * r * 1.15).toFixed(1) + '" cy="' + (cy + Math.sin(a) * r * 1.15).toFixed(1) + '" r="' + r + '" fill="' + color + '" stroke="' + OUT + '" stroke-width="3.5"/>';
+    }
+    return p + '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r * 0.85) + '" fill="#ffd54a" stroke="' + OUT + '" stroke-width="3.5"/>';
+  }
+  function sparkle(x, y, s) {
+    return '<path class="twinkle" d="M' + x + ' ' + (y - s) + ' Q' + x + ' ' + y + ' ' + (x + s) + ' ' + y + ' Q' + x + ' ' + y + ' ' + x + ' ' + (y + s) + ' Q' + x + ' ' + y + ' ' + (x - s) + ' ' + y + ' Q' + x + ' ' + y + ' ' + x + ' ' + (y - s) + 'Z" fill="#fff6c2"/>';
+  }
+  function plant(stage) {
+    switch (stage) {
+      case 0:
+        return '<ellipse cx="200" cy="166" rx="9" ry="11" fill="#b9814f" stroke="' + OUT + '" stroke-width="3.5"/>' +
+               '<path d="M200 156 q2 -8 8 -10" fill="none" stroke="#5aae4f" stroke-width="4" stroke-linecap="round"/>';
+      case 1:
+        return stem(138) + leaf(200, 142, -1, 30) + leaf(200, 146, 1, 30);
+      case 2:
+        return stem(108) + leaf(200, 150, -1, 34) + leaf(200, 152, 1, 34) + leaf(200, 116, -1, 30) + leaf(200, 120, 1, 30);
+      case 3:
+        return stem(96) + leaf(200, 152, -1, 36) + leaf(200, 154, 1, 36) + leaf(200, 122, -1, 32) + leaf(200, 126, 1, 32) +
+               '<path d="M200 70 C214 78 214 98 200 102 C186 98 186 78 200 70Z" fill="#f48fb1" stroke="' + OUT + '" stroke-width="3.5" stroke-linejoin="round"/>' +
+               '<path d="M188 96 Q200 108 212 96 Q206 104 200 104 Q194 104 188 96Z" fill="#6cc160" stroke="' + OUT + '" stroke-width="3" stroke-linejoin="round"/>';
+      case 4:
+        return stem(96) + leaf(200, 152, -1, 36) + leaf(200, 154, 1, 36) + leaf(200, 122, -1, 32) + leaf(200, 126, 1, 32) + flower(200, 84, 12, "#f48fb1");
+      default:
+        return '<path d="M200 140 Q226 126 236 104" fill="none" stroke="' + OUT + '" stroke-width="9" stroke-linecap="round"/>' +
+               '<path d="M200 140 Q226 126 236 104" fill="none" stroke="#5aae4f" stroke-width="4.5" stroke-linecap="round"/>' +
+               stem(92) + leaf(200, 154, -1, 38) + leaf(200, 156, 1, 30) + leaf(200, 124, -1, 34) +
+               flower(236, 100, 8, "#ffffff") + flower(200, 80, 13, "#f48fb1") +
+               sparkle(150, 70, 9) + sparkle(258, 64, 7) + sparkle(266, 140, 6) + sparkle(138, 128, 6);
+    }
+  }
+  function face(mood) {
+    var eyes, mouth, extra = "";
+    if (mood === "calm") {
+      eyes = '<path d="M180 212 q7 7 14 0 M206 212 q7 7 14 0" fill="none" stroke="' + OUT + '" stroke-width="3.5" stroke-linecap="round"/>';
+      mouth = '<path d="M192 225 q8 7 16 0" fill="none" stroke="' + OUT + '" stroke-width="3.5" stroke-linecap="round"/>';
+    } else if (mood === "happy") {
+      eyes = '<path d="M180 216 q7 -9 14 0 M206 216 q7 -9 14 0" fill="none" stroke="' + OUT + '" stroke-width="3.5" stroke-linecap="round"/>';
+      mouth = '<path d="M189 223 q11 15 22 0 z" fill="#8a2f22" stroke="' + OUT + '" stroke-width="3" stroke-linejoin="round"/>';
+    } else if (mood === "sad") {
+      eyes = '<circle cx="187" cy="214" r="4.5" fill="' + OUT + '"/><circle cx="213" cy="214" r="4.5" fill="' + OUT + '"/>' +
+             '<path d="M180 205 l10 -3 M220 205 l-10 -3" stroke="' + OUT + '" stroke-width="3" stroke-linecap="round"/>';
+      mouth = '<path d="M193 230 q7 -6 14 0" fill="none" stroke="' + OUT + '" stroke-width="3.5" stroke-linecap="round"/>';
+      extra = '<path d="M221 219 q3 6 0 8 q-3 -2 0 -8z" fill="#7cc4f2"/>';
+    } else {
+      eyes = '<circle cx="187" cy="214" r="4.8" fill="' + OUT + '"/><circle cx="213" cy="214" r="4.8" fill="' + OUT + '"/>' +
+             '<circle cx="188.6" cy="212.4" r="1.6" fill="#fff"/><circle cx="214.6" cy="212.4" r="1.6" fill="#fff"/>';
+      mouth = '<path d="M193 225 q7 6 14 0" fill="none" stroke="' + OUT + '" stroke-width="3.5" stroke-linecap="round"/>';
+    }
+    return '<ellipse cx="177" cy="224" rx="6.5" ry="3.8" fill="#f4a3a0" opacity=".9"/><ellipse cx="223" cy="224" rx="6.5" ry="3.8" fill="#f4a3a0" opacity=".9"/>' + eyes + mouth + extra;
+  }
+  function mascot(stage, mood) {
+    return '<ellipse cx="200" cy="264" rx="54" ry="8" fill="#000" opacity=".14"/>' +
+      '<g class="bob">' +
+        plant(stage) +
+        '<ellipse cx="183" cy="257" rx="11" ry="7" fill="#e9a07a" stroke="' + OUT + '" stroke-width="3.5"/>' +
+        '<ellipse cx="217" cy="257" rx="11" ry="7" fill="#e9a07a" stroke="' + OUT + '" stroke-width="3.5"/>' +
+        '<path d="M167 186 L233 186 L225 250 Q200 258 175 250 Z" fill="#e2794c" stroke="' + OUT + '" stroke-width="4" stroke-linejoin="round"/>' +
+        '<path d="M172 190 L180 246" stroke="#f3a07a" stroke-width="5" stroke-linecap="round" opacity=".7"/>' +
+        '<rect x="158" y="170" width="84" height="21" rx="9" fill="#ef9165" stroke="' + OUT + '" stroke-width="4"/>' +
+        face(mood) +
+      '</g>';
+  }
+
+  function decor(t) {
+    var g = "";
+    switch (t.key) {
+      case "dusk":
+        g += '<path d="M330 44 a22 22 0 1 0 14 38 a18 18 0 1 1 -14 -38z" fill="#fde9a8"/>';
+        [[52,40,2.2],[96,78,1.6],[150,30,1.8],[262,52,1.6],[300,96,2],[372,120,1.6],[30,110,1.6],[220,20,1.4]].forEach(function (s, i) {
+          g += '<circle class="twinkle" style="animation-delay:' + (i * .3) + 's" cx="' + s[0] + '" cy="' + s[1] + '" r="' + s[2] + '" fill="#fff"/>';
+        });
+        g += '<path d="M0 214 Q70 168 140 200 Q210 176 270 196 Q340 170 400 204 L400 230 L0 230Z" fill="#3a4a8e" opacity=".75"/>';
+        break;
+      case "meadow":
+        g += '<circle cx="340" cy="56" r="26" fill="#ffe27a"/><circle cx="340" cy="56" r="36" fill="#ffe27a" opacity=".25"/>';
+        g += cloud(70, 60, 1) + cloud(250, 34, .75);
+        g += '<path d="M0 212 Q100 176 200 204 Q300 180 400 208 L400 240 L0 240Z" fill="#9fd486"/>';
+        break;
+      case "ocean":
+        g += '<circle cx="76" cy="58" r="24" fill="#fff3a6"/>' + cloud(300, 50, .85);
+        g += '<rect x="0" y="182" width="400" height="40" fill="#2f86c8"/><path d="M0 190 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="#bfe6fb" stroke-width="3" opacity=".7"/>';
+        g += '<path d="M330 182 l10 -40 l6 40z" fill="#fff" stroke="#2b5c86" stroke-width="2"/>';
+        break;
+      case "autumn":
+        g += '<circle cx="300" cy="66" r="30" fill="#ffe2a8" opacity=".9"/>';
+        g += tree(46, 196, "#e8692f") + tree(352, 200, "#f2a02b") + tree(110, 206, "#d94f2a", .7);
+        break;
+      case "aurora":
+        g += '<path d="M-10 90 Q80 30 170 76 T400 50" fill="none" stroke="#7ef0b5" stroke-width="22" opacity=".35" stroke-linecap="round"/>' +
+             '<path d="M-10 120 Q110 60 210 104 T420 80" fill="none" stroke="#6fd3f2" stroke-width="14" opacity=".28" stroke-linecap="round"/>';
+        [[40,30],[120,22],[230,30],[330,20],[372,104],[16,150],[280,130]].forEach(function (s, i) {
+          g += '<circle class="twinkle" style="animation-delay:' + (i * .35) + 's" cx="' + s[0] + '" cy="' + s[1] + '" r="1.8" fill="#fff"/>';
+        });
+        g += pine(40, 210, 1) + pine(78, 214, .7) + pine(350, 212, 1.1) + pine(316, 216, .65);
+        break;
+      case "golden":
+        for (var i = 0; i < 12; i++) {
+          var a = i * Math.PI / 6;
+          g += '<path d="M200 120 L' + (200 + Math.cos(a - .1) * 260).toFixed(0) + ' ' + (120 + Math.sin(a - .1) * 260).toFixed(0) + ' L' + (200 + Math.cos(a + .1) * 260).toFixed(0) + ' ' + (120 + Math.sin(a + .1) * 260).toFixed(0) + 'Z" fill="#fff6d0" opacity=".18"/>';
+        }
+        g += '<circle cx="200" cy="120" r="48" fill="#fff1b0" opacity=".55"/>';
+        g += '<path d="M0 208 Q90 170 190 200 Q300 166 400 200 L400 240 L0 240Z" fill="#e8b04f"/>';
+        break;
+    }
+    return g;
+  }
+  function groundDetail(t) {
+    var g = "";
+    if (t.key === "dusk") g += '<ellipse cx="70" cy="262" rx="12" ry="6" fill="#6d5340"/><ellipse cx="330" cy="248" rx="9" ry="5" fill="#6d5340"/><ellipse cx="300" cy="282" rx="14" ry="6" fill="#6d5340"/>';
+    if (t.key === "meadow") [[60,250,"#fff"],[96,272,"#ffd54a"],[318,256,"#f48fb1"],[352,280,"#fff"],[280,286,"#ffd54a"]].forEach(function (f) {
+      g += '<circle cx="' + f[0] + '" cy="' + f[1] + '" r="4" fill="' + f[2] + '"/><circle cx="' + f[0] + '" cy="' + f[1] + '" r="1.6" fill="#e0a21b"/>';
+    });
+    if (t.key === "ocean") g += '<path d="M64 262 q8 -12 16 0z" fill="#f6a7b6"/><circle cx="330" cy="268" r="5" fill="#fff" opacity=".8"/><path d="M300 248 l6 -6 l6 6z" fill="#e58a5b"/>';
+    if (t.key === "autumn") [[62,256,"#e8692f",20],[330,262,"#f2a02b",-30],[290,288,"#d94f2a",45],[100,284,"#f2a02b",10]].forEach(function (l) {
+      g += '<ellipse cx="' + l[0] + '" cy="' + l[1] + '" rx="8" ry="4" fill="' + l[2] + '" transform="rotate(' + l[3] + ' ' + l[0] + ' ' + l[1] + ')"/>';
+    });
+    if (t.key === "aurora") g += '<ellipse cx="80" cy="262" rx="26" ry="6" fill="#fff" opacity=".7"/><ellipse cx="320" cy="276" rx="30" ry="6" fill="#fff" opacity=".7"/>';
+    if (t.key === "golden") for (var i = 0; i < 7; i++) {
+      var x = i < 4 ? 24 + i * 22 : 300 + (i - 4) * 24;
+      g += '<path d="M' + x + ' 290 Q' + (x + 3) + ' 260 ' + (x + 6) + ' 246" fill="none" stroke="#9c6416" stroke-width="2.5"/><ellipse cx="' + (x + 6) + '" cy="244" rx="4" ry="9" fill="#f7d26e" stroke="#9c6416" stroke-width="2"/>';
+    }
+    return g;
+  }
+  function cloud(x, y, s) {
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')" fill="#fff" opacity=".95"><circle cx="0" cy="10" r="16"/><circle cx="22" cy="0" r="22"/><circle cx="46" cy="10" r="16"/><rect x="0" y="10" width="46" height="16"/></g>';
+  }
+  function tree(x, y, c, s) {
+    s = s || 1;
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><rect x="-5" y="-40" width="10" height="44" rx="4" fill="#6b3e1f"/><circle cx="0" cy="-60" r="32" fill="' + c + '"/><circle cx="-18" cy="-44" r="18" fill="' + c + '"/><circle cx="18" cy="-46" r="20" fill="' + c + '"/></g>';
+  }
+  function pine(x, y, s) {
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><rect x="-4" y="-10" width="8" height="14" fill="#4a3426"/><path d="M0 -84 L26 -36 L-26 -36Z M0 -62 L32 -8 L-32 -8Z" fill="#1f5a4a"/><path d="M0 -84 L10 -66 L-10 -66Z" fill="#fff"/></g>';
+  }
+
+  function sceneSVG(t, opts) {
+    opts = opts || {};
+    var full = !!opts.full;
+    var vb = full ? "40 0 320 300" : "0 0 400 300";
+    var s = '<svg viewBox="' + vb + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + t.name + ' scene">';
+    if (full) s += '<defs><linearGradient id="g' + t.key + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + t.sky[0] + '"/><stop offset="1" stop-color="' + t.sky[1] + '"/></linearGradient></defs><rect width="400" height="300" fill="url(#g' + t.key + ')"/>';
+    s += decor(t);
+    s += '<path d="M0 222 Q200 196 400 222 L400 300 L0 300Z" fill="' + t.ground[0] + '"/>';
+    s += groundDetail(t);
+    if (opts.ring) s += '<circle class="ring" cx="200" cy="170" r="104" fill="#fff" fill-opacity=".1" stroke="#fff" stroke-opacity=".5" stroke-width="3"/>';
+    if (opts.stage != null) s += mascot(opts.stage, opts.mood || "open");
+    if (opts.full && opts.lock) s += "";
+    return s + "</svg>";
+  }
+
+  /* ---------- helpers ---------- */
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function ordinal(n) { var s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+  function plural(n, w) { return n + " " + w + (n === 1 ? "" : "s"); }
+  function applyTheme(t) {
+    var r = document.documentElement.style;
+    r.setProperty("--sky1", t.sky[0]); r.setProperty("--sky2", t.sky[1]);
+    r.setProperty("--ground1", t.ground[0]); r.setProperty("--ground2", t.ground[1]);
+    r.setProperty("--ink-sky", t.ink); r.setProperty("--accent", t.accent);
+    var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", t.sky[0]);
+  }
+  function drawScene(opts) { $("scene").innerHTML = sceneSVG(THEME, opts); }
+
+  var days = streak();
+  var STAGE = themeIndex(days);
+  var THEME = THEMES[STAGE];
+  applyTheme(THEME);
+
+  var params = new URLSearchParams(location.search);
+  var appKey = (params.get("app") || "").toLowerCase().trim();
+  var demo = params.has("demo");
+
+  if (appKey) pauseScreen(); else dashboard();
+
+  /* ---------- pause screen ---------- */
+  function pauseScreen() {
+    var app = APPS[appKey] || { name: appKey.charAt(0).toUpperCase() + appKey.slice(1), url: null };
+    var dl = dayLog();
+    var count;
+    var already = false;
+    try { already = sessionStorage.getItem("sprout.counted") === location.search; } catch (e) {}
+    if (demo) {
+      count = (dl.apps[appKey] || 0) + 1;
+    } else if (already) {
+      count = dl.apps[appKey] || 1;
+    } else {
+      dl.attempts++; dl.apps[appKey] = (dl.apps[appKey] || 0) + 1; count = dl.apps[appKey];
+      save();
+      try { sessionStorage.setItem("sprout.counted", location.search); } catch (e) {}
+    }
+
+    document.title = "Pause · " + app.name;
+    $("pill-text").textContent = demo ? "Practice run · " + app.name : "Before " + app.name;
+    $("title").innerHTML = 'Hold up.<br><span class="accent">Breathe first.</span>';
+    drawScene({ stage: STAGE, mood: "calm", ring: true });
+
+    var label = $("breath-label");
+    label.classList.remove("hidden");
+    var wrap = $("scene-wrap");
+    $("ground").innerHTML =
+      '<p class="fine" style="font-size:16px;margin-top:6px">' + esc(ordinal(count)) + " time opening " + esc(app.name) + " today" +
+      (days > 0 ? " · " + plural(days, "day") + " streak" : "") + "</p>";
+
+    var left = BREATH_SECONDS;
+    function tick() {
+      var phase = left > BREATH_SECONDS / 2 ? "Breathe in…" : "Breathe out…";
+      label.innerHTML = esc(phase) + "<b>" + left + "</b>";
+    }
+    requestAnimationFrame(function () { wrap.classList.add("breathing"); });
+    tick();
+    var timer = setInterval(function () {
+      left--;
+      if (left <= 0) { clearInterval(timer); label.classList.add("hidden"); wrap.classList.remove("breathing"); askWhy(app, count); return; }
+      tick();
+    }, 1000);
+  }
+
+  function askWhy(app, count) {
+    drawScene({ stage: STAGE, mood: "open" });
+    $("title").innerHTML = "Why open<br><span class=\"accent\">" + esc(app.name) + "?</span>";
+    var chosen = null;
+    var html = '<div class="options fade-in" role="radiogroup" aria-label="Reason">';
+    REASONS.forEach(function (r) {
+      html += '<button class="option" role="radio" aria-checked="false" data-k="' + r.key + '"><span class="radio"></span><span><b>' + esc(r.label) + '</b><span class="s">' + esc(r.sub) + "</span></span></button>";
+    });
+    html += "</div>" +
+      '<button class="btn fade-in" id="pass">I\'ll pass</button>' +
+      '<button class="btn ghost fade-in" id="anyway" disabled>Pick a reason to open ' + esc(app.name) + "</button>" +
+      '<p class="fine fade-in">' + esc(ordinal(count)) + " time opening " + esc(app.name) + " today" + (days > 0 ? " · " + plural(days, "day") + " streak" : "") + "</p>";
+    $("ground").innerHTML = html;
+
+    var anyway = $("anyway");
+    Array.prototype.forEach.call(document.querySelectorAll(".option"), function (el) {
+      el.addEventListener("click", function () {
+        Array.prototype.forEach.call(document.querySelectorAll(".option"), function (o) { o.setAttribute("aria-checked", "false"); });
+        el.setAttribute("aria-checked", "true");
+        chosen = REASONS.filter(function (r) { return r.key === el.dataset.k; })[0];
+        anyway.disabled = false;
+        if (chosen.breaks && days > 0) {
+          anyway.textContent = "Open anyway · ends your " + plural(days, "day") + " streak";
+          anyway.classList.add("warn");
+          drawScene({ stage: STAGE, mood: "sad" });
+        } else {
+          anyway.textContent = "Open " + app.name + " for 10 minutes";
+          anyway.classList.remove("warn");
+          drawScene({ stage: STAGE, mood: "open" });
+        }
+      });
+    });
+    $("pass").addEventListener("click", function () { passed(app); });
+    anyway.addEventListener("click", function () { if (chosen) openAnyway(app, chosen); });
+  }
+
+  function passed(app) {
+    var dl = dayLog();
+    if (!demo) { dl.pass++; save(); }
+    $("scene-wrap").classList.add("cheer");
+    drawScene({ stage: STAGE, mood: "happy" });
+    $("title").innerHTML = 'Nice.<br><span class="accent">That\'s a win.</span>';
+    var passes = demo ? dl.pass + 1 : dl.pass;
+    $("ground").innerHTML =
+      '<div class="card fade-in"><h2>' + (passes === 1 ? "1 pass" : passes + " passes") + ' today</h2><p>You skipped ' + esc(app.name) + ". Your sprout noticed." +
+      (days > 0 ? " Streak: " + plural(days, "day") + "." : "") + "</p></div>" +
+      '<p class="fine fade-in">Swipe up to go home. You can leave this tab open.</p>' +
+      '<div class="footer-links fade-in"><a class="textlink" href="./">See your streak</a></div>';
+  }
+
+  function openAnyway(app, reason) {
+    var dl = dayLog();
+    if (!demo) {
+      if (reason.breaks) { dl.slip++; state.lastSlip = today(); } else { dl.needed++; }
+      save();
+    }
+    $("title").innerHTML = "Okay.<br><span class=\"accent\">10 minutes.</span>";
+    drawScene({ stage: STAGE, mood: reason.breaks ? "sad" : "open" });
+    $("ground").innerHTML =
+      '<div class="card fade-in"><h2>Opening ' + esc(app.name) + "…</h2><p>" +
+      (demo ? "This is a practice run, so nothing was counted and nothing opens."
+            : "iPhone may ask to open Shortcuts. Tap <b>Open</b>.") + "</p></div>" +
+      '<p class="fine fade-in hidden" id="nothing">Nothing happened? The “' + LET_ME_IN + '” shortcut isn\'t set up yet. See step 3 in the <a href="./#setup">setup guide</a>.</p>';
+    if (demo) return;
+    var target = app.url || "";
+    setTimeout(function () {
+      location.href = "shortcuts://run-shortcut?name=" + encodeURIComponent(LET_ME_IN) + "&input=text&text=" + encodeURIComponent(target);
+    }, 500);
+    setTimeout(function () { var n = $("nothing"); if (n) n.classList.remove("hidden"); }, 2500);
+  }
+
+  /* ---------- dashboard ---------- */
+  function dashboard() {
+    var dl = dayLog();
+    $("pill-text").textContent = "Sprout";
+    $("title").innerHTML = 'Grow a streak,<br><span class="accent">not a scroll.</span>';
+    drawScene({ stage: STAGE, mood: days > 0 ? "happy" : "open" });
+    var next = THEMES[STAGE + 1];
+    var base = location.origin + location.pathname;
+
+    var themes = THEMES.map(function (t, i) {
+      var locked = days < t.day;
+      return '<div class="theme' + (locked ? " locked" : "") + (i === STAGE ? " current" : "") + '"><div class="thumb">' +
+        sceneSVG(t, { full: true, stage: locked ? null : i, mood: "happy" }) +
+        (locked ? '<span class="lock"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>' : "") +
+        "</div><small>Day " + t.day + "<i>" + esc(t.name) + "</i></small></div>";
+    }).join("");
+
+    var links = Object.keys(APPS).map(function (k) {
+      var u = base + "?app=" + k;
+      return '<div class="link-row"><strong>' + esc(APPS[k].name) + '</strong><code>' + esc(u) + '</code><button class="copy" data-copy="' + esc(u) + '">Copy</button></div>';
+    }).join("");
+
+    $("ground").innerHTML =
+      '<div class="stats">' +
+        '<div class="stat"><b>' + dl.pass + '</b><span>passed today</span></div>' +
+        '<div class="stat"><b>' + dl.slip + '</b><span>gave in today</span></div>' +
+        '<div class="stat"><b>' + (state.best || 0) + '</b><span>best streak</span></div>' +
+      "</div>" +
+
+      '<div class="card"><div class="streak-card"><div class="streak-num">' + days + '</div><div><h2>' + (days === 1 ? "day" : "days") + ' streak</h2><p>' +
+        (state.lastSlip ? "Days since you last opened an app just out of habit or boredom." : "Days since you started. Opening an app because you're bored or out of habit resets it.") +
+        (next ? " " + plural(next.day - days, "more day") + " until <b>" + esc(next.name) + "</b>." : " Every world unlocked.") +
+      "</p></div></div>" +
+      '<div class="themes">' + themes + "</div></div>" +
+
+      '<div class="card" id="setup"><h2>Set it up on your iPhone</h2><p>A website can\'t block apps on its own. Your iPhone\'s free <b>Shortcuts</b> app opens this page whenever you open an app you want to cut back on.</p>' +
+
+      '<details class="step" open><summary><span class="num">1</span>Hard block at night (Screen Time)<span class="chev">›</span></summary><div class="step-body">' +
+        '<span class="tag">Real blocking · 2 min</span>' +
+        "<ol><li>Open <em>Settings</em> → <em>Screen Time</em>.</li>" +
+        "<li>Tap <em>Downtime</em>, turn it on and pick your hours (e.g. 10:30 pm – 7:00 am).</li>" +
+        "<li>Back in Screen Time, tap <em>App Limits</em> → <em>Add Limit</em>, pick Social, set a daily time.</li>" +
+        "<li>Tap <em>Lock Screen Time Settings</em> and set a passcode. Without it you can just tap “Ignore Limit”. Have someone else type it, or type a random one you won't remember.</li></ol>" +
+      "</div></details>" +
+
+      '<details class="step"><summary><span class="num">2</span>Pause screen before each app<span class="chev">›</span></summary><div class="step-body">' +
+        '<span class="tag">Do this once per app</span>' +
+        "<ol><li>Copy that app's link below.</li>" +
+        "<li>Open <em>Shortcuts</em> → <em>Automation</em> tab → <em>+</em>.</li>" +
+        "<li>Choose <em>App</em>, pick the app (e.g. TikTok), keep <em>Is Opened</em> ticked, and pick <em>Run Immediately</em>. Tap <em>Next</em>.</li>" +
+        "<li>Tap <em>New Blank Automation</em> → <em>Add Action</em>, search <em>Open URLs</em> and add it.</li>" +
+        "<li>Tap the blue URL field, paste the link and tap <em>Done</em>.</li></ol>" +
+        '<div class="links">' + links + "</div>" +
+        '<div class="note">Once this is set up, “Open anyway” won\'t work and the app will keep sending you back here. Step 3 fixes that.</div>' +
+      "</div></details>" +
+
+      '<details class="step"><summary><span class="num">3</span>Make “Open anyway” work<span class="chev">›</span></summary><div class="step-body">' +
+        '<span class="tag">A · New shortcut</span>' +
+        "<ol><li>In <em>Shortcuts</em> → <em>Shortcuts</em> tab → <em>+</em>. Name it exactly <em>" + LET_ME_IN + "</em>.</li>" +
+        "<li>Add <em>Adjust Date</em>: set it to <em>Add 10 minutes</em> to <em>Current Date</em>.</li>" +
+        "<li>Add <em>Save File</em>: save the <em>Adjusted Date</em>, turn <em>Ask Where to Save</em> off, set the path to <em>sprout-until.txt</em> and turn <em>Overwrite If File Exists</em> on.</li>" +
+        "<li>Add <em>Open URLs</em> and set the URL to <em>Shortcut Input</em>.</li></ol>" +
+        '<span class="tag" style="margin-top:12px">B · Edit each app automation from step 2</span>' +
+        "<ol><li>Above <em>Open URLs</em>, add <em>Get File</em>: path <em>sprout-until.txt</em>, turn <em>Error If Not Found</em> off.</li>" +
+        "<li>Add <em>Get Dates from Input</em> (it uses the file).</li>" +
+        "<li>Add <em>If</em>: <em>Dates</em> · <em>is after</em> · <em>Current Date</em>. Inside it, add <em>Stop This Shortcut</em>.</li>" +
+        "<li>Make sure <em>Open URLs</em> sits below <em>End If</em>.</li></ol>" +
+        '<div class="note">Now “Open anyway” gives you 10 minutes in that app before the pause screen comes back.</div>' +
+      "</div></details>" +
+
+      '<details class="step"><summary><span class="num">4</span>Try it<span class="chev">›</span></summary><div class="step-body">' +
+        "Do a practice run. Nothing gets counted.<div style=\"margin-top:10px\"><a class=\"btn\" style=\"font-size:17px;padding:13px\" href=\"?app=tiktok&amp;demo\">Practice pause screen</a></div>" +
+      "</div></details>" +
+      "</div>" +
+
+      '<div class="footer-links"><button class="textlink" id="reset">Reset all data</button></div>';
+
+    Array.prototype.forEach.call(document.querySelectorAll(".copy"), function (b) {
+      b.addEventListener("click", function () {
+        var text = b.dataset.copy;
+        var ok = function () { b.textContent = "Copied"; b.classList.add("done"); setTimeout(function () { b.textContent = "Copy"; b.classList.remove("done"); }, 1600); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, function () { fallbackCopy(text); ok(); });
+        else { fallbackCopy(text); ok(); }
+      });
+    });
+    $("reset").addEventListener("click", function () {
+      if (!confirm("Reset your streak and all stats?")) return;
+      try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+      location.reload();
+    });
+    if (location.hash === "#setup") {
+      var st = document.querySelectorAll("details.step");
+      if (st[2]) st[2].open = true;
+      $("setup").scrollIntoView();
+    }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    ta.remove();
+  }
+})();
+</script>
+</body>
+</html>

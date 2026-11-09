@@ -198,6 +198,48 @@
   .textlink { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: rgba(243,227,195,.75); text-decoration: underline; cursor: pointer; font-size: 15px; }
   .footer-links { display: flex; justify-content: center; gap: 22px; margin-top: 4px; }
 
+  /* ---------- your stars ---------- */
+  .card.night {
+    background: linear-gradient(180deg, #151b38 0%, #0b0f23 100%); color: #efe3c4; color-scheme: dark;
+    box-shadow: inset 0 0 0 3px #151b38, inset 0 0 0 4px rgba(232,195,114,.35), 0 8px 22px rgba(0,0,0,.4);
+  }
+  .card.night h2 { color: var(--gold); }
+  .card.night p.lede { color: rgba(239,227,196,.8); }
+  .night .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .night .cell { border: 1px solid rgba(232,195,114,.3); border-radius: 10px; padding: 10px 12px; background: rgba(255,255,255,.03); }
+  .night .cell span, .night .period span { display: block; font-family: var(--title); font-size: 10.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(232,195,114,.85); }
+  .night .cell b { display: block; font-family: var(--title); font-size: 18px; font-weight: 700; margin-top: 2px; }
+  .night .cell i, .night .period i { display: block; font-style: normal; font-size: 15.5px; color: rgba(239,227,196,.78); line-height: 1.3; margin-top: 2px; }
+  .night .period { margin-top: 14px; border-top: 1px solid rgba(232,195,114,.25); padding-top: 12px; }
+  .night .period b { display: block; font-family: var(--title); font-size: 15.5px; font-weight: 700; margin-top: 3px; line-height: 1.3; }
+  .night .period.hard b { color: #ffb48a; }
+  .night label { display: block; font-family: var(--title); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(232,195,114,.9); margin-top: 14px; }
+  .night input[type=date], .night input[type=time], .night input[type=text] {
+    display: block; width: 100%; margin-top: 6px; min-height: 46px;
+    font-family: var(--body); font-size: 17px; font-weight: 600; letter-spacing: 0; text-transform: none; color: #f3e3c3;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(232,195,114,.4); border-radius: 10px; padding: 10px 12px; -webkit-appearance: none; appearance: none;
+  }
+  .night label.check { display: flex; align-items: center; gap: 10px; font-family: var(--body); font-size: 16.5px; font-weight: 600; letter-spacing: 0; text-transform: none; color: #efe3c4; }
+  .night label.check input { width: 20px; height: 20px; accent-color: var(--gold); }
+  .night .row { display: flex; gap: 8px; margin-top: 6px; }
+  .night .row input { margin-top: 0; flex: 1; min-width: 0; }
+  .night .row .copy { padding: 0 16px; }
+  .night .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .results { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .results button { text-align: left; font: inherit; font-size: 16px; font-weight: 600; color: #efe3c4; background: rgba(255,255,255,.05); border: 1px solid rgba(232,195,114,.3); border-radius: 10px; padding: 9px 12px; cursor: pointer; }
+  .results button.on { border-color: var(--gold); background: rgba(232,195,114,.16); }
+  .night .mini { font-size: 15px; color: rgba(239,227,196,.68); margin: 12px 0 0; line-height: 1.35; }
+  .night .mini.err { color: #ffb48a; }
+  .night details.manual summary { cursor: pointer; margin-top: 12px; font-size: 15.5px; color: rgba(239,227,196,.8); text-decoration: underline; }
+  .night .btn { margin-top: 16px; }
+  .textlink.gold { color: var(--gold); margin-top: 14px; display: inline-block; }
+  .star-note { display: flex; gap: 12px; align-items: flex-start; text-align: left; background: rgba(8,10,26,.5); border: 1px solid rgba(232,195,114,.38); border-radius: 12px; padding: 12px 14px; color: #efe3c4; }
+  .star-note svg { flex: none; width: 22px; height: 22px; margin-top: 1px; color: var(--gold); }
+  .star-note b { display: block; font-family: var(--title); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+  .star-note span { display: block; font-size: 16.5px; font-weight: 600; line-height: 1.35; margin-top: 2px; }
+  .star-note.hard { border-color: rgba(255,150,100,.55); }
+  .star-note.hard b, .star-note.hard svg { color: #ffb48a; }
+
   @media (prefers-reduced-motion: reduce) {
     .sway, .twinkle, .rise, .drift, .fall, .cheer .glow-eye { animation: none; }
     .rise, .fall { opacity: 0; }
@@ -253,6 +295,149 @@
   var LET_ME_IN = "Let Me In";
   var STORE_KEY = "elderwood.v1";
 
+  /* ASTRO START */
+  var Astro = (function () {
+    var R = Math.PI / 180;
+    function norm(a) { a %= 360; return a < 0 ? a + 360 : a; }
+    function jd(ms) { return ms / 864e5 + 2440587.5; }
+    function T(j) { return (j - 2451545) / 36525; }
+
+    function sun(j) {
+      var t = T(j);
+      var L0 = 280.46646 + 36000.76983 * t + 0.0003032 * t * t;
+      var M = (357.52911 + 35999.05029 * t - 0.0001537 * t * t) * R;
+      var C = (1.914602 - 0.004817 * t - 0.000014 * t * t) * Math.sin(M) + (0.019993 - 0.000101 * t) * Math.sin(2 * M) + 0.000289 * Math.sin(3 * M);
+      return norm(L0 + C - 0.00569);
+    }
+
+    // Meeus, Astronomical Algorithms ch. 47 (main periodic terms). [D, M, M', F, coefficient in 1e-6 deg]
+    var MT = [[0,0,1,0,6288774],[2,0,-1,0,1274027],[2,0,0,0,658314],[0,0,2,0,213618],[0,1,0,0,-185116],[0,0,0,2,-114332],
+      [2,0,-2,0,58793],[2,-1,-1,0,57066],[2,0,1,0,53322],[2,-1,0,0,45758],[0,1,-1,0,-40923],[1,0,0,0,-34720],[0,1,1,0,-30383],
+      [2,0,0,-2,15327],[0,0,1,2,-12528],[0,0,1,-2,10980],[4,0,-1,0,10675],[0,0,3,0,10034],[4,0,-2,0,8548],[2,1,-1,0,-7888],
+      [2,1,0,0,-6766],[1,0,-1,0,-5163],[1,1,0,0,4987],[2,-1,1,0,4036],[2,0,2,0,3994],[4,0,0,0,3861],[2,0,-3,0,3665],
+      [0,1,-2,0,-2689],[2,0,-1,2,-2602],[2,-1,-2,0,2390],[1,0,1,0,-2348],[2,-2,0,0,2236],[0,1,2,0,-2120],[0,2,0,0,-2069],
+      [2,-2,-1,0,2048],[2,0,1,-2,-1773],[2,0,0,2,-1595],[4,-1,-1,0,1215],[0,0,2,2,-1110],[3,0,-1,0,-892],[2,1,1,0,-810],
+      [4,-1,-2,0,759],[0,2,-1,0,-713],[2,2,-1,0,-700],[2,1,-2,0,691],[2,-1,0,-2,596],[4,0,1,0,549],[0,0,4,0,537],[4,-1,0,0,520]];
+    function moon(j) {
+      var t = T(j), t2 = t * t, t3 = t2 * t, t4 = t3 * t;
+      var Lp = 218.3164477 + 481267.88123421 * t - 0.0015786 * t2 + t3 / 538841 - t4 / 65194000;
+      var D = 297.8501921 + 445267.1114034 * t - 0.0018819 * t2 + t3 / 545868 - t4 / 113065000;
+      var M = 357.5291092 + 35999.0502909 * t - 0.0001536 * t2 + t3 / 24490000;
+      var Mp = 134.9633964 + 477198.8675055 * t + 0.0087414 * t2 + t3 / 69699 - t4 / 14712000;
+      var F = 93.2720950 + 483202.0175233 * t - 0.0036539 * t2 - t3 / 3526000 + t4 / 863310000;
+      var E = 1 - 0.002516 * t - 0.0000074 * t2;
+      var s = 0;
+      for (var i = 0; i < MT.length; i++) {
+        var m = MT[i], arg = (m[0] * D + m[1] * M + m[2] * Mp + m[3] * F) * R;
+        s += m[4] * Math.sin(arg) * (Math.abs(m[1]) === 1 ? E : Math.abs(m[1]) === 2 ? E * E : 1);
+      }
+      var A1 = (119.75 + 131.849 * t) * R, A2 = (53.09 + 479264.290 * t) * R;
+      s += 3958 * Math.sin(A1) + 1962 * Math.sin((Lp - F) * R) + 318 * Math.sin(A2);
+      return norm(Lp + s / 1e6);
+    }
+
+    // Lahiri (Chitrapaksha) ayanamsa, linear fit around J2000.
+    function ayanamsa(j) { return 23.857092 + 0.0139697 * (j - 2451545) / 365.25; }
+
+    function ascendant(j, lat, lon) {
+      var t = T(j);
+      var gmst = 280.46061837 + 360.98564736629 * (j - 2451545) + 0.000387933 * t * t - t * t * t / 38710000;
+      var ramc = norm(gmst + lon) * R;
+      var eps = (23.439291 - 0.0130042 * t) * R;
+      return norm(Math.atan2(Math.cos(ramc), -(Math.sin(ramc) * Math.cos(eps) + Math.tan(lat * R) * Math.sin(eps))) / R);
+    }
+
+    var SIGNS = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+    var RASHI = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrishchika","Dhanu","Makara","Kumbha","Meena"];
+    var NAKS = ["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni",
+      "Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana",
+      "Dhanishta","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
+    var LORDS = ["Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury"];
+    var YEARS = [7, 20, 6, 10, 7, 18, 16, 19, 17];
+    var NAK = 360 / 27;
+    var YEAR_MS = 365.256 * 864e5;
+
+    // Delta T (seconds), NASA polynomial fits; Meeus moon/sun theory runs on Terrestrial Time.
+    function deltaT(j) {
+      var y = 2000 + (j - 2451545) / 365.25, t;
+      if (y >= 2005 && y < 2050) { t = y - 2000; return 62.92 + 0.32217 * t + 0.005589 * t * t; }
+      if (y >= 1986 && y < 2005) { t = y - 2000; return 63.86 + 0.3345 * t - 0.060374 * t * t + 0.0017275 * t * t * t + 0.000651814 * t * t * t * t + 0.00002373599 * t * t * t * t * t; }
+      if (y >= 1961 && y < 1986) { t = y - 1975; return 45.45 + 1.067 * t - t * t / 260 - t * t * t / 718; }
+      if (y >= 1941 && y < 1961) { t = y - 1950; return 29.07 + 0.407 * t - t * t / 233 + t * t * t / 2547; }
+      return 69;
+    }
+    function tt(j) { return j + deltaT(j) / 86400; }
+    function sidereal(lon, j) { return norm(lon - ayanamsa(j)); }
+    function sign(l) { var i = Math.floor(l / 30); return { i: i, name: SIGNS[i], rashi: RASHI[i], deg: l - i * 30 }; }
+    function nak(l) { var i = Math.floor(l / NAK); return { i: i, name: NAKS[i], pada: Math.floor((l - i * NAK) / (NAK / 4)) + 1, lord: LORDS[i % 9] }; }
+
+    function chart(utcMs, lat, lon, hasTime) {
+      var j = jd(utcMs);
+      var m = sidereal(moon(tt(j)), j), su = sidereal(sun(tt(j)), j);
+      var c = { moon: m, sun: su, moonSign: sign(m), sunSign: sign(su), nak: nak(m), utcMs: utcMs };
+      if (hasTime && lat != null && lon != null) { c.asc = sidereal(ascendant(j, lat, lon), j); c.ascSign = sign(c.asc); }
+      return c;
+    }
+
+    // Vimshottari dasha: returns current maha and antar periods at time `atMs`.
+    function dasha(c, atMs) {
+      var n = nak(c.moon), start = n.i % 9;
+      var elapsed = (c.moon - n.i * NAK) / NAK;
+      var mdStart = c.utcMs - elapsed * YEARS[start] * YEAR_MS;
+      for (var k = 0; k < 18; k++) {
+        var li = (start + k) % 9, mdEnd = mdStart + YEARS[li] * YEAR_MS;
+        if (atMs < mdEnd) {
+          var adStart = mdStart;
+          for (var a = 0; a < 9; a++) {
+            var ai = (li + a) % 9, adEnd = adStart + YEARS[li] * YEARS[ai] / 120 * YEAR_MS;
+            if (atMs < adEnd) return { maha: LORDS[li], mahaStart: mdStart, mahaEnd: mdEnd, antar: LORDS[ai], antarStart: adStart, antarEnd: adEnd };
+            adStart = adEnd;
+          }
+        }
+        mdStart = mdEnd;
+      }
+      return null;
+    }
+
+    // Tara Bala: today's Moon star counted from the birth star.
+    var TARAS = [
+      { name: "Janma",       good: null,  msg: "The Moon returns to your birth star. Feelings run strong today, so guard your attention." },
+      { name: "Sampat",      good: true,  msg: "A day of gain. Spend your hours on work that grows." },
+      { name: "Vipat",       good: false, msg: "A day of obstacles. Distraction hits harder today. Hold the line." },
+      { name: "Kshema",      good: true,  msg: "A day of well-being. Rest well and scroll less." },
+      { name: "Pratyari",    good: false, msg: "A day of resistance. The pull is stronger today, so turn back early." },
+      { name: "Sadhaka",     good: true,  msg: "A day of achievement. A good day to finish an edit." },
+      { name: "Naidhana",    good: false, msg: "The hardest star of your cycle. Keep the day simple and the phone down." },
+      { name: "Mitra",       good: true,  msg: "A friendly star. Good for people, not feeds." },
+      { name: "Parama Mitra", good: true, msg: "Your best star of the cycle. Make something you're proud of." }
+    ];
+    function today(birthNak, atMs) {
+      var j = jd(atMs), m = sidereal(moon(tt(j)), j), n = nak(m);
+      var count = ((n.i - birthNak + 27) % 27) + 1;
+      var t = TARAS[(count - 1) % 9];
+      return { nak: n, sign: sign(m), count: count, tara: t };
+    }
+
+    // Local birth time in an IANA zone (or fixed offset in minutes) -> UTC ms.
+    function tzOffsetMin(tz, ms) {
+      var f = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      var p = {};
+      f.formatToParts(new Date(ms)).forEach(function (x) { p[x.type] = x.value; });
+      return (Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second) - ms) / 6e4;
+    }
+    function toUtc(dateStr, timeStr, tz, fixedOffsetMin) {
+      var d = dateStr.split("-").map(Number), t = (timeStr || "12:00").split(":").map(Number);
+      var asUtc = Date.UTC(d[0], d[1] - 1, d[2], t[0], t[1] || 0);
+      if (fixedOffsetMin != null && !isNaN(fixedOffsetMin)) return asUtc - fixedOffsetMin * 6e4;
+      var off = tzOffsetMin(tz, asUtc);
+      off = tzOffsetMin(tz, asUtc - off * 6e4);
+      return asUtc - off * 6e4;
+    }
+
+    return { chart: chart, dasha: dasha, today: today, toUtc: toUtc, sign: sign, nak: nak, TARAS: TARAS };
+  })();
+  /* ASTRO END */
+
   /* ---------- storage ---------- */
   function today(d) {
     d = d || new Date();
@@ -287,6 +472,42 @@
   var state = load();
   state.best = Math.max(state.best || 0, streak());
   save();
+
+  /* ---------- your stars ---------- */
+  var NAK_SYMBOL = ["a horse's head","the womb","a flame","a chariot","a deer's head","a teardrop","a quiver of arrows","a cow's udder",
+    "a coiled serpent","a royal throne","the front of a bed","the back of a bed","an open hand","a bright jewel","a sprout in the wind",
+    "a triumphal arch","a lotus","a protective amulet","a bundle of roots","a winnowing fan","an elephant's tusk","an ear","a drum",
+    "an empty circle","a sword","the twins","a fish"];
+  var MOON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>';
+  var CHART = null, TODAY = null, editingBirth = false;
+  function initStars() {
+    var m = /^#birth=(.+)$/.exec(location.hash || "");
+    if (m) {
+      // Private setup link: #birth=YYYY-MM-DDTHH:MM|utcOffsetMinutes|lat|lon|place
+      var p = decodeURIComponent(m[1]).split("|"), dt = p[0].split("T");
+      state.birth = { date: dt[0], time: dt[1] || "12:00", hasTime: !!dt[1], offset: Number(p[1]), tz: null, lat: Number(p[2]), lon: Number(p[3]), place: p[4] || "" };
+      save();
+      try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    }
+    CHART = null; TODAY = null;
+    var b = state.birth;
+    if (!b || !b.date) return;
+    try {
+      var utc = Astro.toUtc(b.date, b.hasTime ? b.time : "12:00", b.tz, b.tz ? null : b.offset);
+      if (isNaN(utc)) return;
+      CHART = Astro.chart(utc, b.lat, b.lon, b.hasTime && b.lat != null && !isNaN(b.lat));
+      TODAY = Astro.today(CHART.nak.i, Date.now());
+    } catch (e) { CHART = null; TODAY = null; }
+  }
+  initStars();
+  window.addEventListener("hashchange", function () { if (/^#birth=/.test(location.hash)) location.reload(); });
+  function fmtDate(ms) { return new Date(ms).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }); }
+  function starNote(full) {
+    if (!TODAY) return "";
+    var t = TODAY.tara, hard = t.good === false;
+    return '<div class="star-note fade-in' + (hard ? " hard" : "") + '">' + MOON_SVG + "<div><b>" + esc(t.name) + " day for you</b><span>Moon in " + esc(TODAY.nak.name) +
+      (full ? ". " + esc(t.msg) + (hard ? " Your breath is longer today." : "") : "") + "</span></div></div>";
+  }
 
   /* ---------- drawing ---------- */
   var uid = 0;
@@ -531,11 +752,13 @@
     drawScene({ stage: STAGE, mood: "calm", ring: true });
 
     var label = $("breath-label"), wrap = $("scene-wrap");
+    var total = TODAY && TODAY.tara.good === false ? 15 : BREATH_SECONDS;
+    var ring = document.querySelector(".ring"); if (ring) ring.style.animationDuration = total + "s";
     label.classList.remove("hidden");
-    $("ground").innerHTML = '<p class="fine" style="margin-top:6px">' + streakLine(app, count) + "</p>";
+    $("ground").innerHTML = '<p class="fine" style="margin-top:6px">' + streakLine(app, count) + "</p>" + starNote(true);
 
-    var left = BREATH_SECONDS;
-    function tick() { label.innerHTML = (left > BREATH_SECONDS / 2 ? "Breathe in" : "Breathe out") + "<b>" + left + "</b>"; }
+    var left = total;
+    function tick() { label.innerHTML = (left > total / 2 ? "Breathe in" : "Breathe out") + "<b>" + left + "</b>"; }
     requestAnimationFrame(function () { wrap.classList.add("breathing"); });
     tick();
     var timer = setInterval(function () {
@@ -556,7 +779,7 @@
     html += "</div>" +
       '<button class="btn fade-in" id="pass">Turn back</button>' +
       '<button class="btn ghost fade-in" id="anyway" disabled>Choose a reason to enter</button>' +
-      '<p class="fine fade-in">' + streakLine(app, count) + "</p>";
+      '<p class="fine fade-in">' + streakLine(app, count) + "</p>" + starNote(false);
     $("ground").innerHTML = html;
 
     var anyway = $("anyway");
@@ -621,7 +844,7 @@
   /* ---------- dashboard ---------- */
   function dashboard() {
     var dl = dayLog();
-    $("pill-text").textContent = "Elderwood";
+    $("pill-text").textContent = CHART ? "Elderwood · " + CHART.nak.name : "Elderwood";
     $("title").innerHTML = 'Heal the realm,<br><span class="accent">one day at a time.</span>';
     drawScene({ stage: STAGE, mood: days > 0 ? "happy" : "calm" });
     var next = THEMES[STAGE + 1];
@@ -652,6 +875,7 @@
         (next ? " " + plural(next.day - days, "more day") + " until <b>" + esc(next.name) + "</b>." : " Every realm is restored.") +
       "</p></div></div>" +
       '<div class="themes">' + realms + "</div></div>" +
+      starsCard() +
 
       '<div class="card" id="setup"><h2>Set it up on your iPhone</h2><p>A website can\'t block apps on its own. Your iPhone\'s free <b>Shortcuts</b> app opens this page whenever you open an app you want to cut back on.</p>' +
 
@@ -703,6 +927,7 @@
         else { fallbackCopy(text); ok(); }
       });
     });
+    bindStars();
     $("reset").addEventListener("click", function () {
       if (!confirm("Reset your streak and all stats?")) return;
       try { localStorage.removeItem(STORE_KEY); } catch (e) {}
@@ -714,6 +939,97 @@
       $("setup").scrollIntoView();
     }
   }
+  function starsCard() {
+    if (!CHART || editingBirth) return birthForm();
+    var c = CHART, d = Astro.dasha(c, Date.now()), t = TODAY, b = state.birth;
+    function cell(label, value, sub) { return '<div class="cell"><span>' + label + "</span><b>" + esc(value) + "</b><i>" + esc(sub) + "</i></div>"; }
+    function deg(sg) { return sg.name + " " + Math.floor(sg.deg) + "°"; }
+    var hard = t.tara.good === false;
+    return '<div class="card night" id="stars"><h2>Your stars</h2><p class="lede">Vedic chart (Lahiri) for ' + esc(fmtDate(c.utcMs)) + (b.place ? ", " + esc(b.place) : "") + ".</p>" +
+      '<div class="grid">' +
+        cell("Rising", c.ascSign ? c.ascSign.rashi : "Unknown", c.ascSign ? deg(c.ascSign) : "Needs a birth time") +
+        cell("Moon", c.moonSign.rashi, deg(c.moonSign)) +
+        cell("Birth star", c.nak.name, "Pada " + c.nak.pada + ", " + NAK_SYMBOL[c.nak.i]) +
+        cell("Sun", c.sunSign.rashi, deg(c.sunSign)) +
+      "</div>" +
+      (d ? '<div class="period"><span>Current period</span><b>' + d.maha + " Mahadasha · " + d.antar + " Antardasha</b><i>" + d.antar + " period runs until " + esc(fmtDate(d.antarEnd)) + ". " + d.maha + " period runs until " + esc(fmtDate(d.mahaEnd)) + ".</i></div>" : "") +
+      '<div class="period' + (hard ? " hard" : "") + '"><span>Today</span><b>Moon in ' + esc(t.nak.name) + " · " + esc(t.tara.name) + " Tara</b><i>" +
+        esc(ordinal(t.count)) + " star from yours. " + esc(t.tara.msg) + (hard ? " Your pause breath is 15 seconds today." : "") + "</i></div>" +
+      (!b.hasTime ? '<p class="mini">Without a birth time, your Rising sign is unknown, and your birth star could be off if the Moon changed stars that day.</p>' : "") +
+      '<button class="textlink gold" id="edit-birth">Edit birth details</button></div>';
+  }
+
+  function birthForm() {
+    var b = state.birth || {};
+    var has = function (v) { return v != null && !isNaN(v) ? String(v) : ""; };
+    return '<div class="card night" id="stars"><h2>Your stars</h2><p class="lede">Add your birth details and Elderwood reads your Vedic chart. Each day it checks where the Moon is against your birth star and tunes the pause screen to you.</p>' +
+      '<label>Date of birth<input type="date" id="b-date" value="' + esc(b.date || "") + '"></label>' +
+      '<label>Time of birth<input type="time" id="b-time" value="' + esc(b.hasTime === false ? "" : (b.time || "")) + '"></label>' +
+      '<label class="check"><input type="checkbox" id="b-notime"' + (b.hasTime === false ? " checked" : "") + "> I don't know my birth time</label>" +
+      '<label for="b-city">Birth city</label><div class="row"><input type="text" id="b-city" autocomplete="off" placeholder="e.g. Chicago" value="' + esc(b.place || "") + '"><button class="copy" id="b-find" type="button">Find</button></div>' +
+      '<div id="b-results" class="results"></div>' +
+      '<details class="manual"><summary>Enter the location by hand</summary><div class="row3">' +
+        '<label>Latitude<input type="text" inputmode="decimal" id="b-lat" value="' + has(b.lat) + '"></label>' +
+        '<label>Longitude<input type="text" inputmode="decimal" id="b-lon" value="' + has(b.lon) + '"></label>' +
+        '<label>UTC offset<input type="text" inputmode="decimal" id="b-off" placeholder="-6" value="' + (b.offset != null && !b.tz ? has(b.offset / 60) : "") + '"></label>' +
+      "</div></details>" +
+      '<p class="mini" id="b-msg">Saved only on this iPhone. The city search uses the free Open-Meteo service.</p>' +
+      '<button class="btn" id="b-save" type="button">Read my stars</button>' +
+      (CHART ? '<button class="textlink gold" id="b-cancel" type="button">Cancel</button>' : "") + "</div>";
+  }
+
+  function bindStars() {
+    var edit = $("edit-birth");
+    if (edit) { edit.addEventListener("click", function () { editingBirth = true; dashboard(); $("stars").scrollIntoView(); }); return; }
+    var picked = null, msg = $("b-msg");
+    function say(text, err) { msg.textContent = text; msg.classList.toggle("err", !!err); }
+    var cancel = $("b-cancel");
+    if (cancel) cancel.addEventListener("click", function () { editingBirth = false; dashboard(); $("stars").scrollIntoView(); });
+    $("b-find").addEventListener("click", function () {
+      var q = $("b-city").value.trim();
+      if (!q) { say("Type a city first.", true); return; }
+      say("Searching…");
+      fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language=en&format=json&name=" + encodeURIComponent(q))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var list = (data && data.results) || [];
+          if (!list.length) { say("No match. Try another spelling, or enter the location by hand.", true); return; }
+          say("Tap your birth city.");
+          $("b-results").innerHTML = list.map(function (r, i) {
+            return '<button type="button" data-i="' + i + '">' + esc([r.name, r.admin1, r.country].filter(Boolean).join(", ")) + "</button>";
+          }).join("");
+          Array.prototype.forEach.call($("b-results").querySelectorAll("button"), function (btn) {
+            btn.addEventListener("click", function () {
+              var r = list[+btn.dataset.i];
+              picked = { lat: r.latitude, lon: r.longitude, tz: r.timezone, place: [r.name, r.admin1].filter(Boolean).join(", ") };
+              Array.prototype.forEach.call($("b-results").querySelectorAll("button"), function (o) { o.classList.remove("on"); });
+              btn.classList.add("on");
+              say("Got it: " + picked.place + ".");
+            });
+          });
+        })
+        .catch(function () { say("Couldn't reach the city search. Enter the location by hand instead.", true); });
+    });
+    $("b-save").addEventListener("click", function () {
+      var date = $("b-date").value, time = $("b-time").value, noTime = $("b-notime").checked;
+      if (!date) { say("Add your date of birth.", true); return; }
+      if (!noTime && !time) { say("Add your birth time, or tick “I don't know my birth time”.", true); return; }
+      var lat = parseFloat($("b-lat").value), lon = parseFloat($("b-lon").value), off = parseFloat($("b-off").value);
+      var loc = null, old = state.birth;
+      if (picked) loc = picked;
+      else if (!isNaN(lat) && !isNaN(lon) && !isNaN(off)) loc = { lat: lat, lon: lon, tz: null, offset: Math.round(off * 60), place: $("b-city").value.trim() };
+      else if (old && old.lat != null && $("b-city").value.trim() === (old.place || "")) loc = { lat: old.lat, lon: old.lon, tz: old.tz, offset: old.offset, place: old.place };
+      if (!loc) { say("Find your birth city, or enter latitude, longitude and UTC offset by hand.", true); return; }
+      state.birth = { date: date, time: noTime ? "12:00" : time, hasTime: !noTime, lat: loc.lat, lon: loc.lon, tz: loc.tz || null, offset: loc.tz ? null : loc.offset, place: loc.place || "" };
+      save();
+      editingBirth = false;
+      initStars();
+      if (!CHART) { editingBirth = true; dashboard(); say("Something in those details didn't work. Check them and try again.", true); return; }
+      dashboard();
+      $("stars").scrollIntoView();
+    });
+  }
+
   function fallbackCopy(text) {
     var ta = document.createElement("textarea");
     ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";

@@ -144,8 +144,8 @@
   .streak-card { display: flex; align-items: center; gap: 16px; }
   .streak-num { flex: none; font-size: 48px; font-weight: 900; line-height: 1; color: var(--blue); font-variant-numeric: tabular-nums; min-width: 64px; text-align: center; }
 
-  .themes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 10px; margin-top: 14px; }
-  .theme { text-align: center; }
+  .themes { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 10px; margin-top: 14px; }
+  .theme { text-align: center; width: calc((100% - 20px) / 3); }
   .theme .thumb { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 1; border: 3px solid #fff; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
   .theme .thumb svg { width: 100%; height: 100%; display: block; }
   .theme.locked .thumb::after { content: ""; position: absolute; inset: 0; background: rgba(30,36,50,.55); }
@@ -213,7 +213,8 @@
     { key: "ocean",  name: "Ocean",  day: 7,   sky: ["#2b8fd0", "#a9dcf3"], ground: ["#efcf93", "#d9b06e"], ink: "#ffffff", accent: "#fff09a" },
     { key: "autumn", name: "Autumn", day: 14,  sky: ["#d9714a", "#f6c58e"], ground: ["#c7773f", "#a45b2a"], ink: "#ffffff", accent: "#fff1b8" },
     { key: "aurora", name: "Aurora", day: 30,  sky: ["#0c1430", "#1c2c5c"], ground: ["#e3eaf6", "#bcc8df"], ink: "#ffffff", accent: "#7ef0b5" },
-    { key: "golden", name: "Golden", day: 100, sky: ["#e9951f", "#fcdf8e"], ground: ["#dc9a3b", "#bf7d24"], ink: "#3a240c", accent: "#a8410c" }
+    { key: "golden", name: "Golden", day: 100, sky: ["#e9951f", "#fcdf8e"], ground: ["#dc9a3b", "#bf7d24"], ink: "#3a240c", accent: "#a8410c" },
+    { key: "cosmos", name: "Cosmos", day: 365, sky: ["#160c38", "#3a1f6c"], ground: ["#b7a7d8", "#8c7cb6"], ink: "#ffffff", accent: "#ffb3e6" }
   ];
   var APPS = {
     tiktok:    { name: "TikTok",    url: "tiktok://" },
@@ -339,6 +340,8 @@
     return '<ellipse cx="200" cy="264" rx="54" ry="8" fill="#000" opacity=".14"/>' +
       '<g class="bob">' +
         plant(stage) +
+        (stage >= 6 ? '<ellipse cx="200" cy="120" rx="74" ry="66" fill="#bfe6ff" fill-opacity=".22" stroke="#e8f6ff" stroke-width="4"/>' +
+                      '<path d="M150 96 Q160 70 186 60" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".75"/>' : "") +
         '<ellipse cx="183" cy="257" rx="11" ry="7" fill="#e9a07a" stroke="' + OUT + '" stroke-width="3.5"/>' +
         '<ellipse cx="217" cy="257" rx="11" ry="7" fill="#e9a07a" stroke="' + OUT + '" stroke-width="3.5"/>' +
         '<path d="M167 186 L233 186 L225 250 Q200 258 175 250 Z" fill="#e2794c" stroke="' + OUT + '" stroke-width="4" stroke-linejoin="round"/>' +
@@ -388,6 +391,17 @@
         g += '<circle cx="200" cy="120" r="48" fill="#fff1b0" opacity=".55"/>';
         g += '<path d="M0 208 Q90 170 190 200 Q300 166 400 200 L400 240 L0 240Z" fill="#e8b04f"/>';
         break;
+      case "cosmos":
+        g += '<ellipse cx="110" cy="70" rx="120" ry="46" fill="#ff7ad9" opacity=".14" transform="rotate(-18 110 70)"/>' +
+             '<ellipse cx="300" cy="110" rx="110" ry="40" fill="#5ee0ff" opacity=".12" transform="rotate(14 300 110)"/>';
+        [[30,24,2],[74,92,1.6],[140,18,1.8],[180,60,1.3],[250,26,2.2],[300,70,1.5],[364,30,1.8],[384,140,1.5],[18,150,1.6],[330,160,1.3],[118,130,1.3]].forEach(function (st, i) {
+          g += '<circle class="twinkle" style="animation-delay:' + (i * .25) + 's" cx="' + st[0] + '" cy="' + st[1] + '" r="' + st[2] + '" fill="#fff"/>';
+        });
+        g += '<path d="M268 40 L330 18" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/><circle cx="330" cy="18" r="3" fill="#fff"/>';
+        g += '<circle cx="330" cy="218" r="86" fill="#3fb6c9"/>' +
+             '<path d="M246 196 Q330 176 414 196 M250 226 Q330 210 412 226" fill="none" stroke="#2b8fa3" stroke-width="10" opacity=".8"/>' +
+             '<circle cx="64" cy="66" r="14" fill="#ffd38a"/><circle cx="70" cy="62" r="4" fill="#f2b45e"/>';
+        break;
     }
     return g;
   }
@@ -402,6 +416,9 @@
       g += '<ellipse cx="' + l[0] + '" cy="' + l[1] + '" rx="8" ry="4" fill="' + l[2] + '" transform="rotate(' + l[3] + ' ' + l[0] + ' ' + l[1] + ')"/>';
     });
     if (t.key === "aurora") g += '<ellipse cx="80" cy="262" rx="26" ry="6" fill="#fff" opacity=".7"/><ellipse cx="320" cy="276" rx="30" ry="6" fill="#fff" opacity=".7"/>';
+    if (t.key === "cosmos") [[64,256,16],[330,270,22],[268,292,10],[110,288,9]].forEach(function (c) {
+      g += '<ellipse cx="' + c[0] + '" cy="' + c[1] + '" rx="' + c[2] + '" ry="' + (c[2] * .38).toFixed(1) + '" fill="#8c7cb6"/><ellipse cx="' + c[0] + '" cy="' + (c[1] - 1.5) + '" rx="' + (c[2] * .8).toFixed(1) + '" ry="' + (c[2] * .26).toFixed(1) + '" fill="#7a6aa6"/>';
+    });
     if (t.key === "golden") for (var i = 0; i < 7; i++) {
       var x = i < 4 ? 24 + i * 22 : 300 + (i - 4) * 24;
       g += '<path d="M' + x + ' 290 Q' + (x + 3) + ' 260 ' + (x + 6) + ' 246" fill="none" stroke="#9c6416" stroke-width="2.5"/><ellipse cx="' + (x + 6) + '" cy="244" rx="4" ry="9" fill="#f7d26e" stroke="#9c6416" stroke-width="2"/>';

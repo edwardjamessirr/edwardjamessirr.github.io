@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Elderwood</title>
+<meta name="description" content="A pause before distracting apps. Every day you hold out, the realm around the old tree heals.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#140909">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Elderwood">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141a2e'/%3E%3Cpath d='M22 56c6-2 8-8 8-16 0-6-4-9-10-11 6 0 9 2 11 5 0-8-2-13-6-17 6 3 8 9 8 15 1-6 4-11 9-14-3 5-5 10-5 16 3-3 7-4 11-4-5 2-8 6-8 12 0 7 2 12 8 14z' fill='%23e8c372'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=EB+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky1: #140909; --sky2: #4a1d16;
+    --ground1: #3a302c; --ground2: #1e1917;
+    --ink-sky: #f3e3c3; --accent: #ff9b5e;
+    --parch: #f1e4c6; --parch-2: #e6d3aa; --parch-ink: #2a1c0e; --parch-muted: #6a5536;
+    --gold: #e8c372; --gold-2: #b8862f; --gold-deep: #6e4d17; --gold-line: #9c7637;
+    --radius: 14px;
+    --title: "Cinzel", "Trajan Pro", Georgia, serif;
+    --body: "EB Garamond", Garamond, Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: var(--body);
+    background: var(--ground2);
+    color: var(--parch-ink);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 100svh;
+  }
+  .app { max-width: 480px; margin: 0 auto; min-height: 100svh; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* ---------- sky ---------- */
+  .sky {
+    background: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 100%);
+    color: var(--ink-sky);
+    padding: calc(18px + env(safe-area-inset-top)) 20px 0;
+    text-align: center;
+    position: relative;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-family: var(--title); font-weight: 700; font-size: 12.5px; letter-spacing: .28em; text-transform: uppercase;
+    padding: 7px 14px 7px 16px; border-radius: 999px;
+    background: rgba(0,0,0,.28); color: var(--ink-sky);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  .pill .gem { width: 7px; height: 7px; background: var(--accent); transform: rotate(45deg); box-shadow: 0 0 8px var(--accent); }
+  h1 {
+    margin: 16px 0 0; font-family: var(--title); font-weight: 900;
+    font-size: clamp(27px, 7.6vw, 35px); line-height: 1.12; letter-spacing: .01em; text-wrap: balance;
+    text-shadow: 0 2px 12px rgba(0,0,0,.45);
+  }
+  h1 .accent { color: var(--accent); }
+  .orn { display: block; margin: 10px auto 0; width: 150px; height: 12px; color: var(--accent); opacity: .85; }
+
+  .scene-wrap { position: relative; margin: 0 -20px; }
+  .scene-wrap svg { display: block; width: 100%; height: auto; }
+  .breath-label {
+    position: absolute; left: 0; right: 0; top: 2%;
+    font-family: var(--title); font-weight: 700; font-size: 18px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-sky); text-shadow: 0 2px 10px rgba(0,0,0,.6);
+  }
+  .breath-label b { display: block; font-size: 15px; font-weight: 600; letter-spacing: .1em; opacity: .8; margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+  .ring { transform-box: fill-box; transform-origin: center; transform: scale(.7); opacity: 0; }
+  .breathing .ring { animation: breathe 10s ease-in-out forwards; }
+  @keyframes breathe {
+    0% { transform: scale(.7); opacity: 0; } 8% { opacity: 1; }
+    50% { transform: scale(1.1); opacity: 1; } 92% { opacity: 1; }
+    100% { transform: scale(.7); opacity: 0; }
+  }
+  .sway { animation: sway 7s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  @keyframes sway { 0%,100% { transform: rotate(-.8deg) } 50% { transform: rotate(.8deg) } }
+  .cheer .glow-eye { animation: flare 1.4s ease-out 2; }
+  @keyframes flare { 0%,100% { opacity: 1 } 40% { opacity: .3 } }
+  .twinkle { animation: twinkle 2.8s ease-in-out infinite; }
+  @keyframes twinkle { 0%,100% { opacity: .3 } 50% { opacity: 1 } }
+  .rise { animation: rise 5s linear infinite; transform-box: fill-box; }
+  @keyframes rise { 0% { transform: translateY(0); opacity: 0 } 15% { opacity: 1 } 100% { transform: translateY(-70px); opacity: 0 } }
+  .drift { animation: drift 6s ease-in-out infinite; transform-box: fill-box; }
+  @keyframes drift { 0%,100% { transform: translate(0,0) } 50% { transform: translate(8px,-10px) } }
+  .fall { animation: fall 7s linear infinite; transform-box: fill-box; }
+  @keyframes fall { 0% { transform: translate(0,-10px) rotate(0); opacity: 0 } 10% { opacity: 1 } 100% { transform: translate(-30px,90px) rotate(200deg); opacity: 0 } }
+
+  /* ---------- ground ---------- */
+  .ground {
+    flex: 1;
+    background: linear-gradient(180deg, var(--ground1) 0%, var(--ground2) 70%);
+    padding: 6px 16px calc(28px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .card {
+    background: linear-gradient(180deg, var(--parch) 0%, var(--parch-2) 100%);
+    border: 2px solid var(--gold-line); border-radius: var(--radius);
+    box-shadow: inset 0 0 0 3px var(--parch), inset 0 0 0 4px rgba(156,118,55,.45), 0 8px 22px rgba(0,0,0,.4);
+    padding: 18px 20px;
+  }
+  .card h2 { margin: 0 0 4px; font-family: var(--title); font-size: 19px; font-weight: 700; letter-spacing: .02em; }
+  .card p { margin: 0; color: var(--parch-muted); font-weight: 600; font-size: 17px; line-height: 1.38; }
+
+  .option {
+    width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
+    font: inherit; color: inherit; cursor: pointer;
+    background: linear-gradient(180deg, var(--parch) 0%, var(--parch-2) 100%);
+    border: 2px solid var(--gold-line); border-radius: var(--radius);
+    box-shadow: inset 0 0 0 3px var(--parch), inset 0 0 0 4px rgba(156,118,55,.35), 0 6px 16px rgba(0,0,0,.35);
+    padding: 13px 18px;
+    transition: transform .12s, box-shadow .15s, border-color .15s;
+  }
+  .option:active { transform: translateY(2px); }
+  .option[aria-checked="true"] {
+    border-color: var(--gold);
+    box-shadow: inset 0 0 0 3px var(--parch), inset 0 0 0 4px var(--gold-2), 0 0 0 3px rgba(232,195,114,.5), 0 6px 22px rgba(232,195,114,.35);
+  }
+  .gemradio { flex: none; width: 20px; height: 20px; margin: 0 4px; transform: rotate(45deg); border: 2px solid var(--gold-line); background: rgba(255,255,255,.4); display: grid; place-items: center; }
+  .option[aria-checked="true"] .gemradio { border-color: var(--gold-deep); }
+  .option[aria-checked="true"] .gemradio::after { content: ""; width: 10px; height: 10px; background: linear-gradient(135deg, #f7dc93, var(--gold-2)); box-shadow: 0 0 6px var(--gold); }
+  .option b { display: block; font-family: var(--title); font-size: 16.5px; font-weight: 700; letter-spacing: .02em; }
+  .option span.s { display: block; font-size: 16px; font-weight: 600; color: var(--parch-muted); margin-top: 1px; line-height: 1.3; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .btn {
+    display: block; width: 100%; cursor: pointer; text-decoration: none; text-align: center;
+    font-family: var(--title); font-weight: 900; font-size: 19px; letter-spacing: .08em; text-transform: uppercase;
+    padding: 16px 20px; border-radius: 12px;
+    background: linear-gradient(180deg, #f2d78e 0%, var(--gold) 35%, var(--gold-2) 100%);
+    color: #2a1806; border: 1px solid var(--gold-deep);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 5px 0 var(--gold-deep), 0 10px 24px rgba(0,0,0,.35);
+    transition: transform .1s, box-shadow .1s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 0 var(--gold-deep); }
+  .btn.ghost {
+    background: rgba(0,0,0,.25); color: #f3e3b8; border: 1px solid rgba(232,195,114,.55);
+    box-shadow: none; font-size: 13.5px; letter-spacing: .06em; padding: 13px 16px;
+  }
+  .btn.ghost:disabled { opacity: .45; cursor: default; }
+  .btn.ghost.warn { color: #ffb48a; border-color: rgba(255,140,90,.55); }
+  .fine { color: rgba(243,227,195,.9); text-align: center; font-weight: 600; font-size: 16.5px; margin: 0; line-height: 1.4; }
+  .fine a { color: var(--gold); }
+  .fine.smallcaps { font-family: var(--title); font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; }
+
+  .hidden { display: none !important; }
+  .fade-in { animation: fadeUp .5s ease-out both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+
+  /* ---------- dashboard ---------- */
+  .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .stat {
+    background: rgba(0,0,0,.28); border: 1px solid rgba(232,195,114,.4); border-radius: 12px;
+    padding: 12px 6px 10px; text-align: center; color: #f3e3c3;
+  }
+  .stat b { display: block; font-family: var(--title); font-size: 26px; font-weight: 900; line-height: 1.1; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .stat span { font-family: var(--title); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .85; }
+  .streak-card { display: flex; align-items: center; gap: 16px; }
+  .streak-num { flex: none; font-family: var(--title); font-size: 46px; font-weight: 900; line-height: 1; color: var(--gold-deep); font-variant-numeric: tabular-nums; min-width: 60px; text-align: center; }
+
+  .themes { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 10px; margin-top: 16px; }
+  .theme { text-align: center; width: calc((100% - 20px) / 3); }
+  .theme .thumb { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 1; border: 2px solid var(--gold-line); box-shadow: 0 3px 8px rgba(0,0,0,.25); }
+  .theme .thumb > svg { width: 100%; height: 100%; display: block; }
+  .theme.locked .thumb::after { content: ""; position: absolute; inset: 0; background: rgba(20,14,8,.62); }
+  .theme .lock { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; }
+  .theme .thumb .lock svg { width: 24px; height: 24px; }
+  .theme.current .thumb { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold), 0 0 14px rgba(232,195,114,.6); }
+  .theme small { display: block; margin-top: 6px; font-family: var(--title); font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+  .theme small i { font-family: var(--body); text-transform: none; letter-spacing: 0; font-style: italic; display: block; font-weight: 600; font-size: 14.5px; color: var(--parch-muted); }
+
+  details.step { border-top: 1px solid rgba(156,118,55,.4); }
+  details.step:first-of-type { border-top: 0; }
+  details.step summary {
+    list-style: none; cursor: pointer; padding: 14px 0; display: flex; align-items: center; gap: 12px;
+    font-family: var(--title); font-weight: 700; font-size: 15.5px; letter-spacing: .02em;
+  }
+  details.step summary::-webkit-details-marker { display: none; }
+  .num { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--gold-line); color: var(--gold-deep); display: grid; place-items: center; font-family: var(--title); font-weight: 900; font-size: 14px; }
+  .chev { margin-left: auto; transition: transform .2s; color: var(--parch-muted); }
+  details[open] .chev { transform: rotate(90deg); }
+  .step-body { padding: 0 0 16px 40px; font-weight: 600; font-size: 17px; color: #3d2c18; line-height: 1.45; }
+  .step-body ol { margin: 6px 0 0; padding-left: 18px; }
+  .step-body li { margin: 5px 0; }
+  .step-body em { font-style: normal; background: rgba(156,118,55,.16); border-radius: 5px; padding: 0 5px; color: var(--parch-ink); font-weight: 700; }
+  .step-body .tag { display: inline-block; font-family: var(--title); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--gold-deep); margin-bottom: 4px; }
+  .note { margin-top: 10px; background: rgba(156,118,55,.14); border-left: 3px solid var(--gold-line); border-radius: 6px; padding: 8px 12px; color: #4e3a1e; font-size: 16px; }
+
+  .links { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .link-row { display: flex; align-items: center; gap: 8px; background: rgba(156,118,55,.12); border-radius: 10px; padding: 7px 7px 7px 12px; }
+  .link-row strong { font-family: var(--title); font-size: 13px; font-weight: 700; min-width: 82px; }
+  .link-row code { flex: 1; min-width: 0; font-size: 12px; color: var(--parch-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, Menlo, monospace; }
+  .copy { flex: none; border: 1px solid var(--gold-deep); border-radius: 8px; background: linear-gradient(180deg, var(--gold), var(--gold-2)); color: #2a1806; font-family: var(--title); font-weight: 700; font-size: 11.5px; letter-spacing: .08em; padding: 7px 11px; cursor: pointer; }
+  .copy.done { background: #3f7a3a; color: #fff; border-color: #24481f; }
+  .textlink { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: rgba(243,227,195,.75); text-decoration: underline; cursor: pointer; font-size: 15px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; margin-top: 4px; }
+
+  /* ---------- your stars ---------- */
+  .card.night {
+    background: linear-gradient(180deg, #151b38 0%, #0b0f23 100%); color: #efe3c4; color-scheme: dark;
+    box-shadow: inset 0 0 0 3px #151b38, inset 0 0 0 4px rgba(232,195,114,.35), 0 8px 22px rgba(0,0,0,.4);
+  }
+  .card.night h2 { color: var(--gold); }
+  .card.night p.lede { color: rgba(239,227,196,.8); }
+  .night .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .night .cell { border: 1px solid rgba(232,195,114,.3); border-radius: 10px; padding: 10px 12px; background: rgba(255,255,255,.03); }
+  .night .cell span, .night .period span { display: block; font-family: var(--title); font-size: 10.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(232,195,114,.85); }
+  .night .cell b { display: block; font-family: var(--title); font-size: 18px; font-weight: 700; margin-top: 2px; }
+  .night .cell i, .night .period i { display: block; font-style: normal; font-size: 15.5px; color: rgba(239,227,196,.78); line-height: 1.3; margin-top: 2px; }
+  .night .period { margin-top: 14px; border-top: 1px solid rgba(232,195,114,.25); padding-top: 12px; }
+  .night .period b { display: block; font-family: var(--title); font-size: 15.5px; font-weight: 700; margin-top: 3px; line-height: 1.3; }
+  .night .period.hard b { color: #ffb48a; }
+  .night label { display: block; font-family: var(--title); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(232,195,114,.9); margin-top: 14px; }
+  .night input[type=date], .night input[type=time], .night input[type=text] {
+    display: block; width: 100%; margin-top: 6px; min-height: 46px;
+    font-family: var(--body); font-size: 17px; font-weight: 600; letter-spacing: 0; text-transform: none; color: #f3e3c3;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(232,195,114,.4); border-radius: 10px; padding: 10px 12px; -webkit-appearance: none; appearance: none;
+  }
+  .night label.check { display: flex; align-items: center; gap: 10px; font-family: var(--body); font-size: 16.5px; font-weight: 600; letter-spacing: 0; text-transform: none; color: #efe3c4; }
+  .night label.check input { width: 20px; height: 20px; accent-color: var(--gold); }
+  .night .row { display: flex; gap: 8px; margin-top: 6px; }
+  .night .row input { margin-top: 0; flex: 1; min-width: 0; }
+  .night .row .copy { padding: 0 16px; }
+  .night .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .results { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .results button { text-align: left; font: inherit; font-size: 16px; font-weight: 600; color: #efe3c4; background: rgba(255,255,255,.05); border: 1px solid rgba(232,195,114,.3); border-radius: 10px; padding: 9px 12px; cursor: pointer; }
+  .results button.on { border-color: var(--gold); background: rgba(232,195,114,.16); }
+  .night .mini { font-size: 15px; color: rgba(239,227,196,.68); margin: 12px 0 0; line-height: 1.35; }
+  .night .mini.err { color: #ffb48a; }
+  .night details.manual summary { cursor: pointer; margin-top: 12px; font-size: 15.5px; color: rgba(239,227,196,.8); text-decoration: underline; }
+  .night .btn { margin-top: 16px; }
+  .textlink.gold { color: var(--gold); margin-top: 14px; display: inline-block; }
+  .star-note { display: flex; gap: 12px; align-items: flex-start; text-align: left; background: rgba(8,10,26,.5); border: 1px solid rgba(232,195,114,.38); border-radius: 12px; padding: 12px 14px; color: #efe3c4; }
+  .star-note svg { flex: none; width: 22px; height: 22px; margin-top: 1px; color: var(--gold); }
+  .star-note b { display: block; font-family: var(--title); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+  .star-note span { display: block; font-size: 16.5px; font-weight: 600; line-height: 1.35; margin-top: 2px; }
+  .star-note.hard { border-color: rgba(255,150,100,.55); }
+  .star-note.hard b, .star-note.hard svg { color: #ffb48a; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sway, .twinkle, .rise, .drift, .fall, .cheer .glow-eye { animation: none; }
+    .rise, .fall { opacity: 0; }
+    .breathing .ring { animation-duration: .01s; }
+    .fade-in { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <section class="sky">
+    <span class="pill"><span class="gem"></span><span id="pill-text">Elderwood</span></span>
+    <h1 id="title"></h1>
+    <svg class="orn" viewBox="0 0 150 12" aria-hidden="true"><path d="M0 6 H62 M88 6 H150" stroke="currentColor" stroke-width="1"/><path d="M75 0 L81 6 L75 12 L69 6Z" fill="currentColor"/><circle cx="64" cy="6" r="1.6" fill="currentColor"/><circle cx="86" cy="6" r="1.6" fill="currentColor"/></svg>
+    <div class="scene-wrap" id="scene-wrap">
+      <div class="breath-label hidden" id="breath-label" aria-live="polite"></div>
+      <div id="scene"></div>
+    </div>
+  </section>
+  <section class="ground" id="ground"></section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- config ---------- */
+  var THEMES = [
+    { key: "blight",  name: "The Blight",    day: 0,   sky: ["#140909", "#4a1d16"], ground: ["#3a302c", "#1e1917"], ink: "#f3e3c3", accent: "#ff9b5e", bark: ["#4c4541", "#2c2725"], leaf: null },
+    { key: "dawn",    name: "First Light",   day: 3,   sky: ["#1f2a48", "#c98c6c"], ground: ["#4a5f36", "#26331c"], ink: "#f6ead0", accent: "#ffd08a", bark: ["#5e4432", "#3a281b"], leaf: ["#3f6a30", "#5f9045", "#9cc871"] },
+    { key: "vale",    name: "Green Vale",    day: 7,   sky: ["#2f6696", "#a9cbd9"], ground: ["#527b35", "#2a4419"], ink: "#ffffff", accent: "#fff0b0", bark: ["#5e4432", "#3a281b"], leaf: ["#2a5626", "#478536", "#80b957"] },
+    { key: "peaks",   name: "High Peaks",    day: 14,  sky: ["#18233e", "#7489b0"], ground: ["#3d5340", "#1d2b22"], ink: "#ffffff", accent: "#e8c372", bark: ["#584033", "#35261c"], leaf: ["#1d3f2d", "#2d5f42", "#538c66"] },
+    { key: "silver",  name: "Silver Wood",   day: 30,  sky: ["#060d1c", "#1a2d4b"], ground: ["#213834", "#0d1b18"], ink: "#ffffff", accent: "#dfe9f4", bark: ["#5a5650", "#33302c"], leaf: ["#71839a", "#a9b9cb", "#eaf1f8"] },
+    { key: "golden",  name: "Golden Age",    day: 100, sky: ["#2a1a43", "#e38e4c"], ground: ["#6a5022", "#33270e"], ink: "#ffffff", accent: "#ffd36b", bark: ["#5e4432", "#3a281b"], leaf: ["#a8681a", "#df9c34", "#ffd679"] },
+    { key: "starlit", name: "Starlit Crown", day: 365, sky: ["#04061a", "#181244"], ground: ["#1a1f3e", "#090c20"], ink: "#ffffff", accent: "#c9b8ff", bark: ["#3f3a52", "#221f33"], leaf: ["#25296e", "#3a42a0", "#7a84e2"] }
+  ];
+  var APPS = {
+    tiktok:    { name: "TikTok",    url: "tiktok://" },
+    instagram: { name: "Instagram", url: "instagram://" },
+    youtube:   { name: "YouTube",   url: "youtube://" },
+    x:         { name: "X",         url: "twitter://" },
+    snapchat:  { name: "Snapchat",  url: "snapchat://" },
+    reddit:    { name: "Reddit",    url: "reddit://" },
+    facebook:  { name: "Facebook",  url: "fb://" }
+  };
+  var REASONS = [
+    { key: "bored", label: "Idle boredom",         sub: "The scroll won't cure it.",                        breaks: true },
+    { key: "habit", label: "Old habit",            sub: "Your hand moved before your mind did.",            breaks: true },
+    { key: "need",  label: "A true errand",        sub: "A message, work, a search. Your streak is safe.",  breaks: false },
+    { key: "want",  label: "The craving to watch", sub: "So be it, but the blight returns.",                breaks: true }
+  ];
+  var BREATH_SECONDS = 10;
+  var LET_ME_IN = "Let Me In";
+  var STORE_KEY = "elderwood.v1";
+
+  /* ASTRO START */
+  var Astro = (function () {
+    var R = Math.PI / 180;
+    function norm(a) { a %= 360; return a < 0 ? a + 360 : a; }
+    function jd(ms) { return ms / 864e5 + 2440587.5; }
+    function T(j) { return (j - 2451545) / 36525; }
+
+    function sun(j) {
+      var t = T(j);
+      var L0 = 280.46646 + 36000.76983 * t + 0.0003032 * t * t;
+      var M = (357.52911 + 35999.05029 * t - 0.0001537 * t * t) * R;
+      var C = (1.914602 - 0.004817 * t - 0.000014 * t * t) * Math.sin(M) + (0.019993 - 0.000101 * t) * Math.sin(2 * M) + 0.000289 * Math.sin(3 * M);
+      return norm(L0 + C - 0.00569);
+    }
+
+    // Meeus, Astronomical Algorithms ch. 47 (main periodic terms). [D, M, M', F, coefficient in 1e-6 deg]
+    var MT = [[0,0,1,0,6288774],[2,0,-1,0,1274027],[2,0,0,0,658314],[0,0,2,0,213618],[0,1,0,0,-185116],[0,0,0,2,-114332],
+      [2,0,-2,0,58793],[2,-1,-1,0,57066],[2,0,1,0,53322],[2,-1,0,0,45758],[0,1,-1,0,-40923],[1,0,0,0,-34720],[0,1,1,0,-30383],
+      [2,0,0,-2,15327],[0,0,1,2,-12528],[0,0,1,-2,10980],[4,0,-1,0,10675],[0,0,3,0,10034],[4,0,-2,0,8548],[2,1,-1,0,-7888],
+      [2,1,0,0,-6766],[1,0,-1,0,-5163],[1,1,0,0,4987],[2,-1,1,0,4036],[2,0,2,0,3994],[4,0,0,0,3861],[2,0,-3,0,3665],
+      [0,1,-2,0,-2689],[2,0,-1,2,-2602],[2,-1,-2,0,2390],[1,0,1,0,-2348],[2,-2,0,0,2236],[0,1,2,0,-2120],[0,2,0,0,-2069],
+      [2,-2,-1,0,2048],[2,0,1,-2,-1773],[2,0,0,2,-1595],[4,-1,-1,0,1215],[0,0,2,2,-1110],[3,0,-1,0,-892],[2,1,1,0,-810],
+      [4,-1,-2,0,759],[0,2,-1,0,-713],[2,2,-1,0,-700],[2,1,-2,0,691],[2,-1,0,-2,596],[4,0,1,0,549],[0,0,4,0,537],[4,-1,0,0,520]];
+    function moon(j) {
+      var t = T(j), t2 = t * t, t3 = t2 * t, t4 = t3 * t;
+      var Lp = 218.3164477 + 481267.88123421 * t - 0.0015786 * t2 + t3 / 538841 - t4 / 65194000;
+      var D = 297.8501921 + 445267.1114034 * t - 0.0018819 * t2 + t3 / 545868 - t4 / 113065000;
+      var M = 357.5291092 + 35999.0502909 * t - 0.0001536 * t2 + t3 / 24490000;
+      var Mp = 134.9633964 + 477198.8675055 * t + 0.0087414 * t2 + t3 / 69699 - t4 / 14712000;
+      var F = 93.2720950 + 483202.0175233 * t - 0.0036539 * t2 - t3 / 3526000 + t4 / 863310000;
+      var E = 1 - 0.002516 * t - 0.0000074 * t2;
+      var s = 0;
+      for (var i = 0; i < MT.length; i++) {
+        var m = MT[i], arg = (m[0] * D + m[1] * M + m[2] * Mp + m[3] * F) * R;
+        s += m[4] * Math.sin(arg) * (Math.abs(m[1]) === 1 ? E : Math.abs(m[1]) === 2 ? E * E : 1);
+      }
+      var A1 = (119.75 + 131.849 * t) * R, A2 = (53.09 + 479264.290 * t) * R;
+      s += 3958 * Math.sin(A1) + 1962 * Math.sin((Lp - F) * R) + 318 * Math.sin(A2);
+      return norm(Lp + s / 1e6);
+    }
+
+    // Lahiri (Chitrapaksha) ayanamsa, linear fit around J2000.
+    function ayanamsa(j) { return 23.857092 + 0.0139697 * (j - 2451545) / 365.25; }
+
+    function ascendant(j, lat, lon) {
+      var t = T(j);
+      var gmst = 280.46061837 + 360.98564736629 * (j - 2451545) + 0.000387933 * t * t - t * t * t / 38710000;
+      var ramc = norm(gmst + lon) * R;
+      var eps = (23.439291 - 0.0130042 * t) * R;
+      return norm(Math.atan2(Math.cos(ramc), -(Math.sin(ramc) * Math.cos(eps) + Math.tan(lat * R) * Math.sin(eps))) / R);
+    }
+
+    var SIGNS = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+    var RASHI = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrishchika","Dhanu","Makara","Kumbha","Meena"];
+    var NAKS = ["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni",
+      "Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana",
+      "Dhanishta","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
+    var LORDS = ["Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury"];
+    var YEARS = [7, 20, 6, 10, 7, 18, 16, 19, 17];
+    var NAK = 360 / 27;
+    var YEAR_MS = 365.256 * 864e5;
+
+    // Delta T (seconds), NASA polynomial fits; Meeus moon/sun theory runs on Terrestrial Time.
+    function deltaT(j) {
+      var y = 2000 + (j - 2451545) / 365.25, t;
+      if (y >= 2005 && y < 2050) { t = y - 2000; return 62.92 + 0.32217 * t + 0.005589 * t * t; }
+      if (y >= 1986 && y < 2005) { t = y - 2000; return 63.86 + 0.3345 * t - 0.060374 * t * t + 0.0017275 * t * t * t + 0.000651814 * t * t * t * t + 0.00002373599 * t * t * t * t * t; }
+      if (y >= 1961 && y < 1986) { t = y - 1975; return 45.45 + 1.067 * t - t * t / 260 - t * t * t / 718; }
+      if (y >= 1941 && y < 1961) { t = y - 1950; return 29.07 + 0.407 * t - t * t / 233 + t * t * t / 2547; }
+      return 69;
+    }
+    function tt(j) { return j + deltaT(j) / 86400; }
+    function sidereal(lon, j) { return norm(lon - ayanamsa(j)); }
+    function sign(l) { var i = Math.floor(l / 30); return { i: i, name: SIGNS[i], rashi: RASHI[i], deg: l - i * 30 }; }
+    function nak(l) { var i = Math.floor(l / NAK); return { i: i, name: NAKS[i], pada: Math.floor((l - i * NAK) / (NAK / 4)) + 1, lord: LORDS[i % 9] }; }
+
+    function chart(utcMs, lat, lon, hasTime) {
+      var j = jd(utcMs);
+      var m = sidereal(moon(tt(j)), j), su = sidereal(sun(tt(j)), j);
+      var c = { moon: m, sun: su, moonSign: sign(m), sunSign: sign(su), nak: nak(m), utcMs: utcMs };
+      if (hasTime && lat != null && lon != null) { c.asc = sidereal(ascendant(j, lat, lon), j); c.ascSign = sign(c.asc); }
+      return c;
+    }
+
+    // Vimshottari dasha: returns current maha and antar periods at time `atMs`.
+    function dasha(c, atMs) {
+      var n = nak(c.moon), start = n.i % 9;
+      var elapsed = (c.moon - n.i * NAK) / NAK;
+      var mdStart = c.utcMs - elapsed * YEARS[start] * YEAR_MS;
+      for (var k = 0; k < 18; k++) {
+        var li = (start + k) % 9, mdEnd = mdStart + YEARS[li] * YEAR_MS;
+        if (atMs < mdEnd) {
+          var adStart = mdStart;
+          for (var a = 0; a < 9; a++) {
+            var ai = (li + a) % 9, adEnd = adStart + YEARS[li] * YEARS[ai] / 120 * YEAR_MS;
+            if (atMs < adEnd) return { maha: LORDS[li], mahaStart: mdStart, mahaEnd: mdEnd, antar: LORDS[ai], antarStart: adStart, antarEnd: adEnd };
+            adStart = adEnd;
+          }
+        }
+        mdStart = mdEnd;
+      }
+      return null;
+    }
+
+    // Tara Bala: today's Moon star counted from the birth star.
+    var TARAS = [
+      { name: "Janma",       good: null,  msg: "The Moon returns to your birth star. Feelings run strong today, so guard your attention." },
+      { name: "Sampat",      good: true,  msg: "A day of gain. Spend your hours on work that grows." },
+      { name: "Vipat",       good: false, msg: "A day of obstacles. Distraction hits harder today. Hold the line." },
+      { name: "Kshema",      good: true,  msg: "A day of well-being. Rest well and scroll less." },
+      { name: "Pratyari",    good: false, msg: "A day of resistance. The pull is stronger today, so turn back early." },
+      { name: "Sadhaka",     good: true,  msg: "A day of achievement. A good day to finish an edit." },
+      { name: "Naidhana",    good: false, msg: "The hardest star of your cycle. Keep the day simple and the phone down." },
+      { name: "Mitra",       good: true,  msg: "A friendly star. Good for people, not feeds." },
+      { name: "Parama Mitra", good: true, msg: "Your best star of the cycle. Make something you're proud of." }
+    ];
+    function today(birthNak, atMs) {
+      var j = jd(atMs), m = sidereal(moon(tt(j)), j), n = nak(m);
+      var count = ((n.i - birthNak + 27) % 27) + 1;
+      var t = TARAS[(count - 1) % 9];
+      return { nak: n, sign: sign(m), count: count, tara: t };
+    }
+
+    // Local birth time in an IANA zone (or fixed offset in minutes) -> UTC ms.
+    function tzOffsetMin(tz, ms) {
+      var f = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      var p = {};
+      f.formatToParts(new Date(ms)).forEach(function (x) { p[x.type] = x.value; });
+      return (Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second) - ms) / 6e4;
+    }
+    function toUtc(dateStr, timeStr, tz, fixedOffsetMin) {
+      var d = dateStr.split("-").map(Number), t = (timeStr || "12:00").split(":").map(Number);
+      var asUtc = Date.UTC(d[0], d[1] - 1, d[2], t[0], t[1] || 0);
+      if (fixedOffsetMin != null && !isNaN(fixedOffsetMin)) return asUtc - fixedOffsetMin * 6e4;
+      var off = tzOffsetMin(tz, asUtc);
+      off = tzOffsetMin(tz, asUtc - off * 6e4);
+      return asUtc - off * 6e4;
+    }
+
+    return { chart: chart, dasha: dasha, today: today, toUtc: toUtc, sign: sign, nak: nak, TARAS: TARAS };
+  })();
+  /* ASTRO END */
+
+  /* ---------- storage ---------- */
+  function today(d) {
+    d = d || new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function daysBetween(a, b) {
+    var x = a.split("-").map(Number), y = b.split("-").map(Number);
+    return Math.round((Date.UTC(y[0], y[1] - 1, y[2]) - Date.UTC(x[0], x[1] - 1, x[2])) / 864e5);
+  }
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(STORE_KEY));
+      if (s && s.log && s.startedAt) return s;
+    } catch (e) {}
+    return { startedAt: today(), lastSlip: null, best: 0, log: {} };
+  }
+  function save() {
+    try {
+      var keys = Object.keys(state.log).sort();
+      while (keys.length > 90) delete state.log[keys.shift()];
+      localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+  function streak() { return Math.max(0, daysBetween(state.lastSlip || state.startedAt, today())); }
+  function dayLog() {
+    var k = today();
+    if (!state.log[k]) state.log[k] = { attempts: 0, pass: 0, slip: 0, needed: 0, apps: {} };
+    return state.log[k];
+  }
+  function themeIndex(days) { var i = 0; THEMES.forEach(function (t, k) { if (days >= t.day) i = k; }); return i; }
+
+  var state = load();
+  state.best = Math.max(state.best || 0, streak());
+  save();
+
+  /* ---------- your stars ---------- */
+  var NAK_SYMBOL = ["a horse's head","the womb","a flame","a chariot","a deer's head","a teardrop","a quiver of arrows","a cow's udder",
+    "a coiled serpent","a royal throne","the front of a bed","the back of a bed","an open hand","a bright jewel","a sprout in the wind",
+    "a triumphal arch","a lotus","a protective amulet","a bundle of roots","a winnowing fan","an elephant's tusk","an ear","a drum",
+    "an empty circle","a sword","the twins","a fish"];
+  var MOON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>';
+  var CHART = null, TODAY = null, editingBirth = false;
+  function initStars() {
+    var m = /^#birth=(.+)$/.exec(location.hash || "");
+    if (m) {
+      // Private setup link: #birth=YYYY-MM-DDTHH:MM|utcOffsetMinutes|lat|lon|place
+      var p = decodeURIComponent(m[1]).split("|"), dt = p[0].split("T");
+      state.birth = { date: dt[0], time: dt[1] || "12:00", hasTime: !!dt[1], offset: Number(p[1]), tz: null, lat: Number(p[2]), lon: Number(p[3]), place: p[4] || "" };
+      save();
+      try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    }
+    CHART = null; TODAY = null;
+    var b = state.birth;
+    if (!b || !b.date) return;
+    try {
+      var utc = Astro.toUtc(b.date, b.hasTime ? b.time : "12:00", b.tz, b.tz ? null : b.offset);
+      if (isNaN(utc)) return;
+      CHART = Astro.chart(utc, b.lat, b.lon, b.hasTime && b.lat != null && !isNaN(b.lat));
+      TODAY = Astro.today(CHART.nak.i, Date.now());
+    } catch (e) { CHART = null; TODAY = null; }
+  }
+  initStars();
+  window.addEventListener("hashchange", function () { if (/^#birth=/.test(location.hash)) location.reload(); });
+  function fmtDate(ms) { return new Date(ms).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }); }
+  function starNote(full) {
+    if (!TODAY) return "";
+    var t = TODAY.tara, hard = t.good === false;
+    return '<div class="star-note fade-in' + (hard ? " hard" : "") + '">' + MOON_SVG + "<div><b>" + esc(t.name) + " day for you</b><span>Moon in " + esc(TODAY.nak.name) +
+      (full ? ". " + esc(t.msg) + (hard ? " Your breath is longer today." : "") : "") + "</span></div></div>";
+  }
+
+  /* ---------- drawing ---------- */
+  var uid = 0;
+  var DARK = "#170e07";
+
+  function stars(list, color) {
+    return list.map(function (s, i) {
+      return '<circle class="twinkle" style="animation-delay:' + (i * .27).toFixed(2) + 's" cx="' + s[0] + '" cy="' + s[1] + '" r="' + (s[2] || 1.4) + '" fill="' + (color || "#fff") + '"/>';
+    }).join("");
+  }
+  function sparkle(x, y, s, c) {
+    return '<path class="twinkle" d="M' + x + ' ' + (y - s) + ' Q' + x + ' ' + y + ' ' + (x + s) + ' ' + y + ' Q' + x + ' ' + y + ' ' + x + ' ' + (y + s) + ' Q' + x + ' ' + y + ' ' + (x - s) + ' ' + y + ' Q' + x + ' ' + y + ' ' + x + ' ' + (y - s) + 'Z" fill="' + (c || "#fff") + '"/>';
+  }
+  function mist(y, o) {
+    return '<ellipse cx="90" cy="' + y + '" rx="150" ry="9" fill="#fff" opacity="' + o + '"/><ellipse cx="320" cy="' + (y + 6) + '" rx="140" ry="8" fill="#fff" opacity="' + (o * .8) + '"/>';
+  }
+  function pine(x, y, s, c) {
+    return '<path transform="translate(' + x + ' ' + y + ') scale(' + s + ')" d="M0 -70 L10 -50 L6 -50 L18 -28 L12 -28 L26 -4 L-26 -4 L-12 -28 L-18 -28 L-6 -50 L-10 -50Z M-3 -4 h6 v8 h-6z" fill="' + c + '"/>';
+  }
+
+  /* The old tree: a gnarled trunk with a face in its bark. */
+  var TRUNK = "M116 266 C140 262 158 252 166 238 C171 222 171 204 168 188 C164 172 150 160 132 152 C120 147 108 146 98 142 " +
+    "C104 136 116 136 128 138 C146 141 160 148 172 156 C174 140 172 122 164 104 C160 96 156 90 152 82 C160 84 168 90 174 98 " +
+    "C182 110 186 126 188 140 C192 124 194 104 196 84 C197 76 199 70 200 64 C202 72 204 80 206 88 C208 104 208 124 210 140 " +
+    "C216 124 224 110 236 98 C242 92 248 88 254 84 C252 94 246 102 240 108 C230 120 224 138 224 154 C238 146 256 138 278 134 " +
+    "C290 132 300 134 306 138 C296 142 286 146 276 148 C254 154 238 166 232 186 C229 204 229 222 234 238 C242 252 260 262 284 266Z";
+  var CANOPY = [
+    [80,138,17],[96,124,23],[118,116,22],[122,136,17],[100,144,15],
+    [126,90,19],[142,72,25],[166,62,24],[150,96,19],[170,84,17],
+    [178,46,22],[200,38,27],[224,46,24],[196,62,20],[238,62,18],
+    [236,80,18],[256,66,24],[278,80,22],[262,94,18],[288,98,16],
+    [284,120,19],[302,112,22],[318,126,17],[300,138,15],[276,136,13]
+  ];
+
+  function canopy(t, stage) {
+    var L = t.leaf, s = "";
+    if (!L) return "";
+    if (stage === 1) {
+      [[98,138,11],[106,130,9],[152,80,12],[160,74,9],[200,60,13],[192,54,9],[254,80,12],[262,74,9],[306,134,11],[298,128,9]].forEach(function (c) {
+        s += '<circle cx="' + c[0] + '" cy="' + (c[1] + 3) + '" r="' + c[2] + '" fill="' + L[0] + '"/>';
+        s += '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="' + (c[2] - 1.5) + '" fill="' + L[1] + '"/>';
+        s += '<circle cx="' + (c[0] - 3) + '" cy="' + (c[1] - 3) + '" r="' + (c[2] * .45).toFixed(1) + '" fill="' + L[2] + '" opacity=".75"/>';
+      });
+      return s;
+    }
+    CANOPY.forEach(function (c) { s += '<circle cx="' + c[0] + '" cy="' + (c[1] + 7) + '" r="' + c[2] + '" fill="' + L[0] + '"/>'; });
+    CANOPY.forEach(function (c) { s += '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="' + (c[2] - 2) + '" fill="' + L[1] + '"/>'; });
+    CANOPY.forEach(function (c) { s += '<circle cx="' + (c[0] - c[2] * .28).toFixed(1) + '" cy="' + (c[1] - c[2] * .3).toFixed(1) + '" r="' + (c[2] * .5).toFixed(1) + '" fill="' + L[2] + '" opacity=".55"/>'; });
+    if (t.key === "peaks") [[200,14],[166,40],[142,50],[258,44],[300,92],[96,104]].forEach(function (p) { s += '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="13" ry="5" fill="#f4f7fb"/>'; });
+    if (t.key === "silver") s += sparkle(142, 70, 5) + sparkle(222, 44, 6) + sparkle(280, 82, 4) + sparkle(98, 124, 4) + sparkle(302, 112, 4);
+    if (t.key === "starlit") {
+      [[96,124],[118,112],[142,70],[166,60],[200,36],[224,46],[256,64],[278,80],[302,110],[318,126],[150,96],[196,60]].forEach(function (p, i) {
+        s += sparkle(p[0], p[1], i % 3 ? 4 : 6, i % 2 ? "#fff" : "#e8e0ff");
+      });
+    }
+    if (t.key === "vale" || t.key === "dawn") [[150,96],[256,66],[206,38],[118,116],[302,112]].forEach(function (p) { s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3" fill="#fff6d8"/><circle cx="' + p[0] + '" cy="' + p[1] + '" r="1.3" fill="#f2c14e"/>'; });
+    return s;
+  }
+
+  function face(mood, t) {
+    var glow = t.key === "blight" ? "#d9824a" : t.key === "starlit" ? "#cdbcff" : t.key === "silver" ? "#d6ecff" : "#ffcf6b";
+    var eyes, brows, mouth;
+    brows = '<path d="M176 190 C183 182 193 182 199 189 M201 189 C207 182 217 182 224 190" fill="none" stroke="' + DARK + '" stroke-width="4.5" stroke-linecap="round"/>';
+    mouth = '<path d="M187 225 Q200 229 213 225" fill="none" stroke="' + DARK + '" stroke-width="3.5" stroke-linecap="round"/>';
+    if (mood === "calm") {
+      eyes = '<path d="M181 200 Q189 205 197 200 M203 200 Q211 205 219 200" fill="none" stroke="' + DARK + '" stroke-width="3.5" stroke-linecap="round"/>';
+    } else if (mood === "happy") {
+      eyes = '<path d="M181 203 Q189 195 197 203 M203 203 Q211 195 219 203" fill="none" stroke="' + DARK + '" stroke-width="3.5" stroke-linecap="round"/>' +
+             '<g class="glow-eye"><ellipse cx="189" cy="204" rx="7" ry="2.4" fill="' + glow + '" opacity=".55"/><ellipse cx="211" cy="204" rx="7" ry="2.4" fill="' + glow + '" opacity=".55"/></g>';
+      mouth = '<path d="M185 222 Q200 233 215 222" fill="none" stroke="' + DARK + '" stroke-width="3.5" stroke-linecap="round"/>';
+    } else {
+      var pr = mood === "sad" ? 2.2 : 3;
+      eyes = '<ellipse cx="189" cy="200" rx="8" ry="5" fill="' + DARK + '"/><ellipse cx="211" cy="200" rx="8" ry="5" fill="' + DARK + '"/>' +
+             '<g class="glow-eye"><circle cx="189" cy="200" r="' + (pr * 2.4) + '" fill="' + glow + '" opacity=".22"/><circle cx="211" cy="200" r="' + (pr * 2.4) + '" fill="' + glow + '" opacity=".22"/>' +
+             '<circle cx="189" cy="200" r="' + pr + '" fill="' + glow + '"/><circle cx="211" cy="200" r="' + pr + '" fill="' + glow + '"/></g>';
+      if (mood === "sad") {
+        brows = '<path d="M176 192 C183 190 192 186 198 182 M202 182 C208 186 217 190 224 192" fill="none" stroke="' + DARK + '" stroke-width="4.5" stroke-linecap="round"/>';
+        mouth = '<path d="M188 229 Q200 221 212 229" fill="none" stroke="' + DARK + '" stroke-width="3.5" stroke-linecap="round"/>';
+      }
+    }
+    var nose = '<path d="M200 192 C197 202 197 209 202 215" fill="none" stroke="' + DARK + '" stroke-width="3" stroke-linecap="round" opacity=".8"/>';
+    var moss = t.leaf
+      ? '<path d="M189 231 q2 9 -1 15 M200 233 q2 11 -1 19 M211 231 q-1 9 1 15" fill="none" stroke="' + t.leaf[1] + '" stroke-width="3" stroke-linecap="round" opacity=".85"/>'
+      : '<path d="M189 231 q2 9 -1 15 M200 233 q2 11 -1 19 M211 231 q-1 9 1 15" fill="none" stroke="#7d746c" stroke-width="3" stroke-linecap="round" opacity=".7"/>';
+    return brows + eyes + nose + mouth + moss;
+  }
+
+  function tree(t, stage, mood) {
+    var B = t.bark;
+    var twigs = stage === 0
+      ? '<path d="M98 142 l-16 -8 M104 138 l-6 -16 M152 82 l-8 -16 M156 88 l-16 -4 M200 64 l-5 -16 M201 66 l9 -13 M254 84 l9 -14 M250 90 l15 -3 M306 138 l16 -6 M300 136 l8 -14" fill="none" stroke="' + B[0] + '" stroke-width="3" stroke-linecap="round"/>'
+      : "";
+    return '<ellipse cx="200" cy="268" rx="96" ry="9" fill="#000" opacity=".28"/>' +
+      '<g class="sway">' +
+        twigs +
+        '<path d="M98 270 C120 268 140 262 156 252 C152 262 134 270 112 272Z M302 270 C280 268 260 262 244 252 C248 262 266 270 288 272Z" fill="' + B[1] + '" stroke="' + DARK + '" stroke-width="3" stroke-linejoin="round"/>' +
+        '<path d="' + TRUNK + '" fill="' + B[0] + '" stroke="' + DARK + '" stroke-width="3.5" stroke-linejoin="round"/>' +
+        '<path d="M176 252 C172 234 178 214 174 196 M224 254 C228 236 222 220 226 204 M200 264 C197 252 203 244 199 236 M184 168 C188 158 186 150 190 140 M214 166 C210 156 214 148 210 140 M150 150 C138 146 124 144 112 144 M252 146 C266 142 280 140 294 138" fill="none" stroke="' + B[1] + '" stroke-width="3" stroke-linecap="round" opacity=".9"/>' +
+        '<path d="M170 232 C168 214 170 196 168 186" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".12"/>' +
+        face(mood, t) +
+        canopy(t, stage) +
+      "</g>";
+  }
+
+  function decor(t) {
+    var g = "";
+    switch (t.key) {
+      case "blight":
+        g += '<circle cx="290" cy="150" r="46" fill="#a3361f" opacity=".45"/><circle cx="290" cy="150" r="70" fill="#a3361f" opacity=".12"/>';
+        g += '<path d="M0 222 L0 176 L22 192 L48 150 L66 178 L92 132 L118 186 L140 168 L158 204 L250 204 L270 172 L292 190 L320 140 L342 176 L364 158 L384 186 L400 170 L400 222Z" fill="#1c0b09"/>';
+        g += '<path d="M0 222 L0 196 L40 186 L70 204 L110 192 L150 214 L260 214 L300 196 L340 206 L380 192 L400 200 L400 222Z" fill="#2a1512"/>';
+        [[60,240],[120,256],[280,248],[340,262],[230,232],[90,214],[320,220]].forEach(function (e, i) {
+          g += '<circle class="rise" style="animation-delay:' + (i * .7).toFixed(1) + 's" cx="' + e[0] + '" cy="' + e[1] + '" r="1.8" fill="#ff8a4c"/>';
+        });
+        break;
+      case "dawn":
+        g += '<circle cx="290" cy="200" r="34" fill="#ffd59a" opacity=".95"/><circle cx="290" cy="200" r="64" fill="#ffd59a" opacity=".18"/>';
+        g += stars([[40,30],[110,18],[200,26],[340,34],[260,14]], "#fff");
+        g += '<path d="M0 222 L0 186 Q60 160 120 182 Q170 166 220 186 Q290 158 350 180 Q380 172 400 178 L400 222Z" fill="#5c6a7d" opacity=".85"/>';
+        g += '<path d="M0 222 L0 204 Q80 186 160 204 Q240 190 320 206 Q370 196 400 202 L400 222Z" fill="#3f5233"/>';
+        g += mist(206, .22);
+        break;
+      case "vale":
+        g += '<ellipse cx="90" cy="54" rx="56" ry="9" fill="#fff" opacity=".7"/><ellipse cx="300" cy="36" rx="44" ry="7" fill="#fff" opacity=".6"/><ellipse cx="330" cy="76" rx="30" ry="5" fill="#fff" opacity=".5"/>';
+        g += '<path d="M0 222 L0 184 Q70 150 140 176 Q210 150 280 172 Q340 150 400 170 L400 222Z" fill="#6f98a8" opacity=".8"/>';
+        g += '<path d="M0 222 L0 198 Q90 178 180 198 Q270 180 400 196 L400 222Z" fill="#5a8a3c"/>';
+        g += '<path d="M70 222 Q60 210 90 202" fill="none" stroke="#bfe0ec" stroke-width="4" opacity=".7"/>';
+        g += '<path d="M330 90 l6 4 l6 -4 M350 80 l5 3 l5 -3" fill="none" stroke="#24364a" stroke-width="1.6" stroke-linecap="round"/>';
+        break;
+      case "peaks":
+        g += stars([[30,24],[90,40],[160,16],[250,30],[330,18],[380,52]], "#fff");
+        g += '<path d="M0 222 L0 150 L40 108 L72 140 L118 70 L170 150 L200 130 L236 160 L288 84 L330 136 L362 110 L400 140 L400 222Z" fill="#33415f"/>';
+        g += '<path d="M118 70 L104 92 L114 88 L122 98 L132 90 L140 96Z M288 84 L274 106 L284 102 L292 112 L300 104 L306 110Z M40 108 L30 120 L40 118 L48 124Z M362 110 L352 122 L362 120 L370 126Z" fill="#eef3fa"/>';
+        g += mist(196, .14);
+        g += pine(26, 222, 1.1, "#162a20") + pine(60, 224, .8, "#1b3326") + pine(348, 222, 1.2, "#162a20") + pine(382, 224, .85, "#1b3326");
+        break;
+      case "silver":
+        g += '<circle cx="306" cy="66" r="30" fill="#eef2f7"/><circle cx="306" cy="66" r="48" fill="#eef2f7" opacity=".12"/><circle cx="306" cy="66" r="72" fill="#eef2f7" opacity=".06"/>';
+        g += '<circle cx="296" cy="58" r="6" fill="#d7dde6"/><circle cx="314" cy="76" r="4" fill="#d7dde6"/>';
+        g += stars([[30,30],[80,70],[140,22],[200,40],[380,130],[20,140]], "#fff");
+        g += pine(22, 222, 1.2, "#0f1d33") + pine(56, 224, .85, "#13243d") + pine(90, 224, .6, "#162a44") + pine(318, 224, .7, "#162a44") + pine(350, 222, 1.15, "#0f1d33") + pine(384, 224, .9, "#13243d");
+        g += mist(212, .1);
+        [[70,190],[120,236],[300,214],[340,252],[250,250],[60,262]].forEach(function (f, i) {
+          g += '<g class="drift" style="animation-delay:' + (i * .9).toFixed(1) + 's"><circle cx="' + f[0] + '" cy="' + f[1] + '" r="6" fill="#e8ff9a" opacity=".2"/><circle cx="' + f[0] + '" cy="' + f[1] + '" r="2" fill="#f2ffbf"/></g>';
+        });
+        break;
+      case "golden":
+        g += '<circle cx="200" cy="200" r="40" fill="#ffd27a"/><circle cx="200" cy="200" r="74" fill="#ffd27a" opacity=".2"/><circle cx="200" cy="200" r="120" fill="#ffd27a" opacity=".08"/>';
+        g += '<rect x="0" y="196" width="400" height="26" fill="#b4643a"/>';
+        g += '<path d="M150 204 h100 M170 211 h60 M186 217 h28" stroke="#ffe0a0" stroke-width="2.5" opacity=".7"/>';
+        g += '<path d="M70 70 l7 5 l7 -5 M92 58 l6 4 l6 -4 M300 90 l6 4 l6 -4" fill="none" stroke="#2a1a2e" stroke-width="1.8" stroke-linecap="round"/>';
+        break;
+      case "starlit":
+        g += '<ellipse cx="110" cy="70" rx="130" ry="38" fill="#7b5cff" opacity=".12" transform="rotate(-14 110 70)"/><ellipse cx="300" cy="120" rx="120" ry="34" fill="#36c5e0" opacity=".08" transform="rotate(12 300 120)"/>';
+        g += stars([[20,20,1.8],[60,60],[96,30],[140,12,1.8],[170,48],[250,22,1.8],[290,60],[330,30],[372,14,1.8],[390,90],[16,110],[60,150],[340,150],[372,190],[30,190]], "#fff");
+        g += '<path d="M290 60 L330 30 L372 14 M330 30 L340 80" fill="none" stroke="#c9b8ff" stroke-width="1" opacity=".35"/>';
+        g += '<path d="M60 40 L110 18" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".7"/><circle cx="110" cy="18" r="2.4" fill="#fff"/>';
+        g += '<path d="M0 222 L0 196 Q100 178 200 196 Q300 178 400 196 L400 222Z" fill="#252b52"/>';
+        break;
+    }
+    return g;
+  }
+  function groundDetail(t) {
+    var g = "";
+    if (t.key === "blight") g += '<path d="M40 268 l12 -4 l6 6 M330 260 l14 -6 l4 8 M300 290 l10 -3" fill="none" stroke="#1a1412" stroke-width="2.5" stroke-linecap="round"/>';
+    if (t.key === "dawn" || t.key === "vale") [[50,252,"#fff"],[84,276,"#ffd54a"],[330,256,"#f6b8c8"],[360,280,"#fff"],[296,290,"#ffd54a"]].forEach(function (f) {
+      g += '<circle cx="' + f[0] + '" cy="' + f[1] + '" r="3" fill="' + f[2] + '"/>';
+    });
+    if (t.key === "vale") g += '<path d="M0 290 Q60 270 110 280 Q150 288 170 300 L130 300 Q110 292 70 290 Q30 290 0 300Z" fill="#8ec5dc" opacity=".8"/>';
+    if (t.key === "peaks") g += '<ellipse cx="70" cy="262" rx="18" ry="7" fill="#7b8a86"/><ellipse cx="330" cy="276" rx="22" ry="8" fill="#7b8a86"/>';
+    if (t.key === "golden") [[300,120],[330,90],[90,110]].forEach(function (l, i) {
+      g += '<ellipse class="fall" style="animation-delay:' + (i * 2.2) + 's" cx="' + l[0] + '" cy="' + l[1] + '" rx="5" ry="2.6" fill="#ffc451"/>';
+    });
+    if (t.key === "starlit") [[70,262],[320,270],[260,290],[120,288]].forEach(function (c) {
+      g += '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="2" fill="#c9b8ff" class="twinkle"/>';
+    });
+    return g;
+  }
+
+  function sceneSVG(t, opts) {
+    opts = opts || {};
+    var id = "s" + (uid++);
+    var full = !!opts.full;
+    var s = '<svg viewBox="' + (full ? "30 30 340 270" : "0 0 400 300") + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + t.name + '">';
+    if (full) s += '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + t.sky[0] + '"/><stop offset="1" stop-color="' + t.sky[1] + '"/></linearGradient></defs><rect width="400" height="300" fill="url(#' + id + ')"/>';
+    s += decor(t);
+    s += '<path d="M0 222 Q200 210 400 222 L400 300 L0 300Z" fill="' + t.ground[0] + '"/>';
+    s += groundDetail(t);
+    if (opts.ring) s += '<circle class="ring" cx="200" cy="160" r="116" fill="' + t.accent + '" fill-opacity=".06" stroke="' + t.accent + '" stroke-opacity=".7" stroke-width="2"/>';
+    if (opts.stage != null) s += tree(t, opts.stage, opts.mood || "open");
+    return s + "</svg>";
+  }
+
+  /* ---------- helpers ---------- */
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function ordinal(n) { var s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+  function plural(n, w) { return n + " " + w + (n === 1 ? "" : "s"); }
+  function applyTheme(t) {
+    var r = document.documentElement.style;
+    r.setProperty("--sky1", t.sky[0]); r.setProperty("--sky2", t.sky[1]);
+    r.setProperty("--ground1", t.ground[0]); r.setProperty("--ground2", t.ground[1]);
+    r.setProperty("--ink-sky", t.ink); r.setProperty("--accent", t.accent);
+    var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", t.sky[0]);
+  }
+  function drawScene(opts) { $("scene").innerHTML = sceneSVG(THEME, opts); }
+
+  var days = streak();
+  var STAGE = themeIndex(days);
+  var THEME = THEMES[STAGE];
+  applyTheme(THEME);
+
+  var params = new URLSearchParams(location.search);
+  var appKey = (params.get("app") || "").toLowerCase().trim();
+  var demo = params.has("demo");
+
+  if (appKey) pauseScreen(); else dashboard();
+
+  function streakLine(app, count) {
+    return esc(ordinal(count)) + " time reaching for " + esc(app.name) + " today" + (days > 0 ? " · " + plural(days, "day") + " unbroken" : "");
+  }
+
+  /* ---------- pause screen ---------- */
+  function pauseScreen() {
+    var app = APPS[appKey] || { name: appKey.charAt(0).toUpperCase() + appKey.slice(1), url: null };
+    var dl = dayLog();
+    var count, already = false;
+    try { already = sessionStorage.getItem("elderwood.counted") === location.search; } catch (e) {}
+    if (demo) {
+      count = (dl.apps[appKey] || 0) + 1;
+    } else if (already) {
+      count = dl.apps[appKey] || 1;
+    } else {
+      dl.attempts++; dl.apps[appKey] = (dl.apps[appKey] || 0) + 1; count = dl.apps[appKey];
+      save();
+      try { sessionStorage.setItem("elderwood.counted", location.search); } catch (e) {}
+    }
+
+    document.title = "Hold · " + app.name;
+    $("pill-text").textContent = demo ? "Practice · " + app.name : "Before " + app.name;
+    $("title").innerHTML = 'Hold, traveler.<br><span class="accent">Breathe and be still.</span>';
+    drawScene({ stage: STAGE, mood: "calm", ring: true });
+
+    var label = $("breath-label"), wrap = $("scene-wrap");
+    var total = TODAY && TODAY.tara.good === false ? 15 : BREATH_SECONDS;
+    var ring = document.querySelector(".ring"); if (ring) ring.style.animationDuration = total + "s";
+    label.classList.remove("hidden");
+    $("ground").innerHTML = '<p class="fine" style="margin-top:6px">' + streakLine(app, count) + "</p>" + starNote(true);
+
+    var left = total;
+    function tick() { label.innerHTML = (left > total / 2 ? "Breathe in" : "Breathe out") + "<b>" + left + "</b>"; }
+    requestAnimationFrame(function () { wrap.classList.add("breathing"); });
+    tick();
+    var timer = setInterval(function () {
+      left--;
+      if (left <= 0) { clearInterval(timer); label.classList.add("hidden"); wrap.classList.remove("breathing"); askWhy(app, count); return; }
+      tick();
+    }, 1000);
+  }
+
+  function askWhy(app, count) {
+    drawScene({ stage: STAGE, mood: "open" });
+    $("title").innerHTML = 'Why do you seek<br><span class="accent">' + esc(app.name) + "?</span>";
+    var chosen = null;
+    var html = '<div class="options fade-in" role="radiogroup" aria-label="Reason">';
+    REASONS.forEach(function (r) {
+      html += '<button class="option" role="radio" aria-checked="false" data-k="' + r.key + '"><span class="gemradio"></span><span><b>' + esc(r.label) + '</b><span class="s">' + esc(r.sub) + "</span></span></button>";
+    });
+    html += "</div>" +
+      '<button class="btn fade-in" id="pass">Turn back</button>' +
+      '<button class="btn ghost fade-in" id="anyway" disabled>Choose a reason to enter</button>' +
+      '<p class="fine fade-in">' + streakLine(app, count) + "</p>" + starNote(false);
+    $("ground").innerHTML = html;
+
+    var anyway = $("anyway");
+    Array.prototype.forEach.call(document.querySelectorAll(".option"), function (el) {
+      el.addEventListener("click", function () {
+        Array.prototype.forEach.call(document.querySelectorAll(".option"), function (o) { o.setAttribute("aria-checked", "false"); });
+        el.setAttribute("aria-checked", "true");
+        chosen = REASONS.filter(function (r) { return r.key === el.dataset.k; })[0];
+        anyway.disabled = false;
+        if (chosen.breaks && days > 0) {
+          anyway.textContent = "Enter anyway · ends your " + plural(days, "day") + " streak";
+          anyway.classList.add("warn");
+          drawScene({ stage: STAGE, mood: "sad" });
+        } else {
+          anyway.textContent = "Enter " + app.name + " for 10 minutes";
+          anyway.classList.remove("warn");
+          drawScene({ stage: STAGE, mood: "open" });
+        }
+      });
+    });
+    $("pass").addEventListener("click", function () { passed(app); });
+    anyway.addEventListener("click", function () { if (chosen) openAnyway(app, chosen); });
+  }
+
+  function passed(app) {
+    window.scrollTo(0, 0);
+    var dl = dayLog();
+    if (!demo) { dl.pass++; save(); }
+    $("scene-wrap").classList.add("cheer");
+    drawScene({ stage: STAGE, mood: "happy" });
+    $("title").innerHTML = 'Well chosen.<br><span class="accent">The realm grows stronger.</span>';
+    var passes = demo ? dl.pass + 1 : dl.pass;
+    $("ground").innerHTML =
+      '<div class="card fade-in"><h2>' + (passes === 1 ? "1 temptation" : passes + " temptations") + ' resisted today</h2><p>You turned away from ' + esc(app.name) + ". The old tree remembers." +
+      (days > 0 ? " Your streak stands at " + plural(days, "day") + "." : "") + "</p></div>" +
+      '<p class="fine fade-in">Swipe up to go home. You can leave this tab open.</p>' +
+      '<div class="footer-links fade-in"><a class="textlink" href="./">See your realm</a></div>';
+  }
+
+  function openAnyway(app, reason) {
+    window.scrollTo(0, 0);
+    var dl = dayLog();
+    if (!demo) {
+      if (reason.breaks) { dl.slip++; state.lastSlip = today(); } else { dl.needed++; }
+      save();
+    }
+    $("title").innerHTML = 'So be it.<br><span class="accent">Ten minutes.</span>';
+    drawScene({ stage: STAGE, mood: reason.breaks ? "sad" : "open" });
+    $("ground").innerHTML =
+      '<div class="card fade-in"><h2>Opening ' + esc(app.name) + "…</h2><p>" +
+      (demo ? "This is a practice run, so nothing was counted and nothing opens."
+            : "Your iPhone may ask to open Shortcuts. Tap <b>Open</b>.") + "</p></div>" +
+      '<p class="fine fade-in hidden" id="nothing">Nothing happened? The “' + LET_ME_IN + '” shortcut isn\'t set up yet. See step 3 in the <a href="./#setup">setup guide</a>.</p>';
+    if (demo) return;
+    var target = app.url || "";
+    setTimeout(function () {
+      location.href = "shortcuts://run-shortcut?name=" + encodeURIComponent(LET_ME_IN) + "&input=text&text=" + encodeURIComponent(target);
+    }, 500);
+    setTimeout(function () { var n = $("nothing"); if (n) n.classList.remove("hidden"); }, 2500);
+  }
+
+  /* ---------- dashboard ---------- */
+  function dashboard() {
+    var dl = dayLog();
+    $("pill-text").textContent = CHART ? "Elderwood · " + CHART.nak.name : "Elderwood";
+    $("title").innerHTML = 'Heal the realm,<br><span class="accent">one day at a time.</span>';
+    drawScene({ stage: STAGE, mood: days > 0 ? "happy" : "calm" });
+    var next = THEMES[STAGE + 1];
+    var base = location.origin + location.pathname;
+
+    var realms = THEMES.map(function (t, i) {
+      var locked = days < t.day;
+      return '<div class="theme' + (locked ? " locked" : "") + (i === STAGE ? " current" : "") + '"><div class="thumb">' +
+        sceneSVG(t, { full: true, stage: i, mood: "calm" }) +
+        (locked ? '<span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="#e8c372" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>' : "") +
+        "</div><small>Day " + t.day + "<i>" + esc(t.name) + "</i></small></div>";
+    }).join("");
+
+    var links = Object.keys(APPS).map(function (k) {
+      var u = base + "?app=" + k;
+      return '<div class="link-row"><strong>' + esc(APPS[k].name) + '</strong><code>' + esc(u) + '</code><button class="copy" data-copy="' + esc(u) + '">Copy</button></div>';
+    }).join("");
+
+    $("ground").innerHTML =
+      '<div class="stats">' +
+        '<div class="stat"><b>' + dl.pass + '</b><span>Resisted today</span></div>' +
+        '<div class="stat"><b>' + dl.slip + '</b><span>Yielded today</span></div>' +
+        '<div class="stat"><b>' + (state.best || 0) + '</b><span>Longest streak</span></div>' +
+      "</div>" +
+
+      '<div class="card"><div class="streak-card"><div class="streak-num">' + days + '</div><div><h2>' + (days === 1 ? "Day" : "Days") + ' unbroken</h2><p>' +
+        "Every day you don't give in to boredom or habit, the land around the old tree heals." +
+        (next ? " " + plural(next.day - days, "more day") + " until <b>" + esc(next.name) + "</b>." : " Every realm is restored.") +
+      "</p></div></div>" +
+      '<div class="themes">' + realms + "</div></div>" +
+      starsCard() +
+
+      '<div class="card" id="setup"><h2>Set it up on your iPhone</h2><p>A website can\'t block apps on its own. Your iPhone\'s free <b>Shortcuts</b> app opens this page whenever you open an app you want to cut back on.</p>' +
+
+      '<details class="step" open><summary><span class="num">1</span>Hard block at night (Screen Time)<span class="chev">›</span></summary><div class="step-body">' +
+        '<span class="tag">Real blocking · 2 min</span>' +
+        "<ol><li>Open <em>Settings</em> → <em>Screen Time</em>.</li>" +
+        "<li>Tap <em>Downtime</em>, turn it on and pick your hours (e.g. 10:30 pm – 7:00 am).</li>" +
+        "<li>Back in Screen Time, tap <em>App Limits</em> → <em>Add Limit</em>, pick Social, set a daily time.</li>" +
+        "<li>Tap <em>Lock Screen Time Settings</em> and set a passcode. Without it you can just tap “Ignore Limit”. Have someone else type it, or type a random one you won't remember.</li></ol>" +
+      "</div></details>" +
+
+      '<details class="step"><summary><span class="num">2</span>Pause screen before each app<span class="chev">›</span></summary><div class="step-body">' +
+        '<span class="tag">Do this once per app</span>' +
+        "<ol><li>Copy that app's link below.</li>" +
+        "<li>Open <em>Shortcuts</em> → <em>Automation</em> tab → <em>+</em>.</li>" +
+        "<li>Choose <em>App</em>, pick the app (e.g. TikTok), keep <em>Is Opened</em> ticked, and pick <em>Run Immediately</em>. Tap <em>Next</em>.</li>" +
+        "<li>Tap <em>New Blank Automation</em> → <em>Add Action</em>, search <em>Open URLs</em> and add it.</li>" +
+        "<li>Tap the blue URL field, paste the link and tap <em>Done</em>.</li></ol>" +
+        '<div class="links">' + links + "</div>" +
+        '<div class="note">Once this is set up, “Enter anyway” won\'t work and the app will keep sending you back here. Step 3 fixes that.</div>' +
+      "</div></details>" +
+
+      '<details class="step"><summary><span class="num">3</span>Make “Enter anyway” work<span class="chev">›</span></summary><div class="step-body">' +
+        '<span class="tag">A · New shortcut</span>' +
+        "<ol><li>In <em>Shortcuts</em> → <em>Shortcuts</em> tab → <em>+</em>. Name it exactly <em>" + LET_ME_IN + "</em>.</li>" +
+        "<li>Add <em>Adjust Date</em>: set it to <em>Add 10 minutes</em> to <em>Current Date</em>.</li>" +
+        "<li>Add <em>Save File</em>: save the <em>Adjusted Date</em>, turn <em>Ask Where to Save</em> off, set the path to <em>sprout-until.txt</em> and turn <em>Overwrite If File Exists</em> on.</li>" +
+        "<li>Add <em>Open URLs</em> and set the URL to <em>Shortcut Input</em>.</li></ol>" +
+        '<span class="tag" style="margin-top:12px">B · Edit each app automation from step 2</span>' +
+        "<ol><li>Above <em>Open URLs</em>, add <em>Get File</em>: path <em>sprout-until.txt</em>, turn <em>Error If Not Found</em> off.</li>" +
+        "<li>Add <em>Get Dates from Input</em> (it uses the file).</li>" +
+        "<li>Add <em>If</em>: <em>Dates</em> · <em>is after</em> · <em>Current Date</em>. Inside it, add <em>Stop This Shortcut</em>.</li>" +
+        "<li>Make sure <em>Open URLs</em> sits below <em>End If</em>.</li></ol>" +
+        '<div class="note">Now “Enter anyway” gives you 10 minutes in that app before the pause screen comes back.</div>' +
+      "</div></details>" +
+
+      '<details class="step"><summary><span class="num">4</span>Try it<span class="chev">›</span></summary><div class="step-body">' +
+        "Do a practice run. Nothing gets counted.<div style=\"margin-top:12px\"><a class=\"btn\" style=\"font-size:15px;padding:13px\" href=\"?app=tiktok&amp;demo\">Practice pause screen</a></div>" +
+      "</div></details>" +
+      "</div>" +
+
+      '<div class="footer-links"><button class="textlink" id="reset">Reset all data</button></div>';
+
+    Array.prototype.forEach.call(document.querySelectorAll(".copy"), function (b) {
+      b.addEventListener("click", function () {
+        var text = b.dataset.copy;
+        var ok = function () { b.textContent = "Copied"; b.classList.add("done"); setTimeout(function () { b.textContent = "Copy"; b.classList.remove("done"); }, 1600); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, function () { fallbackCopy(text); ok(); });
+        else { fallbackCopy(text); ok(); }
+      });
+    });
+    bindStars();
+    $("reset").addEventListener("click", function () {
+      if (!confirm("Reset your streak and all stats?")) return;
+      try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+      location.reload();
+    });
+    if (location.hash === "#setup") {
+      var st = document.querySelectorAll("details.step");
+      if (st[2]) st[2].open = true;
+      $("setup").scrollIntoView();
+    }
+  }
+  function starsCard() {
+    if (!CHART || editingBirth) return birthForm();
+    var c = CHART, d = Astro.dasha(c, Date.now()), t = TODAY, b = state.birth;
+    function cell(label, value, sub) { return '<div class="cell"><span>' + label + "</span><b>" + esc(value) + "</b><i>" + esc(sub) + "</i></div>"; }
+    function deg(sg) { return sg.name + " " + Math.floor(sg.deg) + "°"; }
+    var hard = t.tara.good === false;
+    return '<div class="card night" id="stars"><h2>Your stars</h2><p class="lede">Vedic chart (Lahiri) for ' + esc(fmtDate(c.utcMs)) + (b.place ? ", " + esc(b.place) : "") + ".</p>" +
+      '<div class="grid">' +
+        cell("Rising", c.ascSign ? c.ascSign.rashi : "Unknown", c.ascSign ? deg(c.ascSign) : "Needs a birth time") +
+        cell("Moon", c.moonSign.rashi, deg(c.moonSign)) +
+        cell("Birth star", c.nak.name, "Pada " + c.nak.pada + ", " + NAK_SYMBOL[c.nak.i]) +
+        cell("Sun", c.sunSign.rashi, deg(c.sunSign)) +
+      "</div>" +
+      (d ? '<div class="period"><span>Current period</span><b>' + d.maha + " Mahadasha · " + d.antar + " Antardasha</b><i>" + d.antar + " period runs until " + esc(fmtDate(d.antarEnd)) + ". " + d.maha + " period runs until " + esc(fmtDate(d.mahaEnd)) + ".</i></div>" : "") +
+      '<div class="period' + (hard ? " hard" : "") + '"><span>Today</span><b>Moon in ' + esc(t.nak.name) + " · " + esc(t.tara.name) + " Tara</b><i>" +
+        esc(ordinal(t.count)) + " star from yours. " + esc(t.tara.msg) + (hard ? " Your pause breath is 15 seconds today." : "") + "</i></div>" +
+      (!b.hasTime ? '<p class="mini">Without a birth time, your Rising sign is unknown, and your birth star could be off if the Moon changed stars that day.</p>' : "") +
+      '<button class="textlink gold" id="edit-birth">Edit birth details</button></div>';
+  }
+
+  function birthForm() {
+    var b = state.birth || {};
+    var has = function (v) { return v != null && !isNaN(v) ? String(v) : ""; };
+    return '<div class="card night" id="stars"><h2>Your stars</h2><p class="lede">Add your birth details and Elderwood reads your Vedic chart. Each day it checks where the Moon is against your birth star and tunes the pause screen to you.</p>' +
+      '<label>Date of birth<input type="date" id="b-date" value="' + esc(b.date || "") + '"></label>' +
+      '<label>Time of birth<input type="time" id="b-time" value="' + esc(b.hasTime === false ? "" : (b.time || "")) + '"></label>' +
+      '<label class="check"><input type="checkbox" id="b-notime"' + (b.hasTime === false ? " checked" : "") + "> I don't know my birth time</label>" +
+      '<label for="b-city">Birth city</label><div class="row"><input type="text" id="b-city" autocomplete="off" placeholder="e.g. Chicago" value="' + esc(b.place || "") + '"><button class="copy" id="b-find" type="button">Find</button></div>' +
+      '<div id="b-results" class="results"></div>' +
+      '<details class="manual"><summary>Enter the location by hand</summary><div class="row3">' +
+        '<label>Latitude<input type="text" inputmode="decimal" id="b-lat" value="' + has(b.lat) + '"></label>' +
+        '<label>Longitude<input type="text" inputmode="decimal" id="b-lon" value="' + has(b.lon) + '"></label>' +
+        '<label>UTC offset<input type="text" inputmode="decimal" id="b-off" placeholder="-6" value="' + (b.offset != null && !b.tz ? has(b.offset / 60) : "") + '"></label>' +
+      "</div></details>" +
+      '<p class="mini" id="b-msg">Saved only on this iPhone. The city search uses the free Open-Meteo service.</p>' +
+      '<button class="btn" id="b-save" type="button">Read my stars</button>' +
+      (CHART ? '<button class="textlink gold" id="b-cancel" type="button">Cancel</button>' : "") + "</div>";
+  }
+
+  function bindStars() {
+    var edit = $("edit-birth");
+    if (edit) { edit.addEventListener("click", function () { editingBirth = true; dashboard(); $("stars").scrollIntoView(); }); return; }
+    var picked = null, msg = $("b-msg");
+    function say(text, err) { msg.textContent = text; msg.classList.toggle("err", !!err); }
+    var cancel = $("b-cancel");
+    if (cancel) cancel.addEventListener("click", function () { editingBirth = false; dashboard(); $("stars").scrollIntoView(); });
+    $("b-find").addEventListener("click", function () {
+      var q = $("b-city").value.trim();
+      if (!q) { say("Type a city first.", true); return; }
+      say("Searching…");
+      fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language=en&format=json&name=" + encodeURIComponent(q))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var list = (data && data.results) || [];
+          if (!list.length) { say("No match. Try another spelling, or enter the location by hand.", true); return; }
+          say("Tap your birth city.");
+          $("b-results").innerHTML = list.map(function (r, i) {
+            return '<button type="button" data-i="' + i + '">' + esc([r.name, r.admin1, r.country].filter(Boolean).join(", ")) + "</button>";
+          }).join("");
+          Array.prototype.forEach.call($("b-results").querySelectorAll("button"), function (btn) {
+            btn.addEventListener("click", function () {
+              var r = list[+btn.dataset.i];
+              picked = { lat: r.latitude, lon: r.longitude, tz: r.timezone, place: [r.name, r.admin1].filter(Boolean).join(", ") };
+              Array.prototype.forEach.call($("b-results").querySelectorAll("button"), function (o) { o.classList.remove("on"); });
+              btn.classList.add("on");
+              say("Got it: " + picked.place + ".");
+            });
+          });
+        })
+        .catch(function () { say("Couldn't reach the city search. Enter the location by hand instead.", true); });
+    });
+    $("b-save").addEventListener("click", function () {
+      var date = $("b-date").value, time = $("b-time").value, noTime = $("b-notime").checked;
+      if (!date) { say("Add your date of birth.", true); return; }
+      if (!noTime && !time) { say("Add your birth time, or tick “I don't know my birth time”.", true); return; }
+      var lat = parseFloat($("b-lat").value), lon = parseFloat($("b-lon").value), off = parseFloat($("b-off").value);
+      var loc = null, old = state.birth;
+      if (picked) loc = picked;
+      else if (!isNaN(lat) && !isNaN(lon) && !isNaN(off)) loc = { lat: lat, lon: lon, tz: null, offset: Math.round(off * 60), place: $("b-city").value.trim() };
+      else if (old && old.lat != null && $("b-city").value.trim() === (old.place || "")) loc = { lat: old.lat, lon: old.lon, tz: old.tz, offset: old.offset, place: old.place };
+      if (!loc) { say("Find your birth city, or enter latitude, longitude and UTC offset by hand.", true); return; }
+      state.birth = { date: date, time: noTime ? "12:00" : time, hasTime: !noTime, lat: loc.lat, lon: loc.lon, tz: loc.tz || null, offset: loc.tz ? null : loc.offset, place: loc.place || "" };
+      save();
+      editingBirth = false;
+      initStars();
+      if (!CHART) { editingBirth = true; dashboard(); say("Something in those details didn't work. Check them and try again.", true); return; }
+      dashboard();
+      $("stars").scrollIntoView();
+    });
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    ta.remove();
+  }
+})();
+</script>
+</body>
+</html>

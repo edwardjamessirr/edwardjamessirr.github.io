@@ -243,8 +243,7 @@ h2{font-weight:700;font-size:clamp(34px,5vw,64px);letter-spacing:-.03em;line-hei
 .rail i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:scaleX(0);transform-origin:0 50%;transition:transform 2.2s var(--ease) .2s}
 .steps.in .rail i{transform:scaleX(1)}
 .steps li{position:relative}
-.steps .n{position:relative;display:inline-grid;place-items:center;width:42px;height:42px;border:1px solid var(--accent);border-radius:50%;background:var(--bg);font:500 13px var(--mono);color:var(--accent-2);transition:background .4s,color .4s}
-.steps li:hover .n{background:var(--accent);color:#14100C}
+.steps .n{position:relative;display:inline-grid;place-items:center;width:42px;height:42px;border:1px solid var(--accent);border-radius:50%;background:var(--bg);font:500 13px var(--mono);color:var(--accent-2)}
 .steps .when{margin-top:22px;font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .steps h3{margin:6px 0 10px;font-size:19px;font-weight:700}
 .steps li p:not(.when){color:var(--ink-2);font-size:15px}

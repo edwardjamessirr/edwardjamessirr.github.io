@@ -19,6 +19,7 @@
   interpolate-size:allow-keywords;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+a,button{-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;scroll-padding-top:76px}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body.locked{overflow:hidden}
@@ -264,14 +265,14 @@ section.faq{padding-block:clamp(72px,9vw,120px)}
 .faq .sec-head{text-align:left;margin:0;max-width:none}
 .faq-list{border-top:1px solid var(--line)}
 details{border-bottom:1px solid var(--line)}
-summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 0;font-weight:600;font-size:18px;transition:color .3s}
+summary{list-style:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;-webkit-user-select:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 0;font-weight:600;font-size:18px;transition:color .3s}
 summary:hover{color:var(--accent-2)}
 summary::-webkit-details-marker{display:none}
 summary::after{content:'+';flex:none;display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;color:var(--accent);font-weight:400;font-size:22px;line-height:1;transition:transform .5s var(--ease),background .3s,color .3s}
 details[open] summary::after{transform:rotate(45deg);background:var(--accent);color:#14100C}
 details p{color:var(--ink-2);padding:0 0 24px;max-width:680px}
-details::details-content{block-size:0;overflow:hidden;transition:block-size .5s var(--ease),content-visibility .5s allow-discrete}
-details[open]::details-content{block-size:auto}
+details[open] p{animation:faqIn .45s var(--ease)}
+@keyframes faqIn{from{opacity:0;transform:translateY(-6px)}}
 
 /* ---------- contact ---------- */
 .final{text-align:center}
@@ -354,6 +355,8 @@ details[open]::details-content{block-size:auto}
   .hero-grid{grid-template-columns:1fr;grid-template-areas:"copy" "visual" "stats";row-gap:26px}
   h1{font-size:clamp(38px,10.6vw,64px);margin:20px 0 24px}
   .hero-visual{justify-self:center;max-width:520px}
+  .hv-tall{width:27%}
+  .hv-wide .hv-cap{padding-left:calc(27% + 8px)}
   .hero-bg::after{background:radial-gradient(ellipse at 50% 30%,transparent 0,rgba(14,11,8,.6) 55%,var(--bg) 100%)}
   .about{grid-template-columns:1fr}
   .faq{grid-template-columns:1fr}
@@ -395,6 +398,7 @@ details[open]::details-content{block-size:auto}
   summary{font-size:17px;padding:20px 0}
   .lb{grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) auto auto;padding:64px 12px 18px}
   .lb-stage{grid-column:1 / -1}
+  .lb-close{width:52px;height:52px;top:8px;right:8px}
   .lb-stage.tall{height:min(calc(100svh - 230px),calc((100vw - 24px)*16/9))}
   .lb-cap{grid-row:2}
   .lb-prev{grid-row:3;justify-self:end}
@@ -409,4 +413,90 @@ details[open]::details-content{block-size:auto}
   .rv,.rv.in,.hero-copy>*,.stats,.hv,.ln>span{opacity:1;animation:none}
   .hv-wide,.hv-tall{transform:none}
   *{transition-duration:.01ms !important}
+}
+
+/* links inside FAQ answers */
+.faq-link{color:var(--accent-2);text-decoration:underline;text-decoration-color:rgba(201,165,122,.4);text-underline-offset:3px;transition:text-decoration-color .3s}
+.faq-link:hover{text-decoration-color:var(--accent-2)}
+
+/* ================= PHONE LAYOUT (2026-11-11) =================
+   Phones get their own compact, app-like layout: less scrolling, swipe rows,
+   and a DM bar within thumb reach. Nothing here touches the computer version. */
+.dock{display:none}
+@media (max-width:640px){
+  /* tighter rhythm: sections were ~2x taller than they needed to be */
+  section:not(.hero){padding:56px var(--gut)}
+  section.faq{padding-block:56px}
+  .sec-head{margin-bottom:24px}
+  .panel .sec-head{margin-bottom:22px}
+  .kicker{margin-bottom:12px;font-size:11px}
+  h2{font-size:30px;line-height:1.06}
+  .lede{font-size:15px;line-height:1.5;margin-top:10px}
+  .tabs{margin-bottom:28px}
+  .channel{font-size:15px;margin:-6px auto 16px}
+
+  /* top bar: just the name and the menu; the DM button moves to the bottom bar */
+  .nav-right .btn{display:none}
+
+  /* bottom bar, within thumb reach */
+  .dock{display:flex;gap:6px;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:37;padding:6px;border:1px solid var(--line-2);border-radius:999px;background:rgba(14,11,8,.82);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);box-shadow:0 18px 40px -12px rgba(0,0,0,.8);transform:translateY(160%);visibility:hidden;transition:transform .55s var(--ease),visibility .55s}
+  .dock.show{transform:none;visibility:visible}
+  .dock .btn{flex:1;padding:.8em .6em;font-size:14px;box-shadow:none}
+  .dock .btn-ghost{flex:0 0 38%;background:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .menu-open .dock{transform:translateY(160%);visibility:hidden}
+  .foot{padding-bottom:92px;justify-content:center;text-align:center}
+
+  /* long-form: swipe sideways instead of four stacked cards */
+  .yt-grid{display:flex;gap:12px;max-width:none;margin-inline:calc(var(--gut)*-1);padding:4px var(--gut);overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .yt-grid::-webkit-scrollbar{display:none}
+  .yt-grid .yt{flex:0 0 84%;scroll-snap-align:start}
+  .yt figcaption{padding:12px 14px}
+  .yt figcaption b{font-size:15px}
+  .yt figcaption span{font-size:13px}
+  /* reels a little smaller so the whole reel fits on screen */
+  .reel-grid{padding:6px 23vw}
+
+  /* receipts: 2 x 2 number cards, testimonial as one compact row */
+  .receipt-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .card{padding:16px;border-radius:14px}
+  .card .big{font-size:30px;margin-bottom:8px}
+  .card p{font-size:13px;line-height:1.45}
+  .card .meta{font-size:9px;letter-spacing:.08em;margin-top:10px}
+  .card.video-card{flex-direction:row;min-height:0}
+  .video-card .clip-media{flex:0 0 46%;max-width:none;margin:0}
+  .video-card video{max-height:none}
+  .video-card figcaption{display:flex;align-items:center;padding:14px}
+  .video-card figcaption p{font-size:19px;line-height:1.2}
+  .snd.snd-big{bottom:10px;padding:.6em .8em;font-size:11.5px}
+  .snd.snd-big svg{width:13px;height:13px}
+
+  /* process */
+  .steps li{padding:0 0 24px 58px}
+  .steps h3{font-size:17px;margin:4px 0 6px}
+  .steps li p:not(.when){font-size:14px;line-height:1.5}
+
+  /* about: smaller photo, tighter text */
+  .about{gap:24px}
+  .portrait{max-width:190px}
+  .portrait img{border-radius:16px}
+  .portrait figcaption{display:none}
+  .about-copy{text-align:left}
+  .about-copy h2{margin-bottom:14px}
+  .about-copy p:not(.kicker){font-size:15px;line-height:1.55;margin-bottom:10px}
+  .chips{margin-top:14px;gap:6px}
+  .chips li{font-size:11px;padding:.5em .85em}
+
+  /* faq */
+  summary{font-size:16px;padding:16px 0}
+  summary::after{width:30px;height:30px;font-size:20px}
+  details p{font-size:15px;padding-bottom:18px}
+
+  /* contact: slim rows instead of three tall boxes */
+  .contact-grid{gap:10px;margin-top:28px}
+  .contact-card{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:14px;row-gap:1px;align-items:center;padding:14px 16px;border-radius:16px}
+  .contact-card .ico{grid-row:1 / span 2;margin:0}
+  .contact-card b{margin-top:0;font-size:17px}
+  .contact-card .sub{font-size:13px}
+  .copy{top:50%;right:12px;transform:translateY(-50%)}
+  .final .meta{margin-top:22px;font-size:10px}
 }

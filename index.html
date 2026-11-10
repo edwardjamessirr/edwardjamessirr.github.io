@@ -12,33 +12,82 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314100C'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-style='italic' font-size='34' fill='%23C9A57A'%3EEJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://i.ytimg.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
-<div class="grain" aria-hidden="true"></div>
+<!-- icons, drawn once and reused -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M11 5 6 9H3v6h3l5 4V5zM16 9.5l5 5M21 9.5l-5 5"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M11 5 6 9H3v6h3l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M5 5l14 14M19 5 5 19"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 19.5 5.3 15A8 8 0 1 1 9 18.7L4 19.5z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3.5 6.5h17v11h-17zM4 7l8 6.5L20 7"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M5 4.5l14 15M19 4.5l-14 15"/></symbol>
+</svg>
 
-<header class="nav">
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"><i></i><b></b></div>
+<div class="tc hide" aria-hidden="true"><b>00:00:00:00</b><span>Intro</span></div>
+
+<header class="nav" id="nav">
   <a class="brand" href="#top">Edward James<small>Video Editor</small></a>
-  <nav class="links">
+  <nav class="links" aria-label="Sections">
+    <span class="pill" aria-hidden="true"></span>
     <a href="#work">Work</a><a href="#receipts">Receipts</a><a href="#process">Process</a><a href="#about">About</a><a href="#faq">FAQ</a>
   </nav>
-  <a class="btn btn-solid btn-sm" href="https://wa.me/526651660117" target="_blank" rel="noopener">DM me ↗</a>
+  <div class="nav-right">
+    <a class="btn btn-solid btn-sm" href="https://wa.me/526651660117" target="_blank" rel="noopener">DM me <span class="arr">↗</span></a>
+    <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+  </div>
 </header>
 
+<div class="menu" id="menu" aria-hidden="true">
+  <nav aria-label="Menu">
+    <a href="#work" style="--i:0"><small>01</small>Work</a>
+    <a href="#receipts" style="--i:1"><small>02</small>Receipts</a>
+    <a href="#process" style="--i:2"><small>03</small>Process</a>
+    <a href="#about" style="--i:3"><small>04</small>About</a>
+    <a href="#faq" style="--i:4"><small>05</small>FAQ</a>
+    <a href="#contact" style="--i:5"><small>06</small>Get in touch</a>
+  </nav>
+  <a class="btn btn-solid" href="https://wa.me/526651660117" target="_blank" rel="noopener">DM me on WhatsApp <span class="arr">↗</span></a>
+</div>
+
+<main>
 <section class="hero" id="top">
   <div class="hero-bg" aria-hidden="true"><img src="img/pool-crane.jpg" alt=""></div>
-  <div class="hero-inner">
-    <p class="badge"><span class="dot"></span>Long-form &amp; short-form editing</p>
-    <h1>Edits that hold attention.<br><em>Attention that pays.</em></h1>
-    <div class="stats">
-      <div class="stat"><b>704K+</b><span>YouTube views on 5 long-form edits</span></div>
-      <div class="stat"><b>400K+</b><span>Views from 5 reels in 14 days</span></div>
-      <div class="stat"><b>7 days</b><span>Footage to final cut</span></div>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="badge"><span class="dot"></span>Long-form &amp; short-form editing</p>
+      <h1><span class="ln"><span>Edits that hold attention.</span></span><span class="ln"><span><em>Attention that pays.</em></span></span></h1>
+      <div class="ctas">
+        <a class="btn btn-solid" href="#contact">Get in touch <span class="arr">↗</span></a>
+        <a class="btn btn-ghost" href="#work">See the work</a>
+      </div>
     </div>
-    <div class="ctas">
-      <a class="btn btn-solid" href="#contact">Get in touch ↗</a>
-      <a class="btn btn-ghost" href="#work">See the work</a>
+    <div class="hero-visual" id="heroVisual">
+      <button class="hv hv-wide" type="button" data-open="long:0" aria-label="Play The Girls In Greece Are…">
+        <img src="https://i.ytimg.com/vi/gHMUC5wiWVQ/maxresdefault.jpg" alt="The Girls In Greece Are…" fetchpriority="high">
+        <span class="hv-tag">Long-form</span>
+        <span class="play"><svg><use href="#i-play"/></svg></span>
+        <span class="hv-cap"><b>The Girls In Greece Are…</b><span>368K views</span></span>
+      </button>
+      <button class="hv hv-tall" type="button" data-open="short:0" aria-label="Open short-form reel">
+        <video class="auto" src="video/reel-42.mp4" poster="img/poster-reel-42.jpg" muted loop playsinline preload="metadata"></video>
+        <span class="hv-tag">Short-form</span>
+        <span class="hv-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+    </div>
+    <div class="stats">
+      <div class="stat"><b data-count>704K+</b><span>YouTube views on 5 long-form edits</span></div>
+      <div class="stat"><b data-count>400K+</b><span>Views from 5 reels in 14 days</span></div>
+      <div class="stat"><b>7 days</b><span>Footage to final cut</span></div>
     </div>
   </div>
   <div class="marquee" aria-label="Proof">
@@ -50,39 +99,59 @@
 
 <div class="paper">
 <section class="work" id="work">
-  <header class="sec-head"><p class="kicker">01 — Work</p><h2>Long-<em>form</em></h2><p class="lede">YouTube vlogs for a 30K-subscriber travel and dating channel. Story first, pacing that holds, 9–12 minutes that feel short.</p></header>
-  <p class="channel"><span class="ch-dot"></span>Kyrikouts <span>· 30K subscribers on YouTube</span></p>
-  <div class="yt-grid">
-    <figure class="yt" data-id="gHMUC5wiWVQ"><button class="yt-play" aria-label="Play The Girls In Greece Are…"><img src="https://i.ytimg.com/vi/gHMUC5wiWVQ/maxresdefault.jpg" alt="The Girls In Greece Are…" loading="lazy"><span class="yt-btn">▶</span><span class="yt-len">12:02</span></button><figcaption><b>The Girls In Greece Are…</b><span>368K views</span></figcaption></figure>
-    <figure class="yt" data-id="cACDDoXL3iA"><button class="yt-play" aria-label="Play Finding My Wife In Brazil Carnival"><img src="https://i.ytimg.com/vi/cACDDoXL3iA/hqdefault.jpg" alt="Finding My Wife In Brazil Carnival" loading="lazy"><span class="yt-btn">▶</span><span class="yt-len">11:18</span></button><figcaption><b>Finding My Wife In Brazil Carnival</b><span>220K views</span></figcaption></figure>
-    <figure class="yt" data-id="vGxY3tZW05o"><button class="yt-play" aria-label="Play Beautiful Girls In Greece Nightlife…"><img src="https://i.ytimg.com/vi/vGxY3tZW05o/hqdefault.jpg" alt="Beautiful Girls In Greece Nightlife…" loading="lazy"><span class="yt-btn">▶</span><span class="yt-len">9:30</span></button><figcaption><b>Beautiful Girls In Greece Nightlife…</b><span>43K views</span></figcaption></figure>
-    <figure class="yt" data-id="by2yaOB07Ww"><button class="yt-play" aria-label="Play In Brazil You Can Have 2 Girlfriends"><img src="https://i.ytimg.com/vi/by2yaOB07Ww/hqdefault.jpg" alt="In Brazil You Can Have 2 Girlfriends" loading="lazy"><span class="yt-btn">▶</span><span class="yt-len">9:05</span></button><figcaption><b>In Brazil You Can Have 2 Girlfriends</b><span>42.8K views</span></figcaption></figure>
+  <p class="kicker">01 — Work</p>
+  <div class="tabs" role="tablist" aria-label="Type of work">
+    <span class="tab-pill" aria-hidden="true"></span>
+    <button role="tab" type="button" id="tab-long" data-tab="long" aria-controls="panel-long" aria-selected="true">Long-form <i>4</i></button>
+    <button role="tab" type="button" id="tab-short" data-tab="short" aria-controls="panel-short" aria-selected="false" tabindex="-1">Short-form <i>3</i></button>
+    <button role="tab" type="button" id="tab-motion" data-tab="motion" aria-controls="panel-motion" aria-selected="false" tabindex="-1">Motion <i>2</i></button>
   </div>
-  <header class="sec-head"><h2>Short-<em>form</em></h2><p class="lede">Vertical reels for the same creator's Instagram: hooks in the first second, captions that land, cut for retention.</p></header>
-  <div class="reel-grid">
-    <figure class="clip tall"><div class="clip-media"><video class="auto" src="video/reel-42.mp4" poster="img/poster-reel-42.jpg" muted loop playsinline preload="metadata"></video><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off">🔇</span><span class="snd-on">🔊</span></button></div></figure><figure class="clip tall"><div class="clip-media"><video class="auto" src="video/reel-43.mp4" poster="img/poster-reel-43.jpg" muted loop playsinline preload="metadata"></video><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off">🔇</span><span class="snd-on">🔊</span></button></div></figure><figure class="clip tall"><div class="clip-media"><video class="auto" src="video/reel-30.mp4" poster="img/poster-reel-30.jpg" muted loop playsinline preload="metadata"></video><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off">🔇</span><span class="snd-on">🔊</span></button></div></figure>
+
+  <div class="panel" id="panel-long" role="tabpanel" aria-labelledby="tab-long">
+    <header class="sec-head"><h2>Long-<em>form</em></h2><p class="lede">YouTube vlogs for a 30K-subscriber travel and dating channel. Story first, pacing that holds, 9–12 minutes that feel short.</p></header>
+    <p class="channel"><span class="ch-dot"></span>Kyrikouts <span>· 30K subscribers on YouTube</span></p>
+    <div class="yt-grid">
+      <figure class="yt" data-id="gHMUC5wiWVQ" data-title="The Girls In Greece Are…" data-meta="368K views"><button class="yt-play" type="button" aria-label="Play The Girls In Greece Are…"><img src="https://i.ytimg.com/vi/gHMUC5wiWVQ/maxresdefault.jpg" alt="The Girls In Greece Are…" loading="lazy"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">12:02</span></button><figcaption><b>The Girls In Greece Are…</b><span>368K views</span></figcaption></figure>
+      <figure class="yt" data-id="cACDDoXL3iA" data-title="Finding My Wife In Brazil Carnival" data-meta="220K views"><button class="yt-play" type="button" aria-label="Play Finding My Wife In Brazil Carnival"><img src="https://i.ytimg.com/vi/cACDDoXL3iA/hqdefault.jpg" alt="Finding My Wife In Brazil Carnival" loading="lazy"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">11:18</span></button><figcaption><b>Finding My Wife In Brazil Carnival</b><span>220K views</span></figcaption></figure>
+      <figure class="yt" data-id="vGxY3tZW05o" data-title="Beautiful Girls In Greece Nightlife…" data-meta="43K views"><button class="yt-play" type="button" aria-label="Play Beautiful Girls In Greece Nightlife…"><img src="https://i.ytimg.com/vi/vGxY3tZW05o/hqdefault.jpg" alt="Beautiful Girls In Greece Nightlife…" loading="lazy"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">9:30</span></button><figcaption><b>Beautiful Girls In Greece Nightlife…</b><span>43K views</span></figcaption></figure>
+      <figure class="yt" data-id="by2yaOB07Ww" data-title="In Brazil You Can Have 2 Girlfriends" data-meta="42.8K views"><button class="yt-play" type="button" aria-label="Play In Brazil You Can Have 2 Girlfriends"><img src="https://i.ytimg.com/vi/by2yaOB07Ww/hqdefault.jpg" alt="In Brazil You Can Have 2 Girlfriends" loading="lazy"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">9:05</span></button><figcaption><b>In Brazil You Can Have 2 Girlfriends</b><span>42.8K views</span></figcaption></figure>
+    </div>
   </div>
-  <header class="sec-head side-head"><p class="kicker">On the side</p><h3>A little <em>motion</em></h3><p class="lede">Something I'm learning alongside the editing: small motion pieces in DaVinci Resolve. I bring it into a video when it helps, like a clean title, a graph or an animated moment, never just for show.</p></header>
-  <div class="side-row">
-    <figure class="clip wide"><div class="clip-media"><video class="auto" src="video/launch-full.mp4" poster="img/poster-launch-full.jpg" muted loop playsinline preload="metadata"></video></div><figcaption>James Launch</figcaption></figure>
-    <figure class="clip wide"><div class="clip-media"><video class="auto" src="video/pool-table.mp4" poster="img/poster-pool-table.jpg" muted loop playsinline preload="metadata"></video></div><figcaption>Motion that <em>feels</em> right</figcaption></figure>
+
+  <div class="panel" id="panel-short" role="tabpanel" aria-labelledby="tab-short" hidden>
+    <header class="sec-head"><h2>Short-<em>form</em></h2><p class="lede">Vertical reels for the same creator's Instagram: hooks in the first second, captions that land, cut for retention.</p></header>
+    <div class="reel-grid">
+      <figure class="clip tall" data-src="video/reel-42.mp4" data-poster="img/poster-reel-42.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-42.mp4" poster="img/poster-reel-42.jpg" muted loop playsinline preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
+      <figure class="clip tall" data-src="video/reel-43.mp4" data-poster="img/poster-reel-43.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-43.mp4" poster="img/poster-reel-43.jpg" muted loop playsinline preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
+      <figure class="clip tall" data-src="video/reel-30.mp4" data-poster="img/poster-reel-30.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-30.mp4" poster="img/poster-reel-30.jpg" muted loop playsinline preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
+    </div>
+    <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+  </div>
+
+  <div class="panel" id="panel-motion" role="tabpanel" aria-labelledby="tab-motion" hidden>
+    <header class="sec-head side-head"><p class="kicker">On the side</p><h3>A little <em>motion</em></h3><p class="lede">Something I'm learning alongside the editing: small motion pieces in DaVinci Resolve. I bring it into a video when it helps, like a clean title, a graph or an animated moment, never just for show.</p></header>
+    <div class="side-row">
+      <figure class="clip wide" data-src="video/launch-full.mp4" data-poster="img/poster-launch-full.jpg" data-title="James Launch" data-silent><div class="clip-media"><video class="auto" src="video/launch-full.mp4" poster="img/poster-launch-full.jpg" muted loop playsinline preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button></div><figcaption>James Launch</figcaption></figure>
+      <figure class="clip wide" data-src="video/pool-table.mp4" data-poster="img/poster-pool-table.jpg" data-title="Motion that feels right" data-silent><div class="clip-media"><video class="auto" src="video/pool-table.mp4" poster="img/poster-pool-table.jpg" muted loop playsinline preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button></div><figcaption>Motion that <em>feels</em> right</figcaption></figure>
+    </div>
   </div>
 </section>
 
 <section class="receipts" id="receipts">
   <header class="sec-head"><p class="kicker">02 — Receipts</p><h2>Numbers, <em>not promises</em></h2></header>
   <div class="receipt-grid">
-    <article class="card"><p class="big">704K+</p><p>YouTube views on five long-form vlogs I edited. The top one alone: 368K.</p><p class="meta">Kyrikouts · YouTube · 30K subscribers</p></article>
-    <article class="card"><p class="big">400K+</p><p>views from five short reels in fourteen days.</p><p class="meta">Live-stream creator · Instagram</p></article>
-    <article class="card"><p class="big">368K</p><p>views on a single 12-minute vlog I cut.</p><p class="meta">Kyrikouts · YouTube</p></article>
-    <article class="card"><p class="big">5 / day</p><p>reels posted in a single day at full pace, every one checked frame by frame first.</p><p class="meta">Volume without the slop</p></article>
-    <figure class="card quote video-card"><div class="clip-media"><video class="auto" data-sound="on" src="video/testimonial.mp4" poster="img/client-voice.jpg" muted loop playsinline preload="metadata"></video><button class="snd snd-big" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off">🔇 Tap to unmute</span><span class="snd-on">🔊 Sound on</span></button></div><figcaption><p>“I didn't even ask for a testimonial. This is one of my clients.”</p></figcaption></figure>
+    <article class="card glow"><p class="big" data-count>704K+</p><p>YouTube views on five long-form vlogs I edited. The top one alone: 368K.</p><p class="meta">Kyrikouts · YouTube · 30K subscribers</p></article>
+    <article class="card glow"><p class="big" data-count>400K+</p><p>views from five short reels in fourteen days.</p><p class="meta">Live-stream creator · Instagram</p></article>
+    <article class="card glow"><p class="big" data-count>368K</p><p>views on a single 12-minute vlog I cut.</p><p class="meta">Kyrikouts · YouTube</p></article>
+    <article class="card glow"><p class="big">5 / day</p><p>reels posted in a single day at full pace, every one checked frame by frame first.</p><p class="meta">Volume without the slop</p></article>
+    <figure class="card quote video-card"><div class="clip-media"><video class="auto" data-sound="on" src="video/testimonial.mp4" poster="img/client-voice.jpg" muted loop playsinline preload="none"></video><button class="snd snd-big" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg> Tap to unmute</span><span class="snd-on"><svg><use href="#i-sound"/></svg> Sound on</span></button></div><figcaption><p>“I didn't even ask for a testimonial. This is one of my clients.”</p></figcaption></figure>
   </div>
 </section>
 
 <section class="process" id="process">
   <header class="sec-head"><p class="kicker">03 — Process</p><h2>From footage to final cut <em>in 7 days.</em></h2></header>
   <ol class="steps">
+    <span class="rail" aria-hidden="true"><i></i></span>
     <li><span class="n">01</span><p class="when">Day 1</p><h3>Brief &amp; footage</h3><p>You send the raw files and one line on what the video has to do. I come back with the angle before I touch a timeline.</p></li>
     <li><span class="n">02</span><p class="when">Days 2–3</p><h3>The cut</h3><p>Hook first, then pacing. Dead air goes, tension stays. Built for retention, not just length.</p></li>
     <li><span class="n">03</span><p class="when">Days 4–5</p><h3>Captions, sound &amp; polish</h3><p>Captions that land, sound, colour and texture, plus simple motion graphics where they help.</p></li>
@@ -91,7 +160,7 @@
 </section>
 
 <section class="about" id="about">
-  <figure class="portrait"><img src="img/james-portrait.jpg" alt="Edward James"><figcaption>Edward James · Video Editor</figcaption></figure>
+  <figure class="portrait"><img src="img/james-portrait.jpg" alt="Edward James" loading="lazy"><figcaption>Edward James · Video Editor</figcaption></figure>
   <div class="about-copy">
     <p class="kicker">04 — About</p>
     <h2>Hey, I'm <em>James.</em></h2>
@@ -104,40 +173,66 @@
 
 <section class="faq" id="faq">
   <header class="sec-head"><p class="kicker">05 — FAQ</p><h2>Questions creators <em>ask first</em></h2></header>
-  <details><summary>How much does a video cost?</summary><p>It depends on length and how much work the footage needs. We agree a fixed price per video before I start, so there are no surprises. Ongoing weekly work gets a lower rate.</p></details>
-  <details><summary>How long does an edit take?</summary><p>Seven days from footage to final cut for a standard video. Short-form reels can turn around much faster once we have a rhythm.</p></details>
-  <details><summary>How many revisions do I get?</summary><p>Two full rounds with timestamped notes. Small fixes after that are on me.</p></details>
-  <details><summary>What do you need from me?</summary><p>Your raw footage, any brand assets, and one sentence on what the video has to do: grow followers, sell an offer, or build trust.</p></details>
-  <details><summary>Why you over a cheaper editor?</summary><p>Because I cut for attention, not just to tidy footage up. Hook, pacing, captions and sound are all done by one person who knows your channel.</p></details>
-  <details><summary>How do we start?</summary><p>Message me on WhatsApp, send an email, or DM me on X. I reply within a day.</p></details>
+  <div class="faq-list">
+    <details name="faq" open><summary>How much does a video cost?</summary><p>A fixed price per video, agreed before I start. Ongoing weekly work gets a lower rate.</p></details>
+    <details name="faq"><summary>How long does an edit take?</summary><p>Seven days from footage to final cut, with two rounds of revisions. Reels turn around faster once we have a rhythm.</p></details>
+    <details name="faq"><summary>How do we start?</summary><p>Message me on WhatsApp, email or X with your raw footage and one line on what the video has to do. I reply within a day.</p></details>
+  </div>
 </section>
 
 <section class="final" id="contact">
   <h2>Let's make your next video <em>hold attention.</em></h2>
-  <div class="ctas">
-    <a class="btn btn-solid" href="https://wa.me/526651660117" target="_blank" rel="noopener">DM me on WhatsApp ↗</a>
-    <a class="btn btn-ghost" href="mailto:eddysmail40@gmail.com">Email me</a>
-    <a class="btn btn-ghost" href="https://x.com/EdwardJamesSirr" target="_blank" rel="noopener">DM me on X</a>
+  <div class="contact-grid">
+    <a class="contact-card primary" href="https://wa.me/526651660117" target="_blank" rel="noopener"><span class="ico"><svg><use href="#i-chat"/></svg></span><b>DM me on WhatsApp <span class="arr">↗</span></b><span class="sub">Replies within a day</span></a>
+    <div class="contact-wrap">
+      <a class="contact-card glow" href="mailto:eddysmail40@gmail.com"><span class="ico"><svg><use href="#i-mail"/></svg></span><b>Email me <span class="arr">↗</span></b><span class="sub">eddysmail40@gmail.com</span></a>
+      <button class="copy" type="button" data-copy="eddysmail40@gmail.com">Copy</button>
+    </div>
+    <a class="contact-card glow" href="https://x.com/EdwardJamesSirr" target="_blank" rel="noopener"><span class="ico"><svg><use href="#i-x"/></svg></span><b>DM me on X <span class="arr">↗</span></b><span class="sub">@EdwardJamesSirr</span></a>
   </div>
   <p class="meta">Replies within a day · 7-day turnaround</p>
 </section>
 
-<footer class="foot"><span>© 2026 Edward James</span><span><a href="https://wa.me/526651660117" target="_blank" rel="noopener">WhatsApp</a> · <a href="mailto:eddysmail40@gmail.com">Email</a> · <a href="https://x.com/EdwardJamesSirr" target="_blank" rel="noopener">X</a></span></footer>
+<footer class="foot"><span>© 2026 Edward James</span><a class="totop" href="#top">Back to top ↑</a><span><a href="https://wa.me/526651660117" target="_blank" rel="noopener">WhatsApp</a> · <a href="mailto:eddysmail40@gmail.com">Email</a> · <a href="https://x.com/EdwardJamesSirr" target="_blank" rel="noopener">X</a></span></footer>
+</div>
+</main>
+
+<!-- full-screen player -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Video player" aria-hidden="true">
+  <button class="lb-btn lb-close" type="button" aria-label="Close"><svg><use href="#i-close"/></svg></button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous video"><svg><use href="#i-left"/></svg></button>
+  <div class="lb-stage wide"></div>
+  <button class="lb-btn lb-next" type="button" aria-label="Next video"><svg><use href="#i-right"/></svg></button>
+  <p class="lb-cap"><b></b><span></span><i></i></p>
 </div>
 
 <script>
-  // reveal on scroll + autoplay videos on screen (scroll check backs up IntersectionObserver)
-  const rv=[...document.querySelectorAll('.sec-head,.yt,.clip,.card,.steps li,.about-copy,.portrait,details,.final')];
-  rv.forEach(el=>el.classList.add('rv'));
-  document.querySelectorAll('.marquee .track').forEach(t=>{t.innerHTML+=t.innerHTML});
-  const vids=[...document.querySelectorAll('video.auto')];
-  function onScreen(el,frac){const r=el.getBoundingClientRect(),h=innerHeight||document.documentElement.clientHeight;const vis=Math.min(r.bottom,h)-Math.max(r.top,0);return vis>Math.min(r.height,h)*frac}
+(()=>{
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const vh=()=>innerHeight||document.documentElement.clientHeight;
+
+  /* ---- reveal on scroll + autoplay clips on screen ---- */
+  const rv=$$('.sec-head,.yt,.clip,.card,.steps li,.about-copy,.portrait,details,.final h2,.contact-grid>*,.tabs');
+  rv.forEach(el=>{el.classList.add('rv');const sibs=[...el.parentElement.children].filter(c=>c.tagName===el.tagName);el.style.setProperty('--d',Math.min(sibs.indexOf(el),5)*70+'ms')});
+  $$('.marquee .track').forEach(t=>{t.innerHTML+=t.innerHTML});
+  const vids=$$('video.auto'), counts=$$('[data-count]'), steps=$('.steps');
+  let lbOpen=false;
+  function onScreen(el,frac,side){const r=el.getBoundingClientRect();if(!r.width||!r.height)return false;const h=vh(),w=innerWidth;const vis=Math.min(r.bottom,h)-Math.max(r.top,0);const visX=Math.min(r.right,w)-Math.max(r.left,0);return vis>Math.min(r.height,h)*frac&&(!side||visX>r.width*.5)}
   function check(){
     rv.forEach(el=>{if(!el.classList.contains('in')&&onScreen(el,.08))el.classList.add('in')});
-    vids.forEach(v=>{if(onScreen(v,.35)){if(v.paused)start(v)}else if(!v.paused){v.pause()}});
+    if(steps&&!steps.classList.contains('in')&&onScreen(steps,.25))steps.classList.add('in');
+    counts.forEach(el=>{if(!el.dataset.done&&onScreen(el,.5))countUp(el)});
+    vids.forEach(v=>{if(!lbOpen&&onScreen(v,.35,true)){if(v.paused)start(v)}else if(!v.paused){v.pause()}});
   }
-  // the testimonial tries to play WITH sound; browsers only allow that after a tap/click,
-  // so if it's blocked it plays muted and the button stays up. First tap anywhere turns the sound on.
+  /* numbers count up to exactly what's written in the page */
+  function countUp(el){
+    el.dataset.done=1;const m=el.textContent.trim().match(/^(\d+)(.*)$/);if(!m||reduce)return;
+    const end=+m[1],suf=m[2],t0=performance.now(),dur=1400;
+    (function tick(t){const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,4);el.textContent=Math.round(end*e)+suf;if(p<1)requestAnimationFrame(tick);else el.textContent=m[0]})(t0);
+  }
+  /* the testimonial tries to play WITH sound; browsers only allow that after a tap/click,
+     so if it's blocked it plays muted and the button stays up. First tap anywhere turns the sound on. */
   let userMuted=false, tapped=false;
   function setBtn(v){const b=v.parentElement.querySelector('.snd');if(!b)return;b.setAttribute('aria-pressed',String(!v.muted));b.setAttribute('aria-label',v.muted?'Unmute':'Mute')}
   function start(v){
@@ -145,20 +240,166 @@
     else v.play().catch(()=>{});
   }
   ['pointerdown','keydown','touchstart'].forEach(ev=>addEventListener(ev,()=>{if(tapped)return;tapped=true;
-    vids.filter(v=>v.dataset.sound==='on'&&!v.paused&&v.muted&&!userMuted).forEach(v=>{v.muted=false;setBtn(v)})},{once:false,passive:true}));
-  if('IntersectionObserver' in window){const io=new IntersectionObserver(check,{threshold:[0,.1,.35,.6]});rv.concat(vids).forEach(el=>io.observe(el))}
-  addEventListener('scroll',check,{passive:true});addEventListener('resize',check);addEventListener('load',check);check();
-  // safety net: never leave anything invisible
+    vids.filter(v=>v.dataset.sound==='on'&&!v.paused&&v.muted&&!userMuted).forEach(v=>{v.muted=false;setBtn(v)})},{passive:true}));
+  if('IntersectionObserver' in window){const io=new IntersectionObserver(check,{threshold:[0,.1,.35,.6]});rv.concat(vids,counts).forEach(el=>io.observe(el))}
+  $$('.reel-grid').forEach(g=>{
+    const clips=$$('.clip',g),dots=$$('.dots i',g.parentElement);
+    g.addEventListener('scroll',()=>{
+      check();const mid=g.getBoundingClientRect().left+g.clientWidth/2;let best=0,bd=1e9;
+      clips.forEach((c,k)=>{const r=c.getBoundingClientRect(),d=Math.abs(r.left+r.width/2-mid);if(d<bd){bd=d;best=k}});
+      dots.forEach((d,k)=>d.classList.toggle('on',k===best));
+    },{passive:true});
+  });
+  /* safety net: never leave anything invisible */
   setTimeout(()=>rv.forEach(el=>{if(onScreen(el,0))el.classList.add('in')}),2000);
-  // sound: tap the speaker; only one video plays sound at a time
-  document.querySelectorAll('.snd').forEach(b=>b.addEventListener('click',()=>{
+  /* sound: tap the speaker; only one video plays sound at a time */
+  function muteAll(){vids.forEach(o=>{o.muted=true;setBtn(o)})}
+  $$('.snd').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
     const v=b.parentElement.querySelector('video'),on=v.muted;
-    vids.forEach(o=>{o.muted=true;const s=o.parentElement.querySelector('.snd');if(s){s.setAttribute('aria-pressed','false');s.setAttribute('aria-label','Unmute')}});
+    muteAll();
     v.muted=!on;if(on)v.play().catch(()=>{});if(v.dataset.sound==='on')userMuted=!on;tapped=true;
-    b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-label',on?'Mute':'Unmute');
+    setBtn(v);
   }));
-  // YouTube: load the player only on click
-  document.querySelectorAll('.yt').forEach(f=>f.querySelector('button').addEventListener('click',()=>{f.querySelector('button').outerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+f.dataset.id+'?autoplay=1&rel=0" title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'}));
+
+  /* ---- nav: background on scroll, progress line, highlight where you are ---- */
+  const nav=$('#nav'), bar=$('.progress i'), head=$('.progress b'), tc=$('.tc'), tcTime=$('.tc b'), tcName=$('.tc span'), pill=$('.pill'), navLinks=$$('.links a');
+  const two=n=>String(n).padStart(2,'0');
+  const secs=navLinks.map(a=>$(a.getAttribute('href')));
+  function movePill(p,el){if(!el){p.classList.remove('show');return}p.style.width=el.offsetWidth+'px';p.style.transform='translateX('+el.offsetLeft+'px)';p.classList.add('show')}
+  let current=null;
+  function onScroll(){
+    const y=scrollY, max=document.documentElement.scrollHeight-vh();
+    nav.classList.toggle('scrolled',y>24);
+    const p=max>0?Math.min(y/max,1):0;
+    bar.style.transform='scaleX('+p+')';head.style.transform='translateX('+p*innerWidth+'px)';
+    let act=null;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<=vh()*.4)act=i});
+    let name=act==null?'Intro':navLinks[act].textContent;
+    const contact=$('#contact');if(contact&&contact.getBoundingClientRect().top<=vh()*.4){act=null;name='Contact'}
+    /* the page as a one-minute timeline at 24 frames a second */
+    const fr=Math.round(p*1440),sec=Math.floor(fr/24);
+    tcTime.textContent='00:'+two(Math.floor(sec/60))+':'+two(sec%60)+':'+two(fr%24);
+    if(tcName.textContent!==name)tcName.textContent=name;
+    tc.classList.toggle('hide',y<vh()*.6||p>.985);
+    if(act!==current){current=act;navLinks.forEach((a,i)=>a.classList.toggle('on',i===act));movePill(pill,act==null?null:navLinks[act])}
+    check();
+  }
+  let ticking=false;
+  addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{ticking=false;onScroll()})},{passive:true});
+
+  /* ---- phone menu ---- */
+  const burger=$('.burger'), menu=$('#menu');
+  function setMenu(open){document.body.classList.toggle('menu-open',open);document.body.classList.toggle('locked',open);burger.setAttribute('aria-expanded',String(open));burger.setAttribute('aria-label',open?'Close menu':'Open menu');menu.setAttribute('aria-hidden',String(!open))}
+  burger.addEventListener('click',()=>setMenu(!document.body.classList.contains('menu-open')));
+  $$('a',menu).forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+
+  /* ---- work tabs ---- */
+  const tabs=$$('.tabs [role=tab]'), tabPill=$('.tab-pill');
+  function selectTab(name,focus){
+    const t=tabs.find(b=>b.dataset.tab===name);if(!t)return;
+    tabs.forEach(b=>{const on=b===t;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;$('#'+b.getAttribute('aria-controls')).hidden=!on});
+    movePill(tabPill,t);if(focus)t.focus();
+    muteAll();requestAnimationFrame(check);
+  }
+  tabs.forEach((b,i)=>{
+    b.addEventListener('click',()=>selectTab(b.dataset.tab));
+    b.addEventListener('keydown',e=>{const d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;e.preventDefault();selectTab(tabs[(i+d+tabs.length)%tabs.length].dataset.tab,true)});
+  });
+  /* links like …/#short-form open that tab */
+  const hashTabs={'#long-form':'long','#short-form':'short','#motion':'motion'};
+  function fromHash(){const n=hashTabs[location.hash];if(n){selectTab(n);$('#work').scrollIntoView()}}
+  addEventListener('hashchange',fromHash);
+
+  /* ---- full-screen player ---- */
+  const lb=$('#lb'), stage=$('.lb-stage'), cap=$('.lb-cap');
+  const groups={
+    long:$$('#panel-long .yt').map(f=>({type:'yt',id:f.dataset.id,title:f.dataset.title,meta:f.dataset.meta,shape:'wide'})),
+    short:$$('#panel-short .clip').map(f=>({type:'mp4',src:f.dataset.src,poster:f.dataset.poster,title:f.dataset.title,shape:'tall'})),
+    motion:$$('#panel-motion .clip').map(f=>({type:'mp4',src:f.dataset.src,poster:f.dataset.poster,title:f.dataset.title,shape:'wide',silent:true}))
+  };
+  let g=null, idx=0, lastFocus=null, hideCursor=()=>{};
+  function render(){
+    const it=groups[g][idx];
+    stage.className='lb-stage '+it.shape;void stage.offsetWidth;stage.classList.add('swap');
+    if(it.type==='yt')stage.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+it.id+'?autoplay=1&rel=0" title="'+it.title.replace(/"/g,'&quot;')+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    stage.style.backgroundImage='';
+    if(it.type==='yt'){const f=$('iframe',stage),ok=()=>{f.classList.add('ready');stage.classList.remove('loading')};stage.style.backgroundImage='url(https://i.ytimg.com/vi/'+it.id+'/hqdefault.jpg)';stage.classList.add('loading');f.addEventListener('load',ok);setTimeout(ok,4000)}
+    else{stage.innerHTML='<video src="'+it.src+'" poster="'+it.poster+'" autoplay loop playsinline '+(it.silent?'muted':'controls')+'></video>';const v=$('video',stage);if(!it.silent){v.muted=false;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{})})}}
+    $('b',cap).textContent=it.title;$('span',cap).textContent=it.meta||'';$('i',cap).textContent=(idx+1)+' / '+groups[g].length;
+  }
+  function openLb(group,i){
+    g=group;idx=i;lastFocus=document.activeElement;lbOpen=true;hideCursor();muteAll();vids.forEach(v=>v.pause());
+    lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.classList.add('locked');render();$('.lb-close').focus();
+  }
+  function closeLb(){
+    if(!lbOpen)return;lbOpen=false;lb.classList.remove('open');lb.setAttribute('aria-hidden','true');document.body.classList.remove('locked');
+    stage.innerHTML='';if(lastFocus&&lastFocus.focus)lastFocus.focus();check();
+  }
+  function step(d){const n=groups[g].length;idx=(idx+d+n)%n;render()}
+  $$('#panel-long .yt').forEach((f,i)=>$('button',f).addEventListener('click',()=>openLb('long',i)));
+  $$('#panel-short .clip').forEach((f,i)=>$('.clip-media',f).addEventListener('click',()=>openLb('short',i)));
+  $$('#panel-motion .clip').forEach((f,i)=>$('.clip-media',f).addEventListener('click',()=>openLb('motion',i)));
+  $$('[data-open]').forEach(b=>b.addEventListener('click',()=>{const [gr,i]=b.dataset.open.split(':');openLb(gr,+i)}));
+  $('.lb-close').addEventListener('click',closeLb);
+  $('.lb-prev').addEventListener('click',()=>step(-1));
+  $('.lb-next').addEventListener('click',()=>step(1));
+  lb.addEventListener('click',e=>{if(e.target===lb||e.target===cap)closeLb()});
+  addEventListener('keydown',e=>{
+    if(e.key==='Escape'){if(lbOpen)closeLb();else setMenu(false)}
+    if(!lbOpen)return;
+    if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1);
+    if(e.key==='Tab'){const f=$$('.lb-btn',lb),a=document.activeElement;if(e.shiftKey&&a===f[0]){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&a===f[f.length-1]){e.preventDefault();f[0].focus()}}
+  });
+  let tx=null;
+  lb.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+  lb.addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60)step(dx<0?1:-1)},{passive:true});
+
+  /* ---- first screen: the small reel cuts through all the short-form reels ---- */
+  (()=>{
+    const btn=$('.hv-tall'),v=$('video',btn),bars=$$('.hv-bars i',btn),list=groups.short,conn=navigator.connection;
+    if(reduce||list.length<2||(conn&&conn.saveData)){$('.hv-bars',btn).hidden=true;return}
+    let i=0,pre=null;
+    const mark=()=>bars.forEach((b,k)=>{b.className=k<i?'done':k===i?'run':''});
+    const preload=()=>{pre=document.createElement('video');pre.muted=true;pre.preload='auto';pre.src=list[(i+1)%list.length].src};
+    function next(){
+      if(lbOpen||document.hidden||!onScreen(v,.35,true))return;
+      i=(i+1)%list.length;const it=list[i];btn.dataset.open='short:'+i;v.classList.add('cut');
+      setTimeout(()=>{const show=()=>v.classList.remove('cut');v.poster=it.poster;v.src=it.src;v.addEventListener('playing',show,{once:true});setTimeout(show,1200);v.play().catch(()=>{});mark();preload()},280);
+    }
+    mark();setTimeout(preload,2500);setInterval(next,6000);
+  })();
+
+  /* ---- small touches ---- */
+  /* copy the email address */
+  $$('.copy').forEach(b=>b.addEventListener('click',()=>{
+    const done=()=>{b.textContent='Copied ✓';b.classList.add('done');setTimeout(()=>{b.textContent='Copy';b.classList.remove('done')},1800)};
+    if(navigator.clipboard)navigator.clipboard.writeText(b.dataset.copy).then(done,()=>{});
+  }));
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches&&!reduce){
+    /* soft glow that follows the cursor on cards */
+    $$('.glow').forEach(c=>c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--gx',e.clientX-r.left+'px');c.style.setProperty('--gy',e.clientY-r.top+'px')}));
+    /* hero cards drift a little with the cursor */
+    const hero=$('.hero'), hvz=$('#heroVisual');
+    hero.addEventListener('pointermove',e=>{hvz.style.setProperty('--mx',(e.clientX/innerWidth-.5).toFixed(3));hvz.style.setProperty('--my',(e.clientY/vh()-.5).toFixed(3))});
+    hero.addEventListener('pointerleave',()=>{hvz.style.setProperty('--mx',0);hvz.style.setProperty('--my',0)});
+    /* a round "Play" cursor over anything that opens a video */
+    const cur=document.createElement('div');cur.className='cursor';cur.setAttribute('aria-hidden','true');cur.innerHTML='<span>Play</span>';document.body.appendChild(cur);document.body.classList.add('has-cursor');
+    let cx=0,cy=0,px=0,py=0,curOn=false,raf=0;
+    const loop=()=>{cx+=(px-cx)*.22;cy+=(py-cy)*.22;cur.style.transform='translate('+cx+'px,'+cy+'px)';raf=(curOn||Math.abs(px-cx)+Math.abs(py-cy)>.5)?requestAnimationFrame(loop):0};
+    const setCur=on=>{curOn=on;cur.classList.toggle('on',on)};
+    hideCursor=()=>setCur(false);
+    addEventListener('pointermove',e=>{px=e.clientX;py=e.clientY;const t=e.target.closest?e.target:null;
+      const on=!!t&&!lbOpen&&!!t.closest('.hv,.yt-play,.clip[data-src] .clip-media')&&!t.closest('.snd,.expand');
+      if(on&&!curOn){cx=px;cy=py}setCur(on);if(!raf)raf=requestAnimationFrame(loop)},{passive:true});
+    addEventListener('scroll',hideCursor,{passive:true});
+    document.documentElement.addEventListener('pointerleave',hideCursor);
+  }
+
+  function layout(){movePill(tabPill,tabs.find(b=>b.getAttribute('aria-selected')==='true'));if(current!=null)movePill(pill,navLinks[current]);onScroll()}
+  addEventListener('resize',layout);addEventListener('load',()=>{layout();fromHash()});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+  layout();
+})();
 </script>
 </body>
 </html>

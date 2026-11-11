@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://i.ytimg.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
 <!-- icons, drawn once and reused -->
@@ -32,7 +32,6 @@
 </svg>
 
 <div class="grain" aria-hidden="true"></div>
-<div class="progress" aria-hidden="true"><i></i><b></b></div>
 <div class="tc hide" aria-hidden="true"><b>00:00:00:00</b><span>Intro</span></div>
 
 <header class="nav" id="nav">
@@ -248,10 +247,15 @@
   if('IntersectionObserver' in window){const io=new IntersectionObserver(check,{threshold:[0,.1,.35,.6]});rv.concat(vids,counts).forEach(el=>io.observe(el))}
   $$('.reel-grid,.yt-grid').forEach(g=>{
     const clips=[...g.children],dots=$$('.dots i',g.parentElement);
+    /* swiping stays light: only the dots move while your finger moves (once per frame);
+       videos start/stop once the swipe has settled, so nothing stutters mid-swipe */
+    let raf=0,settle=0,best=-1;
+    const dotsNow=()=>{raf=0;const mid=g.getBoundingClientRect().left+g.clientWidth/2;let b=0,bd=1e9;
+      clips.forEach((c,k)=>{const r=c.getBoundingClientRect(),d=Math.abs(r.left+r.width/2-mid);if(d<bd){bd=d;b=k}});
+      if(b!==best){best=b;dots.forEach((d,k)=>d.classList.toggle('on',k===b))}};
     g.addEventListener('scroll',()=>{
-      check();const mid=g.getBoundingClientRect().left+g.clientWidth/2;let best=0,bd=1e9;
-      clips.forEach((c,k)=>{const r=c.getBoundingClientRect(),d=Math.abs(r.left+r.width/2-mid);if(d<bd){bd=d;best=k}});
-      dots.forEach((d,k)=>d.classList.toggle('on',k===best));
+      if(!raf)raf=requestAnimationFrame(dotsNow);
+      clearTimeout(settle);settle=setTimeout(check,160);
     },{passive:true});
   });
   /* safety net: never leave anything invisible */
@@ -266,8 +270,8 @@
     setBtn(v);
   }));
 
-  /* ---- nav: background on scroll, progress line, highlight where you are ---- */
-  const nav=$('#nav'), bar=$('.progress i'), head=$('.progress b'), tc=$('.tc'), tcTime=$('.tc b'), tcName=$('.tc span'), pill=$('.pill'), navLinks=$$('.links a');
+  /* ---- nav: background on scroll, highlight where you are ---- */
+  const nav=$('#nav'), tc=$('.tc'), tcTime=$('.tc b'), tcName=$('.tc span'), pill=$('.pill'), navLinks=$$('.links a');
   const two=n=>String(n).padStart(2,'0'), dock=$('.dock');
   const secs=navLinks.map(a=>$(a.getAttribute('href')));
   function movePill(p,el){if(!el){p.classList.remove('show');return}p.style.width=el.offsetWidth+'px';p.style.transform='translateX('+el.offsetLeft+'px)';p.classList.add('show')}
@@ -276,7 +280,6 @@
     const y=scrollY, max=document.documentElement.scrollHeight-vh();
     nav.classList.toggle('scrolled',y>24);
     const p=max>0?Math.min(y/max,1):0;
-    bar.style.transform='scaleX('+p+')';head.style.transform='translateX('+p*innerWidth+'px)';
     let act=null;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<=vh()*.4)act=i});
     let name=act==null?'Intro':navLinks[act].textContent;
     const contact=$('#contact');if(contact&&contact.getBoundingClientRect().top<=vh()*.4){act=null;name='Contact'}
@@ -343,9 +346,18 @@
   }
   function step(d){const n=groups[g].length;idx=(idx+d+n)%n;render()}
   $$('#panel-long .yt').forEach((f,i)=>$('button',f).addEventListener('click',()=>openLb('long',i)));
-  $$('#panel-short .clip').forEach((f,i)=>$('.clip-media',f).addEventListener('click',()=>openLb('short',i)));
-  $$('#panel-motion .clip').forEach((f,i)=>$('.clip-media',f).addEventListener('click',()=>openLb('motion',i)));
-  $$('[data-open]').forEach(b=>b.addEventListener('click',()=>{const [gr,i]=b.dataset.open.split(':');openLb(gr,+i)}));
+  const phone=()=>matchMedia('(max-width:640px)').matches;
+  $$('#panel-short .clip').forEach((f,i)=>$('.clip-media',f).addEventListener('click',()=>{
+    if(phone()){const s=$('.snd',f);if(s)s.click();return}
+    openLb('short',i);
+  }));
+  $$('#panel-motion .clip').forEach((f,i)=>$('.clip-media',f).addEventListener('click',()=>{if(!phone())openLb('motion',i)}));
+  $$('[data-open]').forEach(b=>b.addEventListener('click',()=>{
+    const [gr,i]=b.dataset.open.split(':');
+    /* on phones the small reel on the first screen takes you to the reels instead of a full-screen player */
+    if(phone()&&gr==='short'){selectTab('short');$('#work').scrollIntoView({behavior:reduce?'auto':'smooth'});return}
+    openLb(gr,+i);
+  }));
   $('.lb-close').addEventListener('click',closeLb);
   $('.lb-prev').addEventListener('click',()=>step(-1));
   $('.lb-next').addEventListener('click',()=>step(1));

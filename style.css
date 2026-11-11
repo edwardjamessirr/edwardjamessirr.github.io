@@ -36,11 +36,7 @@ em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent
   animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/* scroll progress */
-.progress{position:fixed;inset:0 0 auto 0;height:2px;z-index:45;pointer-events:none}
-.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:scaleX(0);transform-origin:0 50%}
-/* playhead on the progress line + timecode chip, like a timeline */
-.progress b{position:absolute;left:-5px;top:0;width:10px;height:13px;background:var(--accent-2);clip-path:polygon(0 0,100% 0,100% 50%,50% 100%,0 50%);filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+/* timecode chip, like a timeline */
 .tc{position:fixed;left:var(--gut);bottom:18px;z-index:38;display:flex;align-items:center;gap:10px;pointer-events:none;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);padding:.75em 1em;border:1px solid var(--line);border-radius:999px;background:rgba(14,11,8,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:opacity .4s,transform .5s var(--ease)}
 .tc b{font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
 .tc span{padding-left:10px;border-left:1px solid var(--line-2);color:var(--accent-2)}
@@ -499,3 +495,16 @@ details[open] p{animation:faqIn .45s var(--ease)}
   .copy{top:50%;right:12px;transform:translateY(-50%)}
   .final .meta{margin-top:22px;font-size:10px}
 }
+
+/* phones: reels are tap-for-sound, swipe-for-next; no full-screen zoom, no double-tap zoom */
+@media (max-width:640px){
+  .clip .expand{display:none}
+  .clip[data-src] .clip-media,.reel-grid,.yt-grid,.hv{touch-action:manipulation}
+  .clip[data-src]:hover .clip-media{transform:none}
+}
+@media (max-width:640px){
+  /* keep each reel on its own layer so swiping doesn't repaint the page */
+  .reel-grid .clip-media,.yt-grid .yt{contain:paint;transform:translateZ(0)}
+  .reel-grid .clip-media,.yt-grid .yt{transition:none}
+}
+@media (max-width:640px){ .grain{animation:none} }

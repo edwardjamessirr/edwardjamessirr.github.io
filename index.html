@@ -477,6 +477,9 @@
     mark();setTimeout(preload,2500);setInterval(next,6000);
   })();
 
+  /* back to top: jump straight up, no slow scroll */
+  $$('.totop').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,left:0,behavior:'instant'});history.replaceState(null,'',location.pathname+location.search)}));
+
   /* ---- small touches ---- */
   /* copy the email address */
   $$('.copy').forEach(b=>b.addEventListener('click',()=>{

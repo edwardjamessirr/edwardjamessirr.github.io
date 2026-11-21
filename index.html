@@ -301,7 +301,7 @@
   function check(){
     rv.forEach(el=>{if(!el.classList.contains('in')&&onScreen(el,.08))el.classList.add('in')});
     if(steps&&!steps.classList.contains('in')&&onScreen(steps,.25))steps.classList.add('in');
-    counts.forEach(el=>{if(!el.dataset.done&&onScreen(el,.5)&&(!el.classList.contains('big-land')||el.getBoundingClientRect().top<vh()*.68))countUp(el)});
+    counts.forEach(el=>{if(!el.dataset.done&&onScreen(el,.5))countUp(el)});
     vids.forEach(v=>{if(!lbOpen&&onScreen(v,.35,true)){if(v.paused)start(v)}else if(!v.paused){v.pause()}});
   }
   /* numbers count up to exactly what's written in the page */

@@ -584,3 +584,18 @@ details[open] p{animation:faqIn .45s var(--ease)}
    so the texture's first pixel row (which showed as a thin light line) is never visible */
 .hero{z-index:1}
 .paper{margin-top:-6px}
+
+/* no black flash on reels / motion / testimonial: the cover shows behind the video until it is playing */
+.panel .clip-media,.video-card .clip-media{background-color:#0b0907;background-position:center;background-size:cover;background-repeat:no-repeat}
+video.fadein{opacity:0;transition:opacity .35s ease}
+video.fadein.ready{opacity:1}
+@media (prefers-reduced-motion:reduce){video.fadein{transition:none}}
+
+/* phones/tablets: no glow or border change when a finger brushes a card while scrolling.
+   (Hover glow stays on computers; the 1.8M+ landing glow is an animation and still plays.) */
+@media (hover:none),(pointer:coarse){
+  .glow::before{display:none}
+  .card:hover{border-color:var(--line)}
+  .contact-card:not(.primary):hover{border-color:var(--line)}
+  .chips li:hover{border-color:var(--line);color:var(--ink-2)}
+}

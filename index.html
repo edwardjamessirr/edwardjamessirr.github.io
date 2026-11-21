@@ -80,7 +80,7 @@
 <!-- the one image worth fetching first: the big thumbnail on the first screen -->
 <link rel="preload" as="image" href="https://i.ytimg.com/vi_webp/gHMUC5wiWVQ/maxresdefault.webp" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=29">
+<link rel="stylesheet" href="style.css?v=31">
 </head>
 <body>
 <!-- icons, drawn once and reused -->
@@ -283,6 +283,16 @@
   const vids=$$('video.auto'), counts=$$('[data-count]'), steps=$('.steps');
   /* posters for videos you can't see yet (other tabs, the testimonial further down) load later, so the first screen loads faster on phones */
   const latePoster=v=>{if(v.dataset.posterLate){v.poster=v.dataset.posterLate;v.removeAttribute('data-poster-late')}};
+  /* no black flash: each clip shows its cover image from the start (it only downloads once the tab is open),
+     and the video fades in on top only when it is actually playing */
+  $$('.panel video, .video-card video').forEach(v=>{
+    const m=v.parentElement,p=v.getAttribute('poster')||v.dataset.posterLate;
+    if(p)m.style.backgroundImage='url("'+p+'")';
+    v.classList.add('fadein');
+    const on=()=>v.classList.add('ready');
+    v.addEventListener('playing',on);
+    v.addEventListener('timeupdate',()=>{if(v.currentTime>0)on()});
+  });
   const lateBelow=$$('.receipts video[data-poster-late]');
   if('IntersectionObserver' in window){const pio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){latePoster(e.target);pio.unobserve(e.target)}}),{rootMargin:'900px 0px'});lateBelow.forEach(v=>pio.observe(v))}else lateBelow.forEach(latePoster);
   addEventListener('load',()=>{const c=navigator.connection;if(c&&c.saveData)return;setTimeout(()=>$$('.panel video[data-poster-late]').forEach(latePoster),2500)});

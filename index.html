@@ -308,7 +308,11 @@
   function countUp(el){
     el.dataset.done=1;const m=el.textContent.trim().match(/^(\d+(?:\.\d+)?)(.*)$/);if(!m||reduce)return;
     const end=+m[1],suf=m[2],dec=+(el.dataset.decimals||0),dur=+(el.dataset.dur||1400),t0=performance.now();
-    (function tick(t){const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,4);el.textContent=(end*e).toFixed(dec)+suf;
+    (function tick(t){const p=Math.min((t-t0)/dur,1);
+      /* decimal totals (1.8M+): gentler slow-down and round DOWN, so 1.8 only appears on the very last frame
+         and the landing hits the instant it gets there, instead of sitting on 1.8 first */
+      const e=dec?1-Math.pow(1-p,1.5):1-Math.pow(1-p,4),f=Math.pow(10,dec);
+      el.textContent=(dec?Math.floor(end*e*f+1e-9)/f:end*e).toFixed(dec)+suf;
       if(p<1)requestAnimationFrame(tick);
       else{el.textContent=m[0];
         /* the big total lands with a quick blur-out and a bouncy pop back in */

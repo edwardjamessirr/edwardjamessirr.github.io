@@ -208,7 +208,7 @@
     <article class="card glow"><p class="big" data-count>704K+</p><p>YouTube views on five long-form vlogs I edited. The top one alone: 368K.</p><p class="meta">Kyrikouts · YouTube · 30K subscribers</p></article>
     <article class="card glow"><p class="big" data-count>580K+</p><p>views from my top five reels. The best one alone: 166K.</p><p class="meta">Kyrikouts · Instagram</p></article>
     <article class="card glow"><p class="big" data-count>368K</p><p>views on a single 12-minute vlog I cut.</p><p class="meta">Kyrikouts · YouTube</p></article>
-    <article class="card glow"><p class="big big-land" data-count data-decimals="1" data-dur="950">1.8M+</p><p>views in total across my long-form and short-form edits.</p><p class="meta">YouTube + Instagram combined</p></article>
+    <article class="card glow"><p class="big big-land" data-count data-decimals="1" data-dur="1700">1.8M+</p><p>views in total across my long-form and short-form edits.</p><p class="meta">YouTube + Instagram combined</p></article>
     <figure class="card quote video-card"><div class="clip-media"><video class="auto" data-sound="on" src="video/testimonial.mp4" data-poster-late="img/client-voice-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="snd snd-big" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg> Tap to unmute</span><span class="snd-on"><svg><use href="#i-sound"/></svg> Sound on</span></button></div><figcaption><p>“I didn't even ask for a testimonial. This is one of my clients.”</p></figcaption></figure>
   </div>
 </section>
@@ -301,7 +301,7 @@
   function check(){
     rv.forEach(el=>{if(!el.classList.contains('in')&&onScreen(el,.08))el.classList.add('in')});
     if(steps&&!steps.classList.contains('in')&&onScreen(steps,.25))steps.classList.add('in');
-    counts.forEach(el=>{if(!el.dataset.done&&onScreen(el,.5))countUp(el)});
+    counts.forEach(el=>{if(!el.dataset.done&&onScreen(el,.5)&&(!el.classList.contains('big-land')||el.getBoundingClientRect().top<vh()*.68))countUp(el)});
     vids.forEach(v=>{if(!lbOpen&&onScreen(v,.35,true)){if(v.paused)start(v)}else if(!v.paused){v.pause()}});
   }
   /* numbers count up to exactly what's written in the page */

@@ -24,6 +24,7 @@ html{scroll-behavior:smooth;scroll-padding-top:76px}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body.locked{overflow:hidden}
 img,video{display:block;max-width:100%}
+picture{display:contents}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent-2)}
@@ -156,7 +157,7 @@ h2{font-weight:700;font-size:clamp(34px,5vw,64px);letter-spacing:-.03em;line-hei
 
 /* texture: his paper-fibre as one fixed sheet under everything below the hero */
 .paper{position:relative;isolation:isolate;clip-path:inset(0);background:var(--bg)}
-.paper::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:url(img/texture-paper.jpg) center/cover no-repeat;opacity:.75;mix-blend-mode:overlay}
+.paper::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:url(img/texture-paper.jpg) center/cover no-repeat;background-image:image-set(url(img/texture-paper.avif) type("image/avif"),url(img/texture-paper.jpg) type("image/jpeg"));opacity:.75;mix-blend-mode:overlay}
 .paper::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(120% 60% at 50% 0%,rgba(168,134,95,.035),transparent 60%)}
 
 /* ---------- work: tabbed gallery ---------- */
@@ -240,8 +241,7 @@ h2{font-weight:700;font-size:clamp(34px,5vw,64px);letter-spacing:-.03em;line-hei
 .steps.in .rail i{transform:scaleX(1)}
 .steps li{position:relative}
 .steps .n{position:relative;display:inline-grid;place-items:center;width:42px;height:42px;border:1px solid var(--accent);border-radius:50%;background:var(--bg);font:500 13px var(--mono);color:var(--accent-2)}
-.steps .when{margin-top:22px;font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
-.steps h3{margin:6px 0 10px;font-size:19px;font-weight:700}
+.steps h3{margin:22px 0 10px;font-size:19px;font-weight:700}
 .steps li p:not(.when){color:var(--ink-2);font-size:15px}
 
 /* ---------- about ---------- */
@@ -389,7 +389,7 @@ details[open] p{animation:faqIn .45s var(--ease)}
   .steps li::before{content:'';position:absolute;left:21px;top:42px;bottom:0;width:1px;background:linear-gradient(var(--accent),var(--line))}
   .steps li:last-child::before{display:none}
   .steps .n{position:absolute;left:0;top:0}
-  .steps .when{margin-top:0;padding-top:4px}
+  .steps h3{margin-top:0;padding-top:9px}
   summary{font-size:17px;padding:20px 0}
   .lb{grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) auto auto;padding:64px 12px 18px}
   .lb-stage{grid-column:1 / -1}
@@ -467,7 +467,7 @@ details[open] p{animation:faqIn .45s var(--ease)}
 
   /* process */
   .steps li{padding:0 0 24px 58px}
-  .steps h3{font-size:17px;margin:4px 0 6px}
+  .steps h3{font-size:17px;margin:0 0 6px}
   .steps li p:not(.when){font-size:14px;line-height:1.5}
 
   /* about: smaller photo, tighter text */
@@ -508,3 +508,26 @@ details[open] p{animation:faqIn .45s var(--ease)}
   .reel-grid .clip-media,.yt-grid .yt{transition:none}
 }
 @media (max-width:640px){ .grain{animation:none} }
+
+/* ================= TOUCH FIXES (2026-11-21) =================
+   Phones: no accidental double-tap zoom (two quick taps while scrolling used to zoom
+   into whatever was under your finger, e.g. the testimonial; pinch-zoom still works),
+   lighter background layers so scrolling and swiping stay smooth, and reels swipe one at a time. */
+@media (hover:none),(max-width:640px){
+  html{touch-action:manipulation}
+}
+@media (max-width:640px){
+  /* the grain no longer moves on phones, so it doesn't need to be 4x the screen */
+  .grain{inset:0}
+  /* paper texture scrolls with the page instead of being a fixed, blended full-screen layer
+     (iPhones redraw that on every frame of a scroll, which made swipes and scrolling stutter) */
+  .paper{clip-path:none}
+  .paper::before{position:absolute;background-size:auto 100vh;background-position:center top;background-repeat:repeat-y}
+  /* swipe rows: one reel per swipe, and the swipe never drags the whole page sideways */
+  .reel-grid,.yt-grid{overscroll-behavior-x:contain}
+  .reel-grid .clip{scroll-snap-stop:always}
+  .video-card .clip-media{cursor:pointer}
+  /* dots can be tapped; give them a finger-sized hit area */
+  .dots i{position:relative;cursor:pointer}
+  .dots i::after{content:'';position:absolute;inset:-12px -5px}
+}

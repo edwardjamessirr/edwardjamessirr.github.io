@@ -3,18 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Edward James — Video Editor</title>
-<meta name="description" content="Long-form and short-form editing for creators. 704K+ YouTube views on 5 long-form edits. Edits that hold attention. Attention that pays.">
+<title>Edward James — Video Editor for YouTube Long-form &amp; Reels</title>
+<meta name="description" content="Video editor for YouTube creators: long-form vlogs and short-form reels. 704K+ YouTube views on 5 long-form edits.">
+<meta name="author" content="Edward James">
+<!-- TODO(James): once the site has its real web address, replace YOUR-DOMAIN below, then remove the comment markers
+     so these three lines go live (search engines and link previews need full https:// addresses):
+<link rel="canonical" href="https://YOUR-DOMAIN/">
+<meta property="og:url" content="https://YOUR-DOMAIN/">
+<meta property="og:image" content="https://YOUR-DOMAIN/img/pool-payoff.jpg">
+     and change twitter:image below to https://YOUR-DOMAIN/img/pool-payoff.jpg too. Then delete the relative og:image line below. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Edward James — Video Editor">
+<meta property="og:locale" content="en_US">
 <meta property="og:title" content="Edward James — Video Editor">
 <meta property="og:description" content="Edits that hold attention. Attention that pays. 704K+ YouTube views on 5 long-form edits.">
 <meta property="og:image" content="img/pool-payoff.jpg">
+<meta property="og:image:width" content="1400">
+<meta property="og:image:height" content="787">
+<meta property="og:image:alt" content="“Motion that feels right.” title card with @EdwardJamesSirr over a dark pool table">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@EdwardJamesSirr">
+<meta name="twitter:title" content="Edward James — Video Editor">
+<meta name="twitter:description" content="Edits that hold attention. Attention that pays. 704K+ YouTube views on 5 long-form edits.">
+<meta name="twitter:image" content="img/pool-payoff.jpg">
 <meta name="theme-color" content="#0E0B08">
+<!-- TODO(James): once the domain is known, add "url": "https://YOUR-DOMAIN/" to both entries below, and "image": "https://YOUR-DOMAIN/img/james-portrait.jpg" to the Person -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Person",
+   "@id": "#person",
+   "name": "Edward James",
+   "jobTitle": "Video Editor",
+   "description": "Video editor with three years of experience editing YouTube vlogs, live-stream and dating content. Edits long-form videos and reels for Kyrikouts, a 30K-subscriber travel vlogger.",
+   "email": "mailto:eddysmail40@gmail.com",
+   "sameAs": [
+    "https://x.com/EdwardJamesSirr"
+   ],
+   "knowsAbout": [
+    "Long-form video editing",
+    "Short-form video editing",
+    "DaVinci Resolve",
+    "Captions",
+    "Sound",
+    "Motion graphics"
+   ]
+  },
+  {
+   "@type": "ProfessionalService",
+   "@id": "#service",
+   "name": "Edward James — Video Editor",
+   "description": "Long-form and short-form video editing for creators. Two rounds of revisions on every long-form video.",
+   "founder": {
+    "@id": "#person"
+   },
+   "email": "mailto:eddysmail40@gmail.com",
+   "sameAs": [
+    "https://x.com/EdwardJamesSirr",
+    "https://wa.me/526651660117"
+   ],
+   "serviceType": [
+    "Long-form YouTube video editing",
+    "Short-form reel editing",
+    "Motion graphics"
+   ]
+  }
+ ]
+}
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314100C'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-style='italic' font-size='34' fill='%23C9A57A'%3EEJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://i.ytimg.com">
+<!-- the one image worth fetching first: the big thumbnail on the first screen -->
+<link rel="preload" as="image" href="https://i.ytimg.com/vi_webp/gHMUC5wiWVQ/maxresdefault.webp" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=14">
+<link rel="stylesheet" href="style.css?v=17">
 </head>
 <body>
 <!-- icons, drawn once and reused -->
@@ -63,7 +129,7 @@
 
 <main>
 <section class="hero" id="top">
-  <div class="hero-bg" aria-hidden="true"><img src="img/pool-crane.jpg" alt=""></div>
+  <div class="hero-bg" aria-hidden="true"><picture><source type="image/avif" srcset="img/pool-crane.avif"><img src="img/pool-crane.jpg" alt="" width="1400" height="787" decoding="async"></picture></div>
   <div class="hero-grid">
     <div class="hero-copy">
       <p class="badge"><span class="dot"></span>Long-form &amp; short-form editing</p>
@@ -75,13 +141,13 @@
     </div>
     <div class="hero-visual" id="heroVisual">
       <button class="hv hv-wide" type="button" data-open="long:0" aria-label="Play The Girls In Greece Are…">
-        <img src="https://i.ytimg.com/vi/gHMUC5wiWVQ/maxresdefault.jpg" alt="The Girls In Greece Are…" fetchpriority="high">
+        <img src="https://i.ytimg.com/vi_webp/gHMUC5wiWVQ/maxresdefault.webp" alt="Thumbnail for “The Girls In Greece Are…”: a curly-haired man hugged by a smiling blonde woman on a city street at night" width="1280" height="720" fetchpriority="high">
         <span class="hv-tag">Long-form</span>
         <span class="play"><svg><use href="#i-play"/></svg></span>
         <span class="hv-cap"><b>The Girls In Greece Are…</b><span>368K views</span></span>
       </button>
       <button class="hv hv-tall" type="button" data-open="short:0" aria-label="Open short-form reel">
-        <video class="auto" src="video/reel-br2.mp4" poster="img/poster-reel-br2.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata"></video>
+        <video class="auto" src="video/reel-br2.mp4" poster="img/poster-reel-br2-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="metadata"></video>
         <span class="hv-tag">Short-form</span>
         <span class="hv-bars" aria-hidden="true"><i></i><i></i><i></i></span>
       </button>
@@ -89,7 +155,7 @@
     <div class="stats">
       <div class="stat"><b data-count>704K+</b><span>YouTube views on 5 long-form edits</span></div>
       <div class="stat"><b data-count>400K+</b><span>Views from 5 reels in 14 days</span></div>
-      <div class="stat"><b>7 days</b><span>Long-form, footage to final cut</span></div>
+      <div class="stat"><b>40+</b><span>Reels delivered</span></div>
     </div>
   </div>
   <div class="marquee" aria-label="Proof">
@@ -113,10 +179,10 @@
     <header class="sec-head"><h2>Long-<em>form</em></h2><p class="lede">YouTube vlogs for a 30K-subscriber travel and dating channel. Story first, pacing that holds, 9–12 minutes that feel short.</p></header>
     <p class="channel"><span class="ch-dot"></span>Kyrikouts <span>· 30K subscribers on YouTube</span></p>
     <div class="yt-grid">
-      <figure class="yt" data-id="gHMUC5wiWVQ" data-title="The Girls In Greece Are…" data-meta="368K views"><button class="yt-play" type="button" aria-label="Play The Girls In Greece Are…"><img src="https://i.ytimg.com/vi/gHMUC5wiWVQ/maxresdefault.jpg" alt="The Girls In Greece Are…" loading="lazy"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">12:02</span></button><figcaption><b>The Girls In Greece Are…</b><span>368K views</span></figcaption></figure>
-      <figure class="yt" data-id="cACDDoXL3iA" data-title="Finding My Wife In Brazil Carnival" data-meta="220K views"><button class="yt-play" type="button" aria-label="Play Finding My Wife In Brazil Carnival"><img src="https://i.ytimg.com/vi/cACDDoXL3iA/hqdefault.jpg" alt="Finding My Wife In Brazil Carnival" loading="lazy"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">11:18</span></button><figcaption><b>Finding My Wife In Brazil Carnival</b><span>220K views</span></figcaption></figure>
-      <figure class="yt" data-id="vGxY3tZW05o" data-title="Beautiful Girls In Greece Nightlife…" data-meta="43K views"><button class="yt-play" type="button" aria-label="Play Beautiful Girls In Greece Nightlife…"><img src="https://i.ytimg.com/vi/vGxY3tZW05o/hqdefault.jpg" alt="Beautiful Girls In Greece Nightlife…" loading="lazy"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">9:30</span></button><figcaption><b>Beautiful Girls In Greece Nightlife…</b><span>43K views</span></figcaption></figure>
-      <figure class="yt" data-id="by2yaOB07Ww" data-title="In Brazil You Can Have 2 Girlfriends" data-meta="42.8K views"><button class="yt-play" type="button" aria-label="Play In Brazil You Can Have 2 Girlfriends"><img src="https://i.ytimg.com/vi/by2yaOB07Ww/hqdefault.jpg" alt="In Brazil You Can Have 2 Girlfriends" loading="lazy"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">9:05</span></button><figcaption><b>In Brazil You Can Have 2 Girlfriends</b><span>42.8K views</span></figcaption></figure>
+      <figure class="yt" data-id="gHMUC5wiWVQ" data-title="The Girls In Greece Are…" data-meta="368K views"><button class="yt-play" type="button" aria-label="Play The Girls In Greece Are…"><img src="https://i.ytimg.com/vi_webp/gHMUC5wiWVQ/maxresdefault.webp" alt="Thumbnail for “The Girls In Greece Are…”: a curly-haired man hugged by a smiling blonde woman on a city street at night" width="1280" height="720" loading="lazy" decoding="async"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">12:02</span></button><figcaption><b>The Girls In Greece Are…</b><span>368K views</span></figcaption></figure>
+      <figure class="yt" data-id="cACDDoXL3iA" data-title="Finding My Wife In Brazil Carnival" data-meta="220K views"><button class="yt-play" type="button" aria-label="Play Finding My Wife In Brazil Carnival"><img src="https://i.ytimg.com/vi/cACDDoXL3iA/hqdefault.jpg" alt="Thumbnail for “Finding My Wife In Brazil Carnival”: a man in a cap kissing a woman in a crowded carnival street party" width="480" height="360" loading="lazy" decoding="async"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">11:18</span></button><figcaption><b>Finding My Wife In Brazil Carnival</b><span>220K views</span></figcaption></figure>
+      <figure class="yt" data-id="vGxY3tZW05o" data-title="Beautiful Girls In Greece Nightlife…" data-meta="43K views"><button class="yt-play" type="button" aria-label="Play Beautiful Girls In Greece Nightlife…"><img src="https://i.ytimg.com/vi/vGxY3tZW05o/hqdefault.jpg" alt="Thumbnail for “Beautiful Girls In Greece Nightlife…”: a curly-haired man and a blonde woman hugging outside at night" width="480" height="360" loading="lazy" decoding="async"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">9:30</span></button><figcaption><b>Beautiful Girls In Greece Nightlife…</b><span>43K views</span></figcaption></figure>
+      <figure class="yt" data-id="by2yaOB07Ww" data-title="In Brazil You Can Have 2 Girlfriends" data-meta="42.8K views"><button class="yt-play" type="button" aria-label="Play In Brazil You Can Have 2 Girlfriends"><img src="https://i.ytimg.com/vi/by2yaOB07Ww/hqdefault.jpg" alt="Thumbnail for “In Brazil You Can Have 2 Girlfriends”: a man between two smiling women on a beach at night, city lights behind" width="480" height="360" loading="lazy" decoding="async"><span class="play"><svg><use href="#i-play"/></svg></span><span class="yt-len">9:05</span></button><figcaption><b>In Brazil You Can Have 2 Girlfriends</b><span>42.8K views</span></figcaption></figure>
     </div>
     <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
   </div>
@@ -124,9 +190,9 @@
   <div class="panel" id="panel-short" role="tabpanel" aria-labelledby="tab-short" hidden>
     <header class="sec-head"><h2>Short-<em>form</em></h2><p class="lede">Vertical reels for the same creator's Instagram: hooks in the first second, captions that land, cut for retention.</p></header>
     <div class="reel-grid">
-      <figure class="clip tall" data-src="video/reel-br2.mp4" data-poster="img/poster-reel-br2.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-br2.mp4" poster="img/poster-reel-br2.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
-      <figure class="clip tall" data-src="video/reel-43.mp4" data-poster="img/poster-reel-43.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-43.mp4" poster="img/poster-reel-43.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
-      <figure class="clip tall" data-src="video/reel-br26.mp4" data-poster="img/poster-reel-br26.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-br26.mp4" poster="img/poster-reel-br26.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
+      <figure class="clip tall" data-src="video/reel-br2.mp4" data-poster="img/poster-reel-br2-opt.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-br2.mp4" data-poster-late="img/poster-reel-br2-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
+      <figure class="clip tall" data-src="video/reel-43.mp4" data-poster="img/poster-reel-43-opt.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-43.mp4" data-poster-late="img/poster-reel-43-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
+      <figure class="clip tall" data-src="video/reel-br26.mp4" data-poster="img/poster-reel-br26-opt.jpg" data-title="Short-form reel"><div class="clip-media"><video class="auto" src="video/reel-br26.mp4" data-poster-late="img/poster-reel-br26-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button><button class="snd" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg></span><span class="snd-on"><svg><use href="#i-sound"/></svg></span></button></div></figure>
     </div>
     <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
   </div>
@@ -134,8 +200,8 @@
   <div class="panel" id="panel-motion" role="tabpanel" aria-labelledby="tab-motion" hidden>
     <header class="sec-head side-head"><p class="kicker">On the side</p><h3>A little <em>motion</em></h3><p class="lede">Something I'm learning alongside the editing: small motion pieces in DaVinci Resolve. I bring it into a video when it helps, like a clean title, a graph or an animated moment, never just for show.</p></header>
     <div class="side-row">
-      <figure class="clip wide" data-src="video/launch-full.mp4" data-poster="img/poster-launch-full.jpg" data-title="James Launch" data-silent><div class="clip-media"><video class="auto" src="video/launch-full.mp4" poster="img/poster-launch-full.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button></div><figcaption>James Launch</figcaption></figure>
-      <figure class="clip wide" data-src="video/pool-table.mp4" data-poster="img/poster-pool-table.jpg" data-title="Motion that feels right" data-silent><div class="clip-media"><video class="auto" src="video/pool-table.mp4" poster="img/poster-pool-table.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button></div><figcaption>Motion that <em>feels</em> right</figcaption></figure>
+      <figure class="clip wide" data-src="video/launch-full.mp4" data-poster="img/poster-launch-full-opt.jpg" data-title="James Launch" data-silent><div class="clip-media"><video class="auto" src="video/launch-full.mp4" data-poster-late="img/poster-launch-full-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button></div><figcaption>James Launch</figcaption></figure>
+      <figure class="clip wide" data-src="video/pool-table.mp4" data-poster="img/poster-pool-table-opt.jpg" data-title="Motion that feels right" data-silent><div class="clip-media"><video class="auto" src="video/pool-table.mp4" data-poster-late="img/poster-pool-table-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button></div><figcaption>Motion that <em>feels</em> right</figcaption></figure>
     </div>
   </div>
 </section>
@@ -147,23 +213,23 @@
     <article class="card glow"><p class="big" data-count>400K+</p><p>views from five short reels in fourteen days.</p><p class="meta">Live-stream creator · Instagram</p></article>
     <article class="card glow"><p class="big" data-count>368K</p><p>views on a single 12-minute vlog I cut.</p><p class="meta">Kyrikouts · YouTube</p></article>
     <article class="card glow"><p class="big">5 / day</p><p>reels posted in a single day at full pace, every one checked frame by frame first.</p><p class="meta">Volume without the slop</p></article>
-    <figure class="card quote video-card"><div class="clip-media"><video class="auto" data-sound="on" src="video/testimonial.mp4" poster="img/client-voice.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="snd snd-big" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg> Tap to unmute</span><span class="snd-on"><svg><use href="#i-sound"/></svg> Sound on</span></button></div><figcaption><p>“I didn't even ask for a testimonial. This is one of my clients.”</p></figcaption></figure>
+    <figure class="card quote video-card"><div class="clip-media"><video class="auto" data-sound="on" src="video/testimonial.mp4" data-poster-late="img/client-voice-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="snd snd-big" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg> Tap to unmute</span><span class="snd-on"><svg><use href="#i-sound"/></svg> Sound on</span></button></div><figcaption><p>“I didn't even ask for a testimonial. This is one of my clients.”</p></figcaption></figure>
   </div>
 </section>
 
 <section class="process" id="process">
-  <header class="sec-head"><p class="kicker">03 — Process</p><h2>From footage to final cut <em>in 7 days.</em></h2><p class="lede">That's for long-form videos. Reels usually take about a day.</p></header>
+  <header class="sec-head"><p class="kicker">03 — Process</p><h2>From footage <em>to final cut.</em></h2></header>
   <ol class="steps">
     <span class="rail" aria-hidden="true"><i></i></span>
-    <li><span class="n">01</span><p class="when">Day 1</p><h3>Brief &amp; footage</h3><p>You send the raw files and one line on what the video has to do. I come back with the angle before I touch a timeline.</p></li>
-    <li><span class="n">02</span><p class="when">Days 2–3</p><h3>The cut</h3><p>Hook first, then pacing. Dead air goes, tension stays. Built for retention, not just length.</p></li>
-    <li><span class="n">03</span><p class="when">Days 4–5</p><h3>Captions, sound &amp; polish</h3><p>Captions that land, sound, colour and texture, plus simple motion graphics where they help.</p></li>
-    <li><span class="n">04</span><p class="when">Days 6–7</p><h3>Revisions &amp; delivery</h3><p>Timestamped notes, two rounds of revisions, then the final export in every size you post.</p></li>
+    <li><span class="n">01</span><h3>Brief &amp; footage</h3><p>You send the raw files and one line on what the video has to do. I come back with the angle before I touch a timeline.</p></li>
+    <li><span class="n">02</span><h3>The cut</h3><p>Hook first, then pacing. Dead air goes, tension stays. Built for retention, not just length.</p></li>
+    <li><span class="n">03</span><h3>Captions, sound &amp; polish</h3><p>Captions that land, sound, colour and texture, plus simple motion graphics where they help.</p></li>
+    <li><span class="n">04</span><h3>Revisions &amp; delivery</h3><p>Timestamped notes, two rounds of revisions, then the final export in every size you post.</p></li>
   </ol>
 </section>
 
 <section class="about" id="about">
-  <figure class="portrait"><img src="img/james-portrait.jpg" alt="Edward James" loading="lazy"><figcaption>Edward James · Video Editor</figcaption></figure>
+  <figure class="portrait"><picture><source type="image/avif" srcset="img/james-portrait-600.avif 600w, img/james-portrait.avif 1000w" sizes="(max-width:640px) 190px, (max-width:860px) 340px, 470px"><img src="img/james-portrait.jpg" srcset="img/james-portrait-600.jpg 600w, img/james-portrait.jpg 1000w" sizes="(max-width:640px) 190px, (max-width:860px) 340px, 470px" alt="Edward James, video editor, in a white hoodie and black beanie in autumn woods" width="1000" height="1000" loading="lazy" decoding="async"></picture><figcaption>Edward James · Video Editor</figcaption></figure>
   <div class="about-copy">
     <p class="kicker">04 — About</p>
     <h2>Hey, I'm <em>James.</em></h2>
@@ -178,7 +244,6 @@
   <header class="sec-head"><p class="kicker">05 — FAQ</p><h2>Questions creators <em>ask first</em></h2></header>
   <div class="faq-list">
     <details open><summary>How much does a video cost?</summary><p>It depends on length and how much work the footage needs. We agree a fixed price per video before I start, so there are no surprises.</p></details>
-    <details><summary>How soon will I get my video?</summary><p>Long-form videos take up to 7 days from when you send the footage, including two rounds of changes. Reels are much quicker: usually done in a day. Either way, it depends on how complex the edit is.</p></details>
     <details><summary>How do we get started?</summary><p>Message me on <a class="faq-link" href="https://wa.me/526651660117" target="_blank" rel="noopener">WhatsApp</a>, <a class="faq-link" href="mailto:eddysmail40@gmail.com">email</a> or <a class="faq-link" href="https://x.com/EdwardJamesSirr" target="_blank" rel="noopener">X</a>. Tell me what the video is about and what you want it to do. I'll reply within a day, and then you send me the footage.</p></details>
   </div>
 </section>
@@ -193,7 +258,7 @@
     </div>
     <a class="contact-card glow" href="https://x.com/EdwardJamesSirr" target="_blank" rel="noopener"><span class="ico"><svg><use href="#i-x"/></svg></span><b>DM me on X <span class="arr">↗</span></b><span class="sub">@EdwardJamesSirr</span></a>
   </div>
-  <p class="meta">Replies within a day · Long-form in 7 days · Reels in about a day</p>
+  <p class="meta">Replies within a day</p>
 </section>
 
 <footer class="foot"><span>© 2026 Edward James</span><a class="totop" href="#top">Back to top ↑</a><span><a href="https://wa.me/526651660117" target="_blank" rel="noopener">WhatsApp</a> · <a href="mailto:eddysmail40@gmail.com">Email</a> · <a href="https://x.com/EdwardJamesSirr" target="_blank" rel="noopener">X</a></span></footer>
@@ -220,6 +285,11 @@
   rv.forEach(el=>{el.classList.add('rv');const sibs=[...el.parentElement.children].filter(c=>c.tagName===el.tagName);el.style.setProperty('--d',Math.min(sibs.indexOf(el),5)*70+'ms')});
   $$('.marquee .track').forEach(t=>{t.innerHTML+=t.innerHTML});
   const vids=$$('video.auto'), counts=$$('[data-count]'), steps=$('.steps');
+  /* posters for videos you can't see yet (other tabs, the testimonial further down) load later, so the first screen loads faster on phones */
+  const latePoster=v=>{if(v.dataset.posterLate){v.poster=v.dataset.posterLate;v.removeAttribute('data-poster-late')}};
+  const lateBelow=$$('.receipts video[data-poster-late]');
+  if('IntersectionObserver' in window){const pio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){latePoster(e.target);pio.unobserve(e.target)}}),{rootMargin:'900px 0px'});lateBelow.forEach(v=>pio.observe(v))}else lateBelow.forEach(latePoster);
+  addEventListener('load',()=>{const c=navigator.connection;if(c&&c.saveData)return;setTimeout(()=>$$('.panel video[data-poster-late]').forEach(latePoster),2500)});
   let lbOpen=false;
   function onScreen(el,frac,side){const r=el.getBoundingClientRect();if(!r.width||!r.height)return false;const h=vh(),w=innerWidth;const vis=Math.min(r.bottom,h)-Math.max(r.top,0);const visX=Math.min(r.right,w)-Math.max(r.left,0);return vis>Math.min(r.height,h)*frac&&(!side||visX>r.width*.5)}
   function check(){
@@ -238,11 +308,14 @@
      so if it's blocked it plays muted and the button stays up. First tap anywhere turns the sound on. */
   let userMuted=false, tapped=false;
   function setBtn(v){const b=v.parentElement.querySelector('.snd');if(!b)return;b.setAttribute('aria-pressed',String(!v.muted));b.setAttribute('aria-label',v.muted?'Unmute':'Mute')}
+  /* phones/tablets: the testimonial plays muted until you tap it or its button. Forcing sound on there
+     made it stop/start (and jump) while you scrolled past it, because a scroll isn't a real tap. */
+  const finePointer=matchMedia('(hover:hover) and (pointer:fine)').matches;
   function start(v){
-    if(v.dataset.sound==='on'&&!userMuted){v.muted=false;v.play().then(()=>setBtn(v)).catch(()=>{v.muted=true;setBtn(v);v.play().catch(()=>{})})}
+    if(finePointer&&v.dataset.sound==='on'&&!userMuted){v.muted=false;v.play().then(()=>setBtn(v)).catch(()=>{v.muted=true;setBtn(v);v.play().catch(()=>{})})}
     else v.play().catch(()=>{});
   }
-  ['pointerdown','keydown','touchstart'].forEach(ev=>addEventListener(ev,()=>{if(tapped)return;tapped=true;
+  if(finePointer)['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{if(tapped)return;tapped=true;
     vids.filter(v=>v.dataset.sound==='on'&&!v.paused&&v.muted&&!userMuted).forEach(v=>{v.muted=false;setBtn(v)})},{passive:true}));
   if('IntersectionObserver' in window){const io=new IntersectionObserver(check,{threshold:[0,.1,.35,.6]});rv.concat(vids,counts).forEach(el=>io.observe(el))}
   $$('.reel-grid,.yt-grid').forEach(g=>{
@@ -257,9 +330,15 @@
       if(!raf)raf=requestAnimationFrame(dotsNow);
       clearTimeout(settle);settle=setTimeout(check,160);
     },{passive:true});
+    /* the dots under a swipe row can be tapped too, to jump straight to that video */
+    dots.forEach((d,k)=>d.addEventListener('click',()=>{const c=clips[k];if(!c)return;
+      const cr=c.getBoundingClientRect(),gr=g.getBoundingClientRect();
+      g.scrollTo({left:g.scrollLeft+(cr.left+cr.width/2)-(gr.left+g.clientWidth/2),behavior:reduce?'auto':'smooth'})}));
   });
   /* safety net: never leave anything invisible */
   setTimeout(()=>rv.forEach(el=>{if(onScreen(el,0))el.classList.add('in')}),2000);
+  /* tapping the testimonial video itself works like its sound button */
+  $$('.video-card .clip-media').forEach(m=>m.addEventListener('click',e=>{if(e.target.closest('.snd'))return;const s=$('.snd',m);if(s)s.click()}));
   /* sound: tap the speaker; only one video plays sound at a time */
   function muteAll(){vids.forEach(o=>{o.muted=true;setBtn(o)})}
   $$('.snd').forEach(b=>b.addEventListener('click',e=>{
@@ -272,7 +351,7 @@
 
   /* ---- nav: background on scroll, highlight where you are ---- */
   const nav=$('#nav'), tc=$('.tc'), tcTime=$('.tc b'), tcName=$('.tc span'), pill=$('.pill'), navLinks=$$('.links a');
-  const two=n=>String(n).padStart(2,'0'), dock=$('.dock');
+  const two=n=>String(n).padStart(2,'0'), dock=$('.dock'), work=$('#work');
   const secs=navLinks.map(a=>$(a.getAttribute('href')));
   function movePill(p,el){if(!el){p.classList.remove('show');return}p.style.width=el.offsetWidth+'px';p.style.transform='translateX('+el.offsetLeft+'px)';p.classList.add('show')}
   let current=null;
@@ -289,7 +368,9 @@
     if(tcName.textContent!==name)tcName.textContent=name;
     tc.classList.toggle('hide',y<vh()*.6||p>.985);
     /* phone bottom bar: shows once you're past the first screen, steps aside at the contact cards */
-    if(dock)dock.classList.toggle('show',y>vh()*.55&&!(contact&&contact.getBoundingClientRect().top<vh()*.8));
+    /* …and also while you're in the Work section, so it doesn't cover the reels and their sound buttons */
+    const wr=work.getBoundingClientRect(),inWork=wr.top<vh()*.6&&wr.bottom>vh()*.4;
+    if(dock)dock.classList.toggle('show',y>vh()*.55&&!inWork&&!(contact&&contact.getBoundingClientRect().top<vh()*.8));
     if(act!==current){current=act;navLinks.forEach((a,i)=>a.classList.toggle('on',i===act));movePill(pill,act==null?null:navLinks[act])}
     check();
   }
@@ -306,6 +387,7 @@
   const tabs=$$('.tabs [role=tab]'), tabPill=$('.tab-pill');
   function selectTab(name,focus){
     const t=tabs.find(b=>b.dataset.tab===name);if(!t)return;
+    $$('video[data-poster-late]',$('#'+t.getAttribute('aria-controls'))).forEach(latePoster);
     tabs.forEach(b=>{const on=b===t;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;$('#'+b.getAttribute('aria-controls')).hidden=!on});
     movePill(tabPill,t);if(focus)t.focus();
     muteAll();requestAnimationFrame(check);

@@ -196,8 +196,8 @@
   <div class="panel" id="panel-motion" role="tabpanel" aria-labelledby="tab-motion" hidden>
     <header class="sec-head side-head"><p class="kicker">On the side</p><h3>A little <em>motion</em></h3><p class="lede">Something I'm learning alongside the editing: small motion pieces in DaVinci Resolve. I bring it into a video when it helps, like a clean title, a graph or an animated moment, never just for show.</p></header>
     <div class="side-row">
-      <figure class="clip wide" data-src="video/launch-full.mp4" data-poster="img/poster-launch-full-opt.jpg" data-title="James Launch" data-silent><div class="clip-media"><video class="auto" src="video/launch-full.mp4" data-poster-late="img/poster-launch-full-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button></div><figcaption>James Launch</figcaption></figure>
-      <figure class="clip wide" data-src="video/pool-table.mp4" data-poster="img/poster-pool-table-opt.jpg" data-title="Motion that feels right" data-silent><div class="clip-media"><video class="auto" src="video/pool-table.mp4" data-poster-late="img/poster-pool-table-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="expand" type="button" aria-label="Open full screen"><svg><use href="#i-expand"/></svg></button></div><figcaption>Motion that <em>feels</em> right</figcaption></figure>
+      <figure class="clip wide"><div class="clip-media"><video class="auto" src="video/launch-full.mp4" data-poster-late="img/poster-launch-full-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video></div><figcaption>James Launch</figcaption></figure>
+      <figure class="clip wide"><div class="clip-media"><video class="auto" src="video/pool-table.mp4" data-poster-late="img/poster-pool-table-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video></div><figcaption>Motion that <em>feels</em> right</figcaption></figure>
     </div>
   </div>
 </section>
@@ -443,7 +443,7 @@
     if(phone()){const s=$('.snd',f);if(s)s.click();return}
     openLb('short',i);
   }));
-  $$('#panel-motion .clip').forEach((f,i)=>$('.clip-media',f).addEventListener('click',()=>{if(!phone())openLb('motion',i)}));
+  /* Motion clips just play in place: silent, so there's nothing to open */
   $$('[data-open]').forEach(b=>b.addEventListener('click',()=>{
     const [gr,i]=b.dataset.open.split(':');
     /* on phones the small reel on the first screen takes you to the reels instead of a full-screen player */

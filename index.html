@@ -80,7 +80,7 @@
 <!-- the one image worth fetching first: the big thumbnail on the first screen -->
 <link rel="preload" as="image" href="https://i.ytimg.com/vi_webp/gHMUC5wiWVQ/maxresdefault.webp" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=23">
+<link rel="stylesheet" href="style.css?v=24">
 </head>
 <body>
 <!-- icons, drawn once and reused -->
@@ -213,7 +213,7 @@
     <article class="card glow"><p class="big" data-count>704K+</p><p>YouTube views on five long-form vlogs I edited. The top one alone: 368K.</p><p class="meta">Kyrikouts · YouTube · 30K subscribers</p></article>
     <article class="card glow"><p class="big" data-count>580K+</p><p>views from my top five reels. The best one alone: 166K.</p><p class="meta">Kyrikouts · Instagram</p></article>
     <article class="card glow"><p class="big" data-count>368K</p><p>views on a single 12-minute vlog I cut.</p><p class="meta">Kyrikouts · YouTube</p></article>
-    <article class="card glow"><p class="big">1.8M+</p><p>views in total across my long-form and short-form edits.</p><p class="meta">YouTube + Instagram combined</p></article>
+    <article class="card glow"><p class="big big-land" data-count data-decimals="1" data-dur="1900">1.8M+</p><p>views in total across my long-form and short-form edits.</p><p class="meta">YouTube + Instagram combined</p></article>
     <figure class="card quote video-card"><div class="clip-media"><video class="auto" data-sound="on" src="video/testimonial.mp4" data-poster-late="img/client-voice-opt.jpg" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="none"></video><button class="snd snd-big" type="button" aria-label="Unmute" aria-pressed="false"><span class="snd-off"><svg><use href="#i-mute"/></svg> Tap to unmute</span><span class="snd-on"><svg><use href="#i-sound"/></svg> Sound on</span></button></div><figcaption><p>“I didn't even ask for a testimonial. This is one of my clients.”</p></figcaption></figure>
   </div>
 </section>
@@ -301,9 +301,13 @@
   }
   /* numbers count up to exactly what's written in the page */
   function countUp(el){
-    el.dataset.done=1;const m=el.textContent.trim().match(/^(\d+)(.*)$/);if(!m||reduce)return;
-    const end=+m[1],suf=m[2],t0=performance.now(),dur=1400;
-    (function tick(t){const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,4);el.textContent=Math.round(end*e)+suf;if(p<1)requestAnimationFrame(tick);else el.textContent=m[0]})(t0);
+    el.dataset.done=1;const m=el.textContent.trim().match(/^(\d+(?:\.\d+)?)(.*)$/);if(!m||reduce)return;
+    const end=+m[1],suf=m[2],dec=+(el.dataset.decimals||0),dur=+(el.dataset.dur||1400),t0=performance.now();
+    (function tick(t){const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,4);el.textContent=(end*e).toFixed(dec)+suf;
+      if(p<1)requestAnimationFrame(tick);
+      else{el.textContent=m[0];
+        /* the big total lands with a quick blur-out and a bouncy pop back in */
+        if(el.classList.contains('big-land')){const card=el.closest('.card');[el,card].forEach(x=>{if(x){x.classList.remove('landed');void x.offsetWidth;x.classList.add('landed')}})}}})(t0);
   }
   /* the testimonial tries to play WITH sound; browsers only allow that after a tap/click,
      so if it's blocked it plays muted and the button stays up. First tap anywhere turns the sound on. */

@@ -545,3 +545,24 @@ details[open] p{animation:faqIn .45s var(--ease)}
   .side-vignette{background:linear-gradient(90deg,rgba(6,5,3,.5) 0,rgba(6,5,3,0) 10%,rgba(6,5,3,0) 90%,rgba(6,5,3,.5) 100%)}
 }
 @media print{.side-vignette{display:none}}
+
+/* 1.8M+ total: counts up, then a quick blur-out and a bouncy pop back in with a soft gold glow */
+.big-land{display:inline-block;transform-origin:20% 70%;will-change:transform,filter,opacity}
+.big-land.landed{animation:bigLand .8s cubic-bezier(.22,1,.36,1) both}
+@keyframes bigLand{
+  0%{opacity:1;filter:blur(0);transform:scale(1);text-shadow:none}
+  16%{opacity:0;filter:blur(10px);transform:scale(.9)}
+  42%{opacity:1;filter:blur(1.5px);transform:scale(1.16);text-shadow:0 0 28px rgba(201,165,122,.75)}
+  62%{filter:blur(0);transform:scale(.96)}
+  80%{transform:scale(1.03);text-shadow:0 0 14px rgba(201,165,122,.35)}
+  100%{opacity:1;filter:blur(0);transform:scale(1);text-shadow:none}}
+@media (prefers-reduced-motion:reduce){.big-land.landed{animation:none}}
+
+/* ...and its card glows gold as the number lands, then settles back */
+.card.landed{animation:cardGlow 2s cubic-bezier(.22,1,.36,1) both}
+@keyframes cardGlow{
+  0%{border-color:var(--line);box-shadow:0 0 0 0 rgba(201,165,122,0)}
+  22%{border-color:rgba(214,180,136,1);box-shadow:0 0 0 1px rgba(214,180,136,.8),0 0 60px 10px rgba(201,165,122,.42),inset 0 0 60px rgba(201,165,122,.2)}
+  45%{border-color:rgba(214,180,136,.95);box-shadow:0 0 0 1px rgba(214,180,136,.6),0 0 52px 8px rgba(201,165,122,.34),inset 0 0 50px rgba(201,165,122,.16)}
+  100%{border-color:var(--line);box-shadow:0 0 0 0 rgba(201,165,122,0)}}
+@media (prefers-reduced-motion:reduce){.card.landed{animation:none}}
